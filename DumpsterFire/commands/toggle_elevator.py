@@ -12,6 +12,10 @@ class ToggleElevator(commands2.CommandBase):
 
         self.addRequirements([self.elevator])
 
-        
-        
+    def execute(self):
+
+        if self.button():
+            self.elevator.toggle()
+
+         
 
