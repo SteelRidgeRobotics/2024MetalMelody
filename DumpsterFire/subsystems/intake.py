@@ -9,7 +9,7 @@ class IntakeAndPivot(Subsystem):
         
         self.intakeMotor = phoenix6.hardware.TalonFX(MotorIDs.INTAKEMOTOR)
         self.pivotMotor = phoenix6.hardware.TalonFX(MotorIDs.PIVOTMOTOR)
-        self.choking = False
+        self.holding = False
 
         CommandScheduler.getInstance().registerSubsystem(self)
 
@@ -35,14 +35,18 @@ class IntakeAndPivot(Subsystem):
 
     def periodic(self) -> None: # update whether the robot has the note or not
         if self.hasNote():
-            self.choking = True
+            self.holding = True
         else:
-            self.choking = False
+            self.holding = False
 
 
     #####[[ PIVOT FUNCTIONS ]]#####
             
-            
+    def pivotSetPos(self) -> None: #set motor position to something specific
+        pass
+    
+    
+
     def pivotDownwards(self) -> None: # point intake downwards
         self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(MotorConstants.PIVOTSPEED))
 
