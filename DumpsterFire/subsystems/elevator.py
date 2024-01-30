@@ -11,6 +11,8 @@ class Elevator(Subsystem):
 
         self.elevator_config = phoenix6.configs.TalonFXConfiguration()
 
+        self.isExtended = False
+
         self.elevatorMotor.configurator.apply(self.elevator_config)
 
         CommandScheduler.getInstance().registerSubsystem(self)
@@ -19,15 +21,9 @@ class Elevator(Subsystem):
     #####[[ ELEVATOR FUNCTIONS ]]#####
             
              
-    def toggle(self) -> None: # Move elevator down
-        
-        self.sensorPos = self.elevatorMotor.get_rotor_position().value()
+    def move(self, desiredPos):
 
-        if self.sensorPos == MotorConstants.TOPPOSITION:
-            
-            self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(MotorConstants.BOTTOMPOSITION))
-        
-        
-        elif self.sensorPos == MotorConstants.BOTTOMPOSITION:
-            
-            self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(MotorConstants.TOPPOSITION))
+        self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(desiredPos))
+
+    
+    
