@@ -17,15 +17,15 @@ class IntakeAndPivot(Subsystem):
     #####[[ INTAKE FUNCTIONS ]]#####
 
 
-    def spit(self) -> None: # drop note
+    def disencumber(self) -> None: # drop note
         self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(MotorConstants.INTAKESPEED))
 
 
-    def swallow(self) -> None: # intake note
+    def consume(self) -> None: # intake note
         self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(-MotorConstants.INTAKESPEED))
 
 
-    def choke(self) -> None: # hold note
+    def hold(self) -> None: # hold note
         self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0))
 
 
