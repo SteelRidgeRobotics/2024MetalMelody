@@ -9,5 +9,6 @@ class FeederTest(commands2.CommandBase):
         self.addRequirements(self.intake)
 
     def execute(self):
+        
         self.intake.consume()
 

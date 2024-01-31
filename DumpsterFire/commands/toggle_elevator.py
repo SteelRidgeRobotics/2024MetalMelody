@@ -15,19 +15,19 @@ class ToggleElevator(commands2.Command):
     def execute(self):
 
         if self.elevator.isExtended:
-            self.elevator.move(MotorConstants.BOTTOMPOSITION)
+            self.elevator.move(ElevatorConstants.BOTTOMPOSITION)
         elif not self.elevator.isExtended:
-            self.elevator.move(MotorConstants.TOPPOSITION)
+            self.elevator.move(ElevatorConstants.TOPPOSITION)
     
     def isFinished(self):
         
         self.elevatorPos = self.elevator.elevatorMotor.get_rotor_position().value
 
-        if self.elevator.isExtended and abs(MotorConstants.BOTTOMPOSITION - self.elevatorPos) <= 400:
+        if self.elevator.isExtended and abs(ElevatorConstants.BOTTOMPOSITION - self.elevatorPos) <= 400:
 
             return True
 
-        elif not self.elevator.isExtended and abs(MotorConstants.TOPPOSITION - self.elevatorPos) <= 400:
+        elif not self.elevator.isExtended and abs(ElevatorConstants.TOPPOSITION - self.elevatorPos) <= 400:
 
             return True
         

@@ -18,11 +18,11 @@ class IntakeAndPivot(Subsystem):
 
 
     def disencumber(self) -> None: # drop note
-        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(MotorConstants.INTAKESPEED))
+        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(IntakeConstants.INTAKESPEED))
 
 
     def consume(self) -> None: # intake note
-        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(-MotorConstants.INTAKESPEED))
+        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(-IntakeConstants.INTAKESPEED))
 
 
     def hold(self) -> None: # hold note
@@ -48,11 +48,11 @@ class IntakeAndPivot(Subsystem):
     
 
     def pivotDownwards(self) -> None: # point intake downwards
-        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(MotorConstants.PIVOTSPEED))
+        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(IntakeConstants.PIVOTSPEED))
 
 
     def pivotUpwards(self) -> None: # point intake upwards
-        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(-MotorConstants.PIVOTSPEED))
+        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(-IntakeConstants.PIVOTSPEED))
 
 
     def pivotStop(self) -> None: # stop intake pivot
