@@ -1,8 +1,9 @@
 import wpilib
 import commands2
 from subsystems.intake import IntakeAndPivot
+from commands2.CommandXboxController
 
-class FeederTest(commands2.CommandBase):
+class Consume(commands2.CommandBase):
 
     def __init__(self, IntakeAndPivot):
         self.intake = IntakeAndPivot
