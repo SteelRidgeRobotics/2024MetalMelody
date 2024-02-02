@@ -11,7 +11,7 @@ class Elevator(Subsystem):
 
         self.elevator_config = phoenix6.configs.TalonFXConfiguration()
 
-        self.isExtended = False
+        self.isDown = True
 
         self.elevatorMotor.configurator.apply(self.elevator_config)
 
@@ -24,6 +24,7 @@ class Elevator(Subsystem):
     def move(self, desiredPos):
 
         self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(desiredPos))
+
 
     
     
