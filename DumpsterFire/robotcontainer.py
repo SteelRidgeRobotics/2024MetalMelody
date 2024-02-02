@@ -4,7 +4,7 @@ from constants import *
 # from subsystems.drive import SwerveDrive
 from subsystems.intake import IntakeAndPivot
 from subsystems.elevator import Elevator
-from commands.intake_commands import FeederTest
+from commands.intake_commands import *
 from commands.toggle_elevator import ToggleElevator
 
 class RobotContainer:
@@ -18,4 +18,6 @@ class RobotContainer:
         self.intake = IntakeAndPivot()
         self.elevator = Elevator()
 
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederTest())
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederTest(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))

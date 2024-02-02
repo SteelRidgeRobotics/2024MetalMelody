@@ -1,6 +1,7 @@
 import phoenix6
 from constants import * 
 from commands2 import CommandScheduler, Subsystem
+from wpimath.filter import SlewRateLimiter
 
 class IntakeAndPivot(Subsystem):
     
@@ -9,6 +10,9 @@ class IntakeAndPivot(Subsystem):
         
         self.intakeMotor = phoenix6.hardware.TalonFX(MotorIDs.INTAKEMOTOR)
         self.pivotMotor = phoenix6.hardware.TalonFX(MotorIDs.PIVOTMOTOR)
+
+        self.slew = SlewRateLimiter(.5)
+
         self.holding = False
 
         CommandScheduler.getInstance().registerSubsystem(self)
@@ -18,11 +22,11 @@ class IntakeAndPivot(Subsystem):
 
 
     def disencumber(self) -> None: # drop note
-        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(IntakeConstants.INTAKESPEED))
+        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(self.slew.calculate(-IntakeConstants.INTAKESPEED)))
 
 
     def consume(self) -> None: # intake note
-        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(-IntakeConstants.INTAKESPEED))
+        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(self.slew.calculate(IntakeConstants.INTAKESPEED)))
 
 
     def hold(self) -> None: # hold note
