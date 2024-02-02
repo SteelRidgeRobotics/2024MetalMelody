@@ -10,7 +10,7 @@ class IntakeConstants:
     INTAKESPEED = .2
 
 class ElevatorConstants:
-    ELEVATORTOGGLE = True
+    
     TOPPOSITION = 0 # make this a range for the top position
     BOTTOMPOSITION = 0 # make this a rannge for the bottom position
     FEEDFORWARD = 0 # change this for whatever the feedforward will be
