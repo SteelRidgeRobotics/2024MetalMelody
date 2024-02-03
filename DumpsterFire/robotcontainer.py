@@ -5,8 +5,6 @@ from constants import *
 from subsystems.intake import IntakeAndPivot
 from subsystems.elevator import Elevator
 from commands.intake_commands import *
-# from commands.toggle_elevator import ToggleElevator
-from commands.move_elevator import MoveElevator
 from commands2 import InstantCommand
 
 class RobotContainer:
@@ -25,7 +23,6 @@ class RobotContainer:
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
 
-        #self.elevator.setDefaultCommand(MoveElevator(self.elevator))
 
         
 
