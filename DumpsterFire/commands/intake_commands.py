@@ -47,3 +47,18 @@ class FeederTestStop(commands2.Command):
 
     def isFinished(self) -> bool:
         return False
+    
+class MovePivot(commands2.Command):
+
+    def __init__(self, IntakeAndPivot : IntakeAndPivot):
+        self.intake = IntakeAndPivot
+        self.addRequirements(self.intake)
+
+    def initialize(self):
+        return super().initialize()
+
+    def execute(self):
+        self.intake.pivotCycle()
+
+    def isFinished(self) -> bool:
+        return False

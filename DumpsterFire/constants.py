@@ -6,8 +6,8 @@ class MotorIDs:
     ELEVATORMOTOR = 2
 
 class IntakeConstants:
-    PIVOTSPEED = .5
     INTAKESPEED = .5
+    PIVOTANGLE = [0, 180]
 
 class ElevatorConstants:
     ELEVATORTOGGLE = True
