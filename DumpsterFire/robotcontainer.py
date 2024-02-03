@@ -23,7 +23,6 @@ class RobotContainer:
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
 
-        #self.elevator.setDefaultCommand(MoveElevator(self.elevator))
 
         
 
