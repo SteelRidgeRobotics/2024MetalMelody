@@ -11,8 +11,8 @@ class IntakeConstants:
 
 class ElevatorConstants:
     
-    TOPPOSITION = -80 
-    BOTTOMPOSITION = 52
+    TOPPOSITION = -115
+    BOTTOMPOSITION = 42
     ELEVATORLENGTH = 158.135
     MIDDLEPOSITION = (TOPPOSITION + BOTTOMPOSITION)/2
     FEEDFORWARD = 0 # change this for whatever the feedforward will be
