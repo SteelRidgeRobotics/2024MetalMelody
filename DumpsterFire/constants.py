@@ -1,4 +1,3 @@
-from enum import Enum
 
 class MotorIDs:
     PIVOTMOTOR = 0

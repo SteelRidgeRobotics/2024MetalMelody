@@ -2,11 +2,9 @@ import wpilib
 import commands2
 from subsystems.intake import IntakeAndPivot
 
-
 class FeederTest(commands2.Command):
-
-    def __init__(self, IntakeAndPivot : IntakeAndPivot):
-        self.intake = IntakeAndPivot
+    def __init__(self, intake_and_pivot: IntakeAndPivot):
+        self.intake = intake_and_pivot
         self.addRequirements(self.intake)
 
     def initialize(self):
