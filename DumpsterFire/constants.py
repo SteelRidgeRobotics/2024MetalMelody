@@ -1,4 +1,3 @@
-from enum import Enum
 
 class MotorIDs:
     PIVOTMOTOR = 0
@@ -6,8 +5,8 @@ class MotorIDs:
     ELEVATORMOTOR = 6
 
 class IntakeConstants:
-    PIVOTSPEED = .5
-    INTAKESPEED = .2
+    INTAKESPEED = .5
+    PIVOTANGLE = [0, 180]
 
 class ElevatorConstants:
     
