@@ -5,7 +5,6 @@ from constants import *
 from subsystems.intake import IntakeAndPivot
 from subsystems.elevator import Elevator
 from commands.intake_commands import *
-from commands.toggle_elevator import ToggleElevator
 from commands2 import InstantCommand
 
 class RobotContainer:
