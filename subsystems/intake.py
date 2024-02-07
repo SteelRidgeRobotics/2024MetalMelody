@@ -54,6 +54,14 @@ class IntakeAndPivot(Subsystem):
 
     #####[[ PIVOT FUNCTIONS ]]#####
             
-    def pivotCycle(self) -> None: #set motor position to something specific
+    def pivotDown(self) -> None: #set motor position to something specific
 
-        self.pivotIndex = (self.pivotIndex + 1) % len(IntakeConstants.PIVOTPOS)
+        self.pivotIndex -= 1   #(self.pivotIndex + 1) % len(IntakeConstants.PIVOTPOS)
+        if self.pivotIndex < 1:
+            self.pivotIndex = 1
+
+    def pivotUp(self) -> None:
+        
+        self.pivotIndex += 1
+        if self.pivotIndex > 3:
+            self.pivotIndex = 3
