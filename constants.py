@@ -6,7 +6,7 @@ class MotorIDs:
 
 class IntakeConstants:
     INTAKESPEED = .5
-    PIVOTPOS = [1, 2, 3]
+    PIVOTPOS = [0, 1, 2]
 
 
 class ElevatorConstants:
