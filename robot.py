@@ -1,5 +1,8 @@
 import commands2
 from robotcontainer import RobotContainer
+from wpilib.cameraserver import CameraServer
+import cv2
+import wpilib
 
 class DumpsterFire(commands2.TimedCommandRobot):
 
@@ -8,7 +11,7 @@ class DumpsterFire(commands2.TimedCommandRobot):
         super().__init__()
 
     def robotInit(self):
-
+        wpilib.CameraServer.launch('camera.py:main')
         self.container = RobotContainer()
 
     def robotPeriodic(self):
