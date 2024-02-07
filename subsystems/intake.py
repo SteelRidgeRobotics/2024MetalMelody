@@ -56,15 +56,4 @@ class IntakeAndPivot(Subsystem):
             
     def pivotCycle(self) -> None: #set motor position to something specific
 
-        self.pivotIndex += 1 #go to next index
-        if self.pivotIndex == len(IntakeConstants.PIVOTANGLE)+1: #if the index is too big then set to 0
-            self.pivotIndex = 0
-        
-        self.desired_angle = IntakeConstants.PIVOTANGLE[self.pivotIndex] #set the desired angle to the next angle on the list
-    
-
-    
-
-
-
-
+        self.pivotIndex = (self.pivotIndex + 1) % len(IntakeConstants.PIVOTPOS)
