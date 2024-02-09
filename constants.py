@@ -20,6 +20,15 @@ class ElevatorConstants:
     MOTIONMAGICVELOCITY = 60
     MOTIONMAGICJERK = 240
 
+class LimelightConstants:
+
+    TAGSIZE = 0.16
+    fx = 0
+    fy = 0
+    cx = 0
+    cy = 0
+
+
 class ExternalConstants:
     DRIVERCONTROLLER = 0
     FUNCTIONSCONTROLLER = 1
