@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HomeToMiddleMiddleNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleToHome"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HomeToMiddleBottomNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleBottomToHome"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "New Folder",
+  "choreoAuto": false
+}
