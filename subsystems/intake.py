@@ -19,8 +19,6 @@ class IntakeAndPivot(Subsystem):
         self.pivotIndex = 0 #index for the pivot angles list in constants
         self.desired_angle = 90
 
-        CommandScheduler.getInstance().registerSubsystem(self)
-
 
     #####[[ INTAKE FUNCTIONS ]]#####
 
