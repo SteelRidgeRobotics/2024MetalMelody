@@ -38,8 +38,8 @@ class DriveByController(Command):
         translation_x = -deadband(translation_x, ExternalConstants.DEADBAND) ** 3
         rotation = -deadband(rotation, ExternalConstants.DEADBAND) ** 3
 
-        self.swerve.drive(ChassisSpeeds(translation_x * SwerveConstants.k_max_speed / slowdown_mult, 
-                                        translation_y * SwerveConstants.k_max_speed / slowdown_mult, 
+        self.swerve.drive(ChassisSpeeds(translation_x * SwerveConstants.k_max_module_speed / slowdown_mult, 
+                                        translation_y * SwerveConstants.k_max_module_speed / slowdown_mult, 
                                         rotation * SwerveConstants.k_max_rot_rate / slowdown_mult), field_relative=True)
     
     def end(self, interrupted: bool) -> None:
