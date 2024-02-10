@@ -8,7 +8,7 @@ from commands.intake_commands import *
 from commands.drive import DriveByController
 from commands2 import InstantCommand
 from pathplannerlib.auto import PathPlannerAuto
-from wpilib import SendableChooser, SmartDashboard, DriverStation
+from wpilib import SendableChooser, SmartDashboard
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -29,7 +29,7 @@ class RobotContainer:
         self.start_chooser.addOption("Red Speaker", Pose2d(15.202, 5.48, Rotation2d()))
         self.start_chooser.addOption("Red Source", Pose2d(16.022, 2.1, Rotation2d()))
         
-        #self.start_chooser.onChange(lambda: self.swerve.reset_odometry(pose=self.start_chooser.getSelected()))
+        self.start_chooser.onChange(lambda pose: self.swerve.reset_odometry(pose=pose))
         SmartDashboard.putData("Starting Position", self.start_chooser)
         
         self.auto_chooser = SendableChooser()
