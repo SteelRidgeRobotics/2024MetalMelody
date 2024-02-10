@@ -18,4 +18,8 @@ robotpy_extras = [
 ]
 
 # Other pip packages to install
-requires = ["frc6343"]
+requires = [
+    "frc6343",
+    "robotpy-opencv; platform_machine == 'roborio'",
+    "opencv-python; platform_machine != 'roborio'"
+]

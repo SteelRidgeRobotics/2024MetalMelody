@@ -1,42 +1,40 @@
-# Import the camera server
-from cscore import CameraServer
-
-# Import OpenCV and NumPy
 import cv2
 import numpy as np
 
-from constants import LimelightConstants
+from cscore import CameraServer as CS
+import robotpy_apriltag
+
+from constants import *
+
 
 def main():
-    cs = CameraServer
-    cs.enableLogging()
+    CS.enableLogging()
 
-    # Capture from the first USB Camera on the system
-    camera = cs.startAutomaticCapture()
+    # Get the UsbCamera from CameraServer
+    camera = CS.startAutomaticCapture()
+    # Set the resolution
     camera.setResolution(LimelightConstants.RESOLUTIONX, LimelightConstants.RESOLUTIONY)
 
     # Get a CvSink. This will capture images from the camera
-    cvSink = cs.getVideo()
-
-    # (optional) Setup a CvSource. This will send images back to the Dashboard
-    outputStream = cs.putVideo("Limelight", LimelightConstants.RESOLUTIONX, LimelightConstants.RESOLUTIONY)
+    cvSink = CS.getVideo()
+    # Setup a CvSource. This will send images back to the Dashboard
+    outputStream = CS.putVideo("limelight", LimelightConstants.RESOLUTIONX, LimelightConstants.RESOLUTIONY)
 
     # Allocating new images is very expensive, always try to preallocate
-    img = np.zeros(shape=(LimelightConstants.RESOLUTIONY, LimelightConstants.RESOLUTIONX, 3), dtype=np.uint8)
+    mat = np.zeros(shape=(LimelightConstants.RESOLUTIONY, LimelightConstants.RESOLUTIONX, 3), dtype=np.uint8)
 
     while True:
         # Tell the CvSink to grab a frame from the camera and put it
         # in the source image.  If there is an error notify the output.
-        time, img = cvSink.grabFrame(img)
+        time, mat = cvSink.grabFrame(mat)
         if time == 0:
             # Send the output the error.
-            outputStream.notifyError(cvSink.getError());
+            outputStream.notifyError(cvSink.getError())
             # skip the rest of the current iteration
             continue
 
-        #
-        # Insert your image processing logic here!
-        #
+        # Put a rectangle on the image
+        cv2.rectangle(mat, (100, 100), (400, 400), (255, 255, 255), 5)
 
-        # (optional) send some image back to the dashboard
-        outputStream.putFrame(img)
+        # Give the output stream a new image to display
+        outputStream.putFrame(mat)
