@@ -1,10 +1,9 @@
-import math
+from math import fabs, pi
 
-import navx
 from commands2 import Command, Subsystem
+import navx
 from pathplannerlib.auto import AutoBuilder
-from pathplannerlib.config import (HolonomicPathFollowerConfig, PIDConstants,
-                                   ReplanningConfig)
+from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
 from phoenix6.configs.cancoder_configs import *
 from phoenix6.configs.talon_fx_configs import *
 from phoenix6.configs.config_groups import MagnetSensorConfigs
@@ -16,15 +15,14 @@ from typing import Self
 from wpilib import DriverStation, Field2d, SmartDashboard
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
-from wpimath.kinematics import (ChassisSpeeds, SwerveDrive4Kinematics,
-                                SwerveModulePosition,
-                                SwerveModuleState)
+from wpimath.kinematics import ChassisSpeeds, SwerveDrive4Kinematics, SwerveModulePosition, SwerveModuleState
 
 from constants import *
 
 
 class SwerveModule(Subsystem):
-    
+
+
     def __init__(self, module_name: str, drive_motor_constants: DriveMotorConstants, direction_motor_constants: DirectionMotorConstants, CANcoder_id: int, CAN_offset: float) -> None:
         super().__init__()
 
@@ -47,8 +45,7 @@ class SwerveModule(Subsystem):
         return Rotation2d.fromDegrees(rots_to_degs(self.direction_motor.get_rotor_position().value / k_direction_gear_ratio))
     
     def reset_sensor_position(self) -> None:
-        pos = -self.turning_encoder.get_absolute_position().value
-        self.direction_motor.set_position(pos * k_direction_gear_ratio)
+        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().value * k_direction_gear_ratio)
 
     def get_state(self) -> SwerveModuleState:
         return SwerveModuleState(rots_to_meters(self.drive_motor.get_rotor_velocity().value, k_drive_gear_ratio), self.get_angle())
@@ -60,19 +57,21 @@ class SwerveModule(Subsystem):
         desiredState.optimize(desiredState, self.get_angle())
         desiredAngle = desiredState.angle.degrees() % 360
 
-        angleDist = math.fabs(desiredAngle - self.directionTargetAngle)
+        angleDist = fabs(desiredAngle - self.directionTargetAngle)
 
-        if angleDist in range(91, 270):
+        if (angleDist > 90 and angleDist < 270):
             targetAngle = (desiredAngle + 180) % 360
             self.invert_factor = -1
         else:
             targetAngle = desiredAngle
             self.invert_factor = 1
 
-        targetAngleDist = math.fabs(targetAngle - self.directionTargetAngle)
+        targetAngleDist = fabs(targetAngle - self.directionTargetAngle)
 
         if targetAngleDist > 180:
             targetAngleDist = abs(targetAngleDist - 360)
+
+        changeInRots = degs_to_rots(targetAngleDist)
 
         angleDiff = targetAngle - self.directionTargetAngle
 
@@ -80,9 +79,9 @@ class SwerveModule(Subsystem):
             angleDiff += 360
 
         if angleDiff > 180:
-            self.directionTargetPos -= degs_to_rots(targetAngleDist)
+            self.directionTargetPos -= changeInRots
         else:
-            self.directionTargetPos += degs_to_rots(targetAngleDist)
+            self.directionTargetPos += changeInRots
 
         self.directionTargetAngle = targetAngle
 
@@ -93,8 +92,7 @@ class SwerveModule(Subsystem):
 class Swerve(Subsystem):
     navx = navx.AHRS.create_spi()
 
-    kinematics = SwerveDrive4Kinematics(Translation2d(1, 1), Translation2d(-1, 1),
-                                        Translation2d(1, -1), Translation2d(-1, -1)) # LF, LR, RF, RR
+    kinematics = SwerveDrive4Kinematics(Translation2d(1, 1), Translation2d(-1, 1), Translation2d(1, -1), Translation2d(-1, -1)) # LF, LR, RF, RR
     
     field = Field2d()
     
@@ -103,20 +101,21 @@ class Swerve(Subsystem):
     right_front: SwerveModule = SwerveModule("RF", DriveMotorConstants(MotorIDs.RIGHT_FRONT_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_FRONT_DIRECTION), CANIDs.RIGHT_FRONT, -0.39990234375)
     right_rear: SwerveModule = SwerveModule("RR", DriveMotorConstants(MotorIDs.RIGHT_REAR_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_REAR_DIRECTION), CANIDs.RIGHT_REAR, 0.41943359375)
     
+    
     def __init__(self):
         super().__init__()
 
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 
         SmartDashboard.putData(self.field)
-        SmartDashboard.putData("Reset Odometry", self.reset_odometry_command())
-        SmartDashboard.putData("Reset Gyro", self.reset_gyro_command())
+        SmartDashboard.putData("Reset Odometry", self.runOnce(lambda: self.reset_odometry()))
+        SmartDashboard.putData("Reset Gyro", self.runOnce(lambda: self.reset_yaw()))
         
         if not AutoBuilder.isConfigured():
             AutoBuilder.configureHolonomic(
                 lambda: self.get_pose(),
                 lambda pose: self.reset_odometry(pose),
-                lambda: self.get_chassis_speeds(),
+                lambda: self.get_robot_relative_speeds(),
                 lambda chassisSpeed: self.drive(chassisSpeed, field_relative=False),
                 HolonomicPathFollowerConfig(
                     PIDConstants(1.5, 0.0, 0.0, 0.0), # translation
@@ -132,12 +131,13 @@ class Swerve(Subsystem):
         self.navx.reset()
 
     def should_flip_auto_path(self) -> bool:
+        # Flips the PathPlanner path if we're on the red alliance
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(-self.navx.getYaw())
     
-    def drive(self, chassis_speed: ChassisSpeeds, field_relative: bool=True):
+    def drive(self, chassis_speed:ChassisSpeeds, field_relative: bool=True) -> None:
         chassis_speed = ChassisSpeeds.discretize(chassis_speed, 0.02)
         if field_relative:
             states = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(chassis_speed, self.get_angle()))
@@ -148,7 +148,7 @@ class Swerve(Subsystem):
 
         self.set_module_states(desat_states)
 
-    def get_chassis_speeds(self) -> ChassisSpeeds:
+    def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
 
     def set_module_states(self, module_states: tuple[SwerveModuleState, SwerveModuleState, SwerveModuleState, SwerveModuleState]) -> None:
@@ -164,12 +164,6 @@ class Swerve(Subsystem):
 
     def reset_odometry(self, pose=Pose2d()) -> None:
         self.odometry.resetPosition(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), pose)
-        
-    def reset_odometry_command(self) -> Command:
-        return self.runOnce(lambda: self.reset_odometry())
-    
-    def reset_gyro_command(self) -> Command:
-        return self.runOnce(lambda: self.reset_yaw())
     
     def reset_yaw(self) -> Self:
         self.navx.reset()
@@ -179,19 +173,21 @@ class Swerve(Subsystem):
         self.field.setRobotPose(self.odometry.update(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position())))
         SmartDashboard.putData(self.field)
         
-    def initialize(self):
+    def initialize(self) -> None:
         self.left_front.reset_sensor_position()
         self.left_rear.reset_sensor_position()
         self.right_front.reset_sensor_position()
         self.right_rear.reset_sensor_position()
 
-"""Conversions"""
+"""
+CONVERSIONS
+"""
 
 def meters_to_rots(meters: float, ratio: float) -> float:
-    return (meters / (math.pi * SwerveConstants.k_wheel_size)) * ratio
+    return meters / (pi * SwerveConstants.k_wheel_size) * ratio
 
 def rots_to_meters(rotation: float, ratio: float=1) -> float:
-    return (rotation / ratio) * (math.pi * SwerveConstants.k_wheel_size)
+    return (rotation / ratio) * (pi * SwerveConstants.k_wheel_size)
 
 def rots_to_degs(rotation: float) -> float:
     return rotation * 360
