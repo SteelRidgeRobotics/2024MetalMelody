@@ -12,6 +12,9 @@ class DumpsterFire(commands2.TimedCommandRobot):
         self.container = RobotContainer()
 
     def robotPeriodic(self):
-        
+
         commands2.CommandScheduler.getInstance().run()
+        
+    def autonomousInit(self) -> None:
+        self.container.runSelectedAutoCommand()
         
