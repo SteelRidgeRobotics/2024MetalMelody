@@ -11,7 +11,7 @@ class DumpsterFire(commands2.TimedCommandRobot):
         super().__init__()
 
     def robotInit(self):
-        wpilib.CameraServer.launch('camera.py:main')
+        wpilib.CameraServer.launch('vision.py:main')
         self.container = RobotContainer()
 
     def robotPeriodic(self):
