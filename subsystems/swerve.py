@@ -108,7 +108,6 @@ class Swerve(Subsystem):
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 
         SmartDashboard.putData(self.field)
-        #SmartDashboard.putData("Reset Odometry", self.runOnce(lambda: self.reset_odometry()))
         SmartDashboard.putData("Reset Gyro", self.runOnce(lambda: self.reset_yaw()))
         
         if not AutoBuilder.isConfigured():
@@ -131,7 +130,6 @@ class Swerve(Subsystem):
         self.navx.reset()
 
     def should_flip_auto_path(self) -> bool:
-        # Flips the PathPlanner path if we're on the red alliance
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
     def get_angle(self) -> Rotation2d:
