@@ -64,10 +64,10 @@ class SwerveModule(Subsystem):
 
         if angleDist in range(91, 270):
             targetAngle = (desiredAngle + 180) % 360
-            invert_factor = -1
+            self.invert_factor = -1
         else:
             targetAngle = desiredAngle
-            invert_factor = 1
+            self.invert_factor = 1
 
         targetAngleDist = math.fabs(targetAngle - self.directionTargetAngle)
 
@@ -76,7 +76,7 @@ class SwerveModule(Subsystem):
 
         angleDiff = targetAngle - self.directionTargetAngle
 
-        while angleDiff < 0:
+        if angleDiff < 0:
             angleDiff += 360
 
         if angleDiff > 180:
@@ -87,7 +87,7 @@ class SwerveModule(Subsystem):
         self.directionTargetAngle = targetAngle
 
         self.direction_motor.set_control(MotionMagicVoltage(self.directionTargetPos * k_direction_gear_ratio))
-        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(invert_factor * desiredState.speed, k_drive_gear_ratio)))
+        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio)))
        
 
 class Swerve(Subsystem):
@@ -112,21 +112,22 @@ class Swerve(Subsystem):
         SmartDashboard.putData("Reset Odometry", self.reset_odometry_command())
         SmartDashboard.putData("Reset Gyro", self.reset_gyro_command())
         
-        AutoBuilder.configureHolonomic(
-            lambda: self.get_pose(),
-            lambda pose: self.reset_odometry(pose),
-            lambda: self.get_chassis_speeds(),
-            lambda chassisSpeed: self.drive(chassisSpeed, field_relative=False),
-            HolonomicPathFollowerConfig(
-                PIDConstants(1.5, 0.0, 0.0, 0.0), # translation
-                PIDConstants(2.5, 0.0, 0.0, 0.0), # rotation
-                SwerveConstants.k_max_module_speed,
-                SwerveConstants.k_drive_base_radius,
-                ReplanningConfig()
-            ),
-            lambda: self.should_flip_auto_path(),
-            self
-        )
+        if not AutoBuilder.isConfigured():
+            AutoBuilder.configureHolonomic(
+                lambda: self.get_pose(),
+                lambda pose: self.reset_odometry(pose),
+                lambda: self.get_chassis_speeds(),
+                lambda chassisSpeed: self.drive(chassisSpeed, field_relative=False),
+                HolonomicPathFollowerConfig(
+                    PIDConstants(1.5, 0.0, 0.0, 0.0), # translation
+                    PIDConstants(2.5, 0.0, 0.0, 0.0), # rotation
+                    SwerveConstants.k_max_module_speed,
+                    SwerveConstants.k_drive_base_radius,
+                    ReplanningConfig()
+                ),
+                lambda: self.should_flip_auto_path(),
+                self
+            )
         
         self.navx.reset()
 

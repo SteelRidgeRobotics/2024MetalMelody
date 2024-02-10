@@ -2,25 +2,28 @@ from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, T
 from phoenix6.hardware.talon_fx import TalonFX
 
 class MotorIDs:
+    LEFT_FRONT_DRIVE = 0
+    LEFT_REAR_DRIVE = 1
+    RIGHT_FRONT_DRIVE = 2
+    RIGHT_REAR_DRIVE = 3
+
+    LEFT_FRONT_DIRECTION = 4
+    LEFT_REAR_DIRECTION = 5
+    RIGHT_FRONT_DIRECTION = 6
+    RIGHT_REAR_DIRECTION = 7
+    
     PIVOTMOTOR = 0
+    
     INTAKEMOTOR = 1
+    
     ELEVATORMOTOR = 6
     
-    LEFT_FRONT_DRIVE = 10
-    LEFT_REAR_DRIVE = 11
-    RIGHT_FRONT_DRIVE = 12
-    RIGHT_REAR_DRIVE = 13
-    
-    LEFT_FRONT_DIRECTION = 14
-    LEFT_REAR_DIRECTION = 15
-    RIGHT_FRONT_DIRECTION = 16
-    RIGHT_REAR_DIRECTION = 17
     
 class CANIDs:
-    LEFT_FRONT = 14
-    LEFT_REAR = 15
-    RIGHT_FRONT = 16
-    RIGHT_REAR = 17
+    LEFT_FRONT = 4
+    LEFT_REAR = 5
+    RIGHT_FRONT = 6
+    RIGHT_REAR = 7
 
 class IntakeConstants:
     INTAKESPEED = .5

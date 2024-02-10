@@ -21,8 +21,6 @@ class Elevator(Subsystem):
 
         self.elevatorMotor.configurator.apply(elevator_config)
 
-        CommandScheduler.getInstance().registerSubsystem(self)
-
 
     #####[[ ELEVATOR FUNCTIONS ]]#####
 
