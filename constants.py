@@ -57,8 +57,7 @@ class SwerveConstants:
     k_drive_base_radius = 0.43 # meters
 
 class DriveMotorConstants:
-    """Constants for a TalonFX drive motor for a swerve module."""
-    
+
     def __init__(self, motor_id: int, 
                  k_s: float=0.4, k_v: float=0, k_a: float=0, k_p: float=0.133, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
@@ -76,14 +75,6 @@ class DriveMotorConstants:
         self.neutral_mode = NeutralModeValue.BRAKE
         
     def apply_configuration(self, motor: TalonFX) -> TalonFX:
-        """Applies the DriveMotorConstants into the TalonFX.
-
-        Args:
-            motor (TalonFX): The drive motor to apply the constants to.
-
-        Returns:
-            TalonFX: The new configurated TalonFX for method chaining.
-        """
         config = TalonFXConfiguration()
         config.slot0.with_k_s(self.k_s).with_k_v(self.k_v).with_k_a(self.k_a).with_k_p(self.k_p).with_k_i(self.k_i).with_k_d(self.k_d)
         config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.inverted)
@@ -116,14 +107,6 @@ class DirectionMotorConstants:
         self.invert = InvertedValue.CLOCKWISE_POSITIVE
         
     def apply_configuration(self, motor: TalonFX) -> TalonFX:
-        """Applies the DriveMotorConstants into the TalonFX.
-
-        Args:
-            motor (TalonFX): The drive motor to apply the constants to.
-
-        Returns:
-            TalonFX: The new configurated TalonFX for method chaining.
-        """
         config = TalonFXConfiguration()
         config.slot0.with_k_s(self.k_s).with_k_v(self.k_v).with_k_a(self.k_a).with_k_p(self.k_p).with_k_i(self.k_i).with_k_d(self.k_d)
         config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.invert)
