@@ -1,6 +1,7 @@
 import wpilib
 from commands2.button import JoystickButton
 from constants import *
+from subsystems.camera import Camera
 from subsystems.intake import IntakeAndPivot
 from subsystems.elevator import Elevator
 from subsystems.swerve import Swerve
@@ -14,7 +15,7 @@ from wpimath.geometry import Pose2d, Rotation2d
 class RobotContainer:
     
     def __init__(self):
-        
+        self.camera: Camera = Camera()
         self.swerve: Swerve = Swerve() # This helps IntelliSense know that this is a Swerve object, not a Subsystem (it gets confused sometimes)
         self.intake = IntakeAndPivot()
         self.elevator = Elevator()
@@ -39,7 +40,9 @@ class RobotContainer:
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
         self.driverController = wpilib.XboxController(ExternalConstants.DRIVERCONTROLLER)
-        self.functionsController = wpilib.XboxController(ExternalConstants.FUNCTIONSCONTROLLER)        
+        self.functionsController = wpilib.XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
+
+        self.robot_pose = self.getStartPose()
         
         self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
 
@@ -51,8 +54,14 @@ class RobotContainer:
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
+    
+    def getStartPose(self) -> Pose2d:
+        return self.start_chooser.getSelected()
         
     def runSelectedAutoCommand(self) -> None:
         self.swerve.reset_yaw().reset_odometry(self.start_chooser.getSelected())
         self.getAuto().schedule()
+
+    def updateOdometry(self) -> None:
+        self.swerve.addVisionMeasurement(Pose2d(self.camera.getCalculatedXY(), self.swerve.get_angle()))
         

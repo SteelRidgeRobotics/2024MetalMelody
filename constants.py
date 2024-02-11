@@ -18,12 +18,11 @@ class MotorIDs:
     
     ELEVATORMOTOR = 11
     
-    
 class CANIDs:
-    LEFT_FRONT = 4
-    LEFT_REAR = 5
-    RIGHT_FRONT = 6
-    RIGHT_REAR = 7
+    LEFT_FRONT = 5
+    LEFT_REAR = 6
+    RIGHT_FRONT = 7
+    RIGHT_REAR = 8
 
 class IntakeConstants:
     INTAKESPEED = .5
