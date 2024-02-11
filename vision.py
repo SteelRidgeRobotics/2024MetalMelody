@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 
 from cscore import CameraServer as CS
-import robotpy_apriltag
 
 from constants import *
 
