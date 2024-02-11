@@ -25,6 +25,9 @@ class Camera(Subsystem):
     def getTotalLatency(self) -> float:
         return self.totalLatency
     
+    def getTagId(self) -> int:
+        return self.currentTag
+    
     def periodic(self) -> None:
         self.fieldPose = self.limelight.getEntry("botpose_wpiblue").getDoubleArray([0, 0, 0, 0, 0, 0, 0])
         self.currentTag = self.limelight.getEntry("tid").getInteger(0)
