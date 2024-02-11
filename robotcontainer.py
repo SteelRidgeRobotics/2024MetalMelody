@@ -9,7 +9,7 @@ from commands.intake_commands import *
 from commands.drive import DriveByController
 from commands2 import InstantCommand
 from pathplannerlib.auto import PathPlannerAuto
-from wpilib import SendableChooser, SmartDashboard
+from wpilib import SendableChooser, SmartDashboard, Timer
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -63,5 +63,5 @@ class RobotContainer:
         self.getAuto().schedule()
 
     def updateOdometry(self) -> None:
-        self.swerve.addVisionMeasurement(Pose2d(self.camera.getCalculatedXY(), self.swerve.get_angle()))
+        self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())
         

@@ -1,6 +1,6 @@
 from math import fabs, pi, sqrt
 
-from commands2 import Command, Subsystem
+from commands2 import Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
@@ -12,7 +12,7 @@ from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.controls.motion_magic_voltage import MotionMagicVoltage
 from phoenix6.signals import *
 from typing import Self
-from wpilib import DriverStation, Field2d, SmartDashboard, Timer
+from wpilib import DriverStation, Field2d, SmartDashboard
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.kinematics import ChassisSpeeds, SwerveDrive4Kinematics, SwerveModulePosition, SwerveModuleState
@@ -171,14 +171,14 @@ class Swerve(Subsystem):
         self.field.setRobotPose(self.odometry.update(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position())))
         SmartDashboard.putData(self.field)
 
-    def addVisionMeasurement(self, pose: Pose2d) -> None:
+    def addVisionMeasurement(self, pose: Pose2d, timestamp: float) -> None:
         current_pose = self.odometry.getEstimatedPosition()
         diff_x = current_pose.X() - pose.X()
         diff_y = current_pose.Y() - pose.Y()
         distance = sqrt(diff_x**2 + diff_y**2)
         if distance > 2:
             return
-        self.odometry.addVisionMeasurement(pose, Timer.getFPGATimestamp())
+        self.odometry.addVisionMeasurement(pose, timestamp)
         
     def initialize(self) -> None:
         self.left_front.reset_sensor_position()
