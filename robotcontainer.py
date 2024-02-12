@@ -1,15 +1,14 @@
-import wpilib
+from commands.drive import DriveByController
+from commands.intake_commands import *
+from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
-from subsystems.camera import Camera
-from subsystems.intake import IntakeAndPivot
-from subsystems.elevator import Elevator
-from subsystems.swerve import Swerve
-from commands.intake_commands import *
-from commands.drive import DriveByController
-from commands2 import InstantCommand
 from pathplannerlib.auto import PathPlannerAuto
-from wpilib import SendableChooser, SmartDashboard, Timer
+from subsystems.camera import Camera
+from subsystems.elevator import Elevator
+from subsystems.intake import IntakeAndPivot
+from subsystems.swerve import Swerve
+from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -39,24 +38,19 @@ class RobotContainer:
         self.auto_chooser.addOption("2 Note Speaker", PathPlannerAuto("2NoteSpeaker"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
-        self.driverController = wpilib.XboxController(ExternalConstants.DRIVERCONTROLLER)
-        self.functionsController = wpilib.XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
-
-        self.robot_pose = self.getStartPose()
+        self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)
+        self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
         
-        self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
+        self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederTest(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).onTrue(InstantCommand(lambda: MovePivot(self.intake)))
+        JoystickButton(self.functionsController, XboxController.Button.kA).whileTrue(FeederTest(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: MovePivot(self.intake)))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
-    
-    def getStartPose(self) -> Pose2d:
-        return self.start_chooser.getSelected()
         
     def runSelectedAutoCommand(self) -> None:
         self.swerve.reset_yaw().reset_odometry(self.start_chooser.getSelected())

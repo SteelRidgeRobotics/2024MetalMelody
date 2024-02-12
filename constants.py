@@ -63,6 +63,8 @@ class SwerveConstants:
     k_max_module_speed = 4 # m/s
     k_max_rot_rate = 10 # rad/s
     k_drive_base_radius = 0.43 # meters
+    auto_kP_translation = 1.5
+    auto_kP_rotation = 2.5
 
 class DriveMotorConstants:
 
