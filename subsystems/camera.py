@@ -3,9 +3,6 @@ import ntcore
 from wpimath.geometry import Pose2d, Rotation2d
 
 class Camera(Subsystem):
-    """
-    periodic scans network tables for any apriltags found.
-    """
 
     def __init__(self) -> None:
         super().__init__()
