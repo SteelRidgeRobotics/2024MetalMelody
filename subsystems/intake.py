@@ -31,7 +31,6 @@ class Intake(Subsystem):
     def hold(self) -> None: # hold note
         self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0))
 
-
     def periodic(self) -> None: # update whether the robot has the note or not
 
         if self.pivotIndex == 0:

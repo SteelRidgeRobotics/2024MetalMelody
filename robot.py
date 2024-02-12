@@ -19,4 +19,3 @@ class DumpsterFire(commands2.TimedCommandRobot):
         
     def autonomousInit(self) -> None:
         self.container.runSelectedAutoCommand()
-        
