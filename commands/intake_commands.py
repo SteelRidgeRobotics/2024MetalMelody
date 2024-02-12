@@ -1,10 +1,8 @@
 import wpilib
 import commands2
-from subsystems.intake import IntakeAndPivot
-
+from subsystems.intake import Intake
 
 class FeederTest(commands2.Command):
-
     def __init__(self, IntakeAndPivot : IntakeAndPivot):
         self.intake = IntakeAndPivot
         self.addRequirements(self.intake)
@@ -32,7 +30,7 @@ class FeederTestDrop(commands2.Command):
 
     def isFinished(self) -> bool:
         return False
-    
+
 class FeederTestStop(commands2.Command):
 
     def __init__(self, IntakeAndPivot : IntakeAndPivot):

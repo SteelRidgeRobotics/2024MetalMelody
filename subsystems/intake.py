@@ -3,7 +3,7 @@ from constants import *
 from commands2 import CommandScheduler, Subsystem
 from wpimath.filter import SlewRateLimiter
 
-class IntakeAndPivot(Subsystem):
+class Intake(Subsystem):
     
     def __init__(self):
         super().__init__()
@@ -15,14 +15,13 @@ class IntakeAndPivot(Subsystem):
 
         self.holding = False
 
-        CommandScheduler.getInstance().registerSubsystem(self)
+        self.pivotIndex = 0 #index for the pivot angles list in constants
 
 
     #####[[ INTAKE FUNCTIONS ]]#####
 
-
     def disencumber(self) -> None: # drop note
-        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(self.slew.calculate(-IntakeConstants.INTAKESPEED)))
+        self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(self.slew.calculate(-IntakeConstants.INTAKESPEED * 1.5)))
 
 
     def consume(self) -> None: # intake note
@@ -32,38 +31,22 @@ class IntakeAndPivot(Subsystem):
     def hold(self) -> None: # hold note
         self.intakeMotor.set_control(phoenix6.controls.DutyCycleOut(0))
 
-
-    def hasNote(self) -> bool: # use beam break to see if note is inside intake
-        pass
-
-
     def periodic(self) -> None: # update whether the robot has the note or not
-        if self.hasNote():
-            self.holding = True
-        else:
-            self.holding = False
 
+        if self.pivotIndex == 0:
+           
+            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[0]))
+
+        elif self.pivotIndex == 1:
+           
+            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[1]))
+
+        else:
+            
+            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[2]))
 
     #####[[ PIVOT FUNCTIONS ]]#####
             
-    def pivotSetPos(self) -> None: #set motor position to something specific
-        pass
+    def pivotCycle(self) -> None: #set motor position to something specific
     
-    
-
-    def pivotDownwards(self) -> None: # point intake downwards
-        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(IntakeConstants.PIVOTSPEED))
-
-
-    def pivotUpwards(self) -> None: # point intake upwards
-        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(-IntakeConstants.PIVOTSPEED))
-
-
-    def pivotStop(self) -> None: # stop intake pivot
-        self.pivotMotor.set_control(phoenix6.controls.DutyCycleOut(0))
-
-    
-
-
-
-
+        self.pivotIndex = (self.pivotIndex + 1) % 3
