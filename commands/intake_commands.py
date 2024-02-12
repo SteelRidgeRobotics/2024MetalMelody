@@ -3,8 +3,8 @@ import commands2
 from subsystems.intake import Intake
 
 class FeederTest(commands2.Command):
-    def __init__(self, IntakeAndPivot : IntakeAndPivot):
-        self.intake = IntakeAndPivot
+    def __init__(self, intake: Intake):
+        self.intake = intake
         self.addRequirements(self.intake)
 
     def initialize(self):
@@ -18,8 +18,8 @@ class FeederTest(commands2.Command):
 
 class FeederTestDrop(commands2.Command):
 
-    def __init__(self, IntakeAndPivot : IntakeAndPivot):
-        self.intake = IntakeAndPivot
+    def __init__(self, intake: Intake):
+        self.intake = intake
         self.addRequirements(self.intake)
 
     def initialize(self):
@@ -33,8 +33,8 @@ class FeederTestDrop(commands2.Command):
 
 class FeederTestStop(commands2.Command):
 
-    def __init__(self, IntakeAndPivot : IntakeAndPivot):
-        self.intake = IntakeAndPivot
+    def __init__(self, intake: Intake):
+        self.intake = intake
         self.addRequirements(self.intake)
 
     def initialize(self):

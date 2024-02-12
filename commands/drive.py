@@ -65,7 +65,7 @@ class DriveByController(Command):
             if self.mode == DriveModes.NORMAL:
                 self.mode = DriveModes.AMP
             else:
-                self.mode == DriveModes.NORMAL
+                self.mode = DriveModes.NORMAL
     
     def end(self, interrupted: bool) -> None:
         return super().end(interrupted)
