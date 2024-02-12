@@ -18,12 +18,11 @@ class MotorIDs:
     
     ELEVATORMOTOR = 11
     
-    
 class CANIDs:
-    LEFT_FRONT = 4
-    LEFT_REAR = 5
-    RIGHT_FRONT = 6
-    RIGHT_REAR = 7
+    LEFT_FRONT = 5
+    LEFT_REAR = 6
+    RIGHT_FRONT = 7
+    RIGHT_REAR = 8
 
 class IntakeConstants:
     INTAKESPEED = .5
@@ -41,10 +40,19 @@ class ElevatorConstants:
     MOTIONMAGICVELOCITY = 60
     MOTIONMAGICJERK = 240
 
+class LimelightConstants:
+
+    RESOLUTIONX = 1280
+    RESOLUTIONY = 960
+
 class ExternalConstants:
     DRIVERCONTROLLER = 0
     DEADBAND = 0.15
     FUNCTIONSCONTROLLER = 1
+    
+class DriveConstants:
+    rotation_kP = 0.1
+    translation_kP = 0.1
     
 """
 SWERVE
@@ -55,6 +63,8 @@ class SwerveConstants:
     k_max_module_speed = 4 # m/s
     k_max_rot_rate = 10 # rad/s
     k_drive_base_radius = 0.43 # meters
+    auto_kP_translation = 1.5
+    auto_kP_rotation = 2.5
 
 class DriveMotorConstants:
 
