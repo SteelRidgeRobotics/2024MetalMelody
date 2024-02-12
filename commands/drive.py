@@ -3,15 +3,12 @@ from constants import *
 from math import fabs
 from subsystems.swerve import Swerve
 from wpilib import XboxController
-from wpimath.filter import SlewRateLimiter
+from wpimath.geometry import Rotation2d, Translation2d
 from wpimath.kinematics import ChassisSpeeds
 
 class DriveByController(Command):
-    trans_x_slew = SlewRateLimiter(30)
-    trans_y_slew = SlewRateLimiter(30)
-    rot_slew = SlewRateLimiter(30)
 
-    def __init__(self, swerve: SwerveConstants, controller: XboxController) -> None:
+    def __init__(self, swerve: Swerve, controller: XboxController) -> None:
         super().__init__()
 
         self.swerve = swerve
@@ -37,6 +34,10 @@ class DriveByController(Command):
         translation_y = -deadband(translation_y, ExternalConstants.DEADBAND) ** 3
         translation_x = -deadband(translation_x, ExternalConstants.DEADBAND) ** 3
         rotation = -deadband(rotation, ExternalConstants.DEADBAND) ** 3
+        
+        if self.controller.getAButton():
+            self.swerve.pivot_around_point(rotation * SwerveConstants.k_max_rot_rate / slowdown_mult, Translation2d(3.56, Rotation2d()))
+            return
 
         self.swerve.drive(ChassisSpeeds(translation_x * SwerveConstants.k_max_module_speed / slowdown_mult, 
                                         translation_y * SwerveConstants.k_max_module_speed / slowdown_mult, 

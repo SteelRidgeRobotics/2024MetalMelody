@@ -145,6 +145,13 @@ class Swerve(Subsystem):
         desat_states = self.kinematics.desaturateWheelSpeeds(states, SwerveConstants.k_max_module_speed)
 
         self.set_module_states(desat_states)
+        
+    def pivot_around_point(self, omega: float, center_of_rotation: Translation2d) -> None:
+        theta_speed = ChassisSpeeds(0, 0, omega)
+        
+        states = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(theta_speed, self.get_angle()), centerOfRotation=center_of_rotation)
+        desat_states = self.kinematics.desaturateWheelSpeeds(states, SwerveConstants.k_max_module_speed)
+        self.set_module_states(desat_states)
 
     def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
