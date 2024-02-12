@@ -6,7 +6,7 @@ from constants import *
 from pathplannerlib.auto import PathPlannerAuto
 from subsystems.camera import Camera
 from subsystems.elevator import Elevator
-from subsystems.intake import IntakeAndPivot
+from subsystems.intake import Intake
 from subsystems.swerve import Swerve
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
@@ -16,7 +16,7 @@ class RobotContainer:
     def __init__(self):
         self.camera: Camera = Camera()
         self.elevator = Elevator()
-        self.intake = IntakeAndPivot()
+        self.intake = Intake()
         self.swerve: Swerve = Swerve()
         
         """Sendables!!!"""
@@ -43,11 +43,11 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederIn(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kY).whileTrue(FeederOut(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederStop(self.intake))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
+        JoystickButton(self.functionsController, XboxController.Button.kA).whileTrue(FeederIn(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kY).whileTrue(FeederOut(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(FeederStop(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
         
     def getAuto(self) -> PathPlannerAuto:
