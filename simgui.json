@@ -1,7 +1,11 @@
 {
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Autonomous Select": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Reset Gyro": "Command",
+      "/SmartDashboard/Starting Position": "String Chooser"
     }
   },
   "NetworkTables Info": {
