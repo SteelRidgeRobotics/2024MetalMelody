@@ -26,7 +26,8 @@ class CANIDs:
 
 class IntakeConstants:
     INTAKESPEED = .5
-    PIVOTANGLE = [0, 180]
+    PIVOTPOS = [0, 1, 2]
+
 
 class ElevatorConstants:
     

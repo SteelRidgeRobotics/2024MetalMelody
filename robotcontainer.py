@@ -15,9 +15,9 @@ class RobotContainer:
     
     def __init__(self):
         self.camera: Camera = Camera()
-        self.swerve: Swerve = Swerve()
-        self.intake = IntakeAndPivot()
         self.elevator = Elevator()
+        self.intake = IntakeAndPivot()
+        self.swerve: Swerve = Swerve()
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
@@ -43,11 +43,12 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kA).whileTrue(FeederTest(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederIn(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kY).whileTrue(FeederOut(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).whileTrue(FeederStop(self.intake))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        JoystickButton(self.functionsController, wpilib.XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: MovePivot(self.intake)))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
@@ -58,4 +59,3 @@ class RobotContainer:
 
     def updateOdometry(self) -> None:
         self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())
-        

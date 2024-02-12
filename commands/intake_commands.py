@@ -2,7 +2,7 @@ import wpilib
 import commands2
 from subsystems.intake import IntakeAndPivot
 
-class FeederTest(commands2.Command):
+class FeederIn(commands2.Command):
     def __init__(self, intake_and_pivot: IntakeAndPivot):
         self.intake = intake_and_pivot
         self.addRequirements(self.intake)
@@ -16,7 +16,7 @@ class FeederTest(commands2.Command):
     def isFinished(self) -> bool:
         return False
 
-class FeederTestDrop(commands2.Command):
+class FeederOut(commands2.Command):
 
     def __init__(self, IntakeAndPivot : IntakeAndPivot):
         self.intake = IntakeAndPivot
@@ -31,7 +31,7 @@ class FeederTestDrop(commands2.Command):
     def isFinished(self) -> bool:
         return False
     
-class FeederTestStop(commands2.Command):
+class FeederStop(commands2.Command):
 
     def __init__(self, IntakeAndPivot : IntakeAndPivot):
         self.intake = IntakeAndPivot
@@ -42,21 +42,6 @@ class FeederTestStop(commands2.Command):
 
     def execute(self):
         self.intake.hold()
-
-    def isFinished(self) -> bool:
-        return False
-    
-class MovePivot(commands2.Command):
-
-    def __init__(self, IntakeAndPivot : IntakeAndPivot):
-        self.intake = IntakeAndPivot
-        self.addRequirements(self.intake)
-
-    def initialize(self):
-        return super().initialize()
-
-    def execute(self):
-        self.intake.pivotCycle()
 
     def isFinished(self) -> bool:
         return False
