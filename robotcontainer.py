@@ -7,7 +7,6 @@ from subsystems.elevator import Elevator
 from subsystems.swerve import Swerve
 from commands.intake_commands import *
 from commands.drive import DriveByController
-from commands.amp import LineUpToAmp
 from commands2 import InstantCommand
 from pathplannerlib.auto import PathPlannerAuto
 from wpilib import SendableChooser, SmartDashboard, Timer
@@ -17,7 +16,7 @@ class RobotContainer:
     
     def __init__(self):
         self.camera: Camera = Camera()
-        self.swerve: Swerve = Swerve() # This helps IntelliSense know that this is a Swerve object, not a Subsystem (it gets confused sometimes)
+        self.swerve: Swerve = Swerve()
         self.intake = IntakeAndPivot()
         self.elevator = Elevator()
         
@@ -46,8 +45,6 @@ class RobotContainer:
         self.robot_pose = self.getStartPose()
         
         self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
-        
-        JoystickButton(self.driverController, wpilib.XboxController.Button.kA).onTrue(LineUpToAmp(self.camera, self.swerve, self.driverController))
 
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kA).whileTrue(FeederTest(self.intake))
         JoystickButton(self.functionsController, wpilib.XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
