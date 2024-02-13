@@ -3,7 +3,7 @@ from commands.intake_commands import *
 from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
-from pathplannerlib.auto import PathPlannerAuto
+from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from subsystems.camera import Camera
 from subsystems.elevator import Elevator
 from subsystems.intake import Intake
@@ -15,10 +15,16 @@ class RobotContainer:
     
     def __init__(self):
         self.camera: Camera = Camera()
-        self.elevator = Elevator()
+        self.elevator: Elevator = Elevator()
         self.intake = Intake()
         self.swerve: Swerve = Swerve()
         self.swerve.initialize()
+        
+        # PathPlanner Commands
+        ## Elevator
+        NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.setStage(0)))
+        NamedCommands.registerCommand("elevatorMid", InstantCommand(lambda: self.elevator.setStage(1)))
+        NamedCommands.registerCommand("elevatorBottom", InstantCommand(lambda: self.elevator.setStage(2)))
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
