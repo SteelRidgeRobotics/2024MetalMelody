@@ -29,6 +29,14 @@ class Intake(Subsystem):
         self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[self.pivotIndex]))
 
     #####[[ PIVOT FUNCTIONS ]]#####
+    def pivotDown(self) -> None:
+        self.pivotIndex = 0
+
+    def pivotHold(self) -> None:
+        self.pivotIndex = 1
+
+    def pivotAmp(self) -> None:
+        self.pivotIndex = 2
             
     def pivotCycle(self) -> None: #set motor position to something specific
         self.pivotIndex = (self.pivotIndex + 1) % 3
