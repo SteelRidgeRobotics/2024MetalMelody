@@ -26,8 +26,19 @@ class Camera(Subsystem):
         return self.currentTag
     
     def periodic(self) -> None:
-        self.fieldPose = self.limelight.getEntry("botpose_wpiblue").getDoubleArray([0, 0, 0, 0, 0, 0, 0])
         self.currentTag = self.limelight.getEntry("tid").getInteger(0)
+        if self.currentTag == -1:
+            self.fieldPose = [0, 0, 0, 0, 0, 0, 0]
+            self.offsetX = 0
+            self.offsetY = 0
+            return
+        self.fieldPose = self.limelight.getEntry("botpose_wpiblue").getDoubleArray([0, 0, 0, 0, 0, 0, 0])
         self.offsetX = self.limelight.getEntry("tx").getDouble(0)
         self.offsetY = self.limelight.getEntry("ty").getDouble(0)
         self.totalLatency = self.limelight.getEntry("tl").getDouble(0) + self.limelight.getEntry("cl").getDouble(0)
+        
+    def setPipeline(self, id: int) -> None:
+        self.limelight.putNumber("pipeline", id)
+        
+    def getPipeline(self) -> int:
+        return self.limelight.getEntry("pipeline").getDouble(0)

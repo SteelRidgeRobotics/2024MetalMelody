@@ -59,4 +59,5 @@ class RobotContainer:
         self.getAuto().schedule()
 
     def updateOdometry(self) -> None:
-        self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())
+        if self.camera.getTagId() != -1:
+            self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())

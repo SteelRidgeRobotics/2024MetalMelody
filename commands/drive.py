@@ -23,6 +23,7 @@ class DriveByController(Command):
 
         self.controller = controller
         self.mode = DriveModes.NORMAL
+        self.camera.setPipeline(0)
     
     def execute(self) -> None:
         translation_x = (-deadband(self.controller.getLeftY(), ExternalConstants.DEADBAND) ** 3) * SwerveConstants.k_max_module_speed
@@ -40,7 +41,7 @@ class DriveByController(Command):
                 return
         
         if self.mode == DriveModes.NORMAL:
-            self.swerve.drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), field_relative=True)
+            self.swerve.drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
             
         else:
             angle_dist = fabs(self.getAmpAngleTarget().radians() - self.swerve.get_angle().radians())
@@ -64,8 +65,10 @@ class DriveByController(Command):
         if self.controller.getYButtonPressed():
             if self.mode == DriveModes.NORMAL:
                 self.mode = DriveModes.AMP
+                self.camera.setPipeline(0)
             else:
                 self.mode = DriveModes.NORMAL
+                self.camera.setPipeline(1)
     
     def end(self, interrupted: bool) -> None:
         return super().end(interrupted)
