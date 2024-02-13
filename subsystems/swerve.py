@@ -115,7 +115,7 @@ class Swerve(Subsystem):
                 lambda: self.get_pose(),
                 lambda pose: self.reset_odometry(pose),
                 lambda: self.get_robot_relative_speeds(),
-                lambda chassisSpeed: self.drive(chassisSpeed, field_relative=False),
+                lambda chassisSpeed: self.robot_centric_drive(chassisSpeed),
                 HolonomicPathFollowerConfig(
                     PIDConstants(SwerveConstants.auto_kP_translation, 0.0, 0.0, 0.0), # translation
                     PIDConstants(SwerveConstants.auto_kP_rotation, 0.0, 0.0, 0.0), # rotation
@@ -135,16 +135,11 @@ class Swerve(Subsystem):
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(-self.navx.getYaw())
     
-    def drive(self, chassis_speed:ChassisSpeeds, field_relative: bool=True) -> None:
-        chassis_speed = ChassisSpeeds.discretize(chassis_speed, 0.02)
-        if field_relative:
-            states = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(chassis_speed, self.get_angle()))
-        else:
-            states = self.kinematics.toSwerveModuleStates(chassis_speed)
-
-        desat_states = self.kinematics.desaturateWheelSpeeds(states, SwerveConstants.k_max_module_speed)
-
-        self.set_module_states(desat_states)
+    def field_relative_drive(self, chassis_speed: ChassisSpeeds) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
+        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle())))
+        
+    def robot_centric_drive(self, chassis_speed: ChassisSpeeds) -> None: # see drive(), but less cool to watch
+        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(chassis_speed, 0.02)))
         
     def pivot_around_point(self, omega: float, center_of_rotation: Translation2d) -> None:
         theta_speed = ChassisSpeeds(0, 0, omega)

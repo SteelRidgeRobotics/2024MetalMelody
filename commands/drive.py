@@ -41,7 +41,7 @@ class DriveByController(Command):
                 return
         
         if self.mode == DriveModes.NORMAL:
-            self.swerve.drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
+            self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
             
         else:
             angle_dist = fabs(self.getAmpAngleTarget().radians() - self.swerve.get_angle().radians())
@@ -55,11 +55,11 @@ class DriveByController(Command):
                 adjust *= -1
             
             if self.camera.getTagId() == 0:
-                self.swerve.drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, adjust))
+                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, adjust))
             elif self.camera.getTagId() == self.getAmpTagID():
                 # align ourselves to all wyatt has to do is **drive forward** (forward being to the amp)
-                x_diff, unused = self.camera.getDistanceToTag()
-                self.swerve.drive(ChassisSpeeds(translation_x / slowdown_mult, -x_diff * DriveConstants.translation_kP, adjust))
+                x_diff, unused_hi_ally = self.camera.getDistanceToTag()
+                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, -x_diff * DriveConstants.translation_kP, adjust))
             
         # Toggle Modes
         if self.controller.getYButtonPressed():
