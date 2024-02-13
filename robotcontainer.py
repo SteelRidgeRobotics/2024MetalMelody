@@ -18,6 +18,7 @@ class RobotContainer:
         self.elevator = Elevator()
         self.intake = Intake()
         self.swerve: Swerve = Swerve()
+        self.swerve.initialize()
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
