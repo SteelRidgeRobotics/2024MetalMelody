@@ -33,17 +33,19 @@ class Intake(Subsystem):
 
     def periodic(self) -> None: # update whether the robot has the note or not
 
-        if self.pivotIndex == 0:
+        # if self.pivotIndex == 0:
            
-            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[0]))
+            # self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[0]))
 
-        elif self.pivotIndex == 1:
+        # elif self.pivotIndex == 1:
            
-            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[1]))
+            # self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[1]))
 
-        else:
+        # else:
             
-            self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[2]))
+           # self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[2]))
+        
+        self.pivotMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(IntakeConstants.PIVOTPOS[self.pivotIndex]))
 
     #####[[ PIVOT FUNCTIONS ]]#####
             

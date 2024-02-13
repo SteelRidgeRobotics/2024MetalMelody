@@ -26,7 +26,7 @@ class CANIDs:
 
 class IntakeConstants:
     INTAKESPEED = .5
-    PIVOTPOS = [0, 1, 2]
+    PIVOTPOS = [0, 1, 2] #Please set these numbers as constants, then enter in the list. Like the elevator constants
 
 
 class ElevatorConstants:
@@ -35,6 +35,7 @@ class ElevatorConstants:
     TOPPOSITION = 0
     BOTTOMPOSITION = -130
     MIDDLEPOSITION = (TOPPOSITION + BOTTOMPOSITION)/2
+    ELEVATORPOS = [TOPPOSITION, MIDDLEPOSITION, BOTTOMPOSITION]
     USESUPPLYLIMIT = True
     kP = 1
     MOTIONMAGICACCELERATION = 20

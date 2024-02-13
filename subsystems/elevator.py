@@ -25,15 +25,17 @@ class Elevator(Subsystem):
 
         wpilib.SmartDashboard.putNumber("Stage", self.stage)
 
-        if self.stage == 0:
-            self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
+        #if self.stage == 0:
+           # self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
 
-        elif self.stage == 1:
+       # elif self.stage == 1:
            
-            self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.MIDDLEPOSITION))
+           # self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.MIDDLEPOSITION))
 
-        else:
-            self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
+       # else:
+          #  self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
+        
+        self.elevatorMotor.set_control(phoenix6.controls.MotionMagicDutyCycle(ElevatorConstants.ELEVATORPOS[self.stage]))
 
     def togglePosition(self) -> None:
 
