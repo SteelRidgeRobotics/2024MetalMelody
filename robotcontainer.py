@@ -25,6 +25,11 @@ class RobotContainer:
         NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.setStage(0)))
         NamedCommands.registerCommand("elevatorMid", InstantCommand(lambda: self.elevator.setStage(1)))
         NamedCommands.registerCommand("elevatorBottom", InstantCommand(lambda: self.elevator.setStage(2)))
+
+        ## Intake
+        NamedCommands.registerCommand("intakeConsume", InstantCommand(lambda: self.intake.consume()))
+        NamedCommands.registerCommand("intakeDisencumber", InstantCommand(lambda: self.intake.disencumber()))
+        NamedCommands.registerCommand("intakeStop", InstantCommand(lambda: self.intake.hold()))
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
