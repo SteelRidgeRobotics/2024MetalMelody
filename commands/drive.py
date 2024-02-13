@@ -54,12 +54,12 @@ class DriveByController(Command):
             if angle_diff > 180:
                 adjust *= -1
             
-            if self.camera.getTagId() == 0:
-                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, adjust))
-            elif self.camera.getTagId() == self.getAmpTagID():
+            if self.camera.getTagId() == self.getAmpTagID():
                 # align ourselves to all wyatt has to do is **drive forward** (forward being to the amp)
                 x_diff, unused_hi_ally = self.camera.getDistanceToTag()
                 self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, -x_diff * DriveConstants.translation_kP, adjust))
+            else:
+                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, adjust))
             
         # Toggle Modes
         if self.controller.getYButtonPressed():

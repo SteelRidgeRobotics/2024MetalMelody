@@ -14,13 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpToNote"
+            "pathName": "AmpToSecondMNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NoteToAmp"
+            "pathName": "SecondMNoteToAmp"
           }
         }
       ]

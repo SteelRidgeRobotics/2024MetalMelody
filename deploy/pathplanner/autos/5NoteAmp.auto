@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StartToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpToCloseNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CloseNoteToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpToTopMNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TopMNoteToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpToSecondMNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SecondMNoteToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpToSecondCloseNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SecondCloseNoteToAmp"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Amp",
+  "choreoAuto": false
+}
