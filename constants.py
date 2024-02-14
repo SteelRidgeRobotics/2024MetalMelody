@@ -27,9 +27,9 @@ class CANIDs:
 
 class IntakeConstants:
     INTAKESPEED = .5
-    STARTPOS = -0.235
-    STOWPOS = 2.34
-    INTAKEPOS = 0.768
+    STARTPOS = -0.2
+    STOWPOS = 0.572
+    INTAKEPOS = 0.2
     PIVOTPOS = [0, 1, 2] #Please set these numbers as constants, then enter in the list. Like the elevator constants
 
 
