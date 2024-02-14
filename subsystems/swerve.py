@@ -142,11 +142,7 @@ class Swerve(Subsystem):
         self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(chassis_speed, 0.02)))
         
     def pivot_around_point(self, omega: float, center_of_rotation: Translation2d) -> None:
-        theta_speed = ChassisSpeeds(0, 0, omega)
-        
-        states = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(theta_speed, self.get_angle()), centerOfRotation=center_of_rotation)
-        desat_states = self.kinematics.desaturateWheelSpeeds(states, SwerveConstants.k_max_module_speed)
-        self.set_module_states(desat_states)
+        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds(0, 0, omega), self.get_angle()), centerOfRotation=center_of_rotation))
 
     def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
@@ -175,10 +171,7 @@ class Swerve(Subsystem):
 
     def addVisionMeasurement(self, pose: Pose2d, timestamp: float) -> None:
         current_pose = self.odometry.getEstimatedPosition()
-        diff_x = current_pose.X() - pose.X()
-        diff_y = current_pose.Y() - pose.Y()
-        distance = sqrt(diff_x**2 + diff_y**2)
-        if distance > 2:
+        if sqrt((current_pose.X() - pose.X())**2 + (current_pose.Y() - pose.Y())**2) > 1:
             return
         self.odometry.addVisionMeasurement(pose, timestamp)
         
