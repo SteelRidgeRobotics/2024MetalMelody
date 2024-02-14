@@ -1,5 +1,5 @@
 import phoenix6
-from constants import * 
+from constants import *
 from commands2 import CommandScheduler, Subsystem
 from wpimath.filter import SlewRateLimiter
 
@@ -11,6 +11,10 @@ class Intake(Subsystem):
         
         self.intakeMotor = phoenix6.hardware.TalonFX(MotorIDs.INTAKEMOTOR)
         self.pivotMotor = phoenix6.hardware.TalonFX(MotorIDs.PIVOTMOTOR)
+        pivotConfig = phoenix6.configs.TalonFXConfiguration()
+        # config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE)
+        pivotConfig.motor_output.neutral_mode = phoenix6.configs.config_groups.NeutralModeValue.BRAKE
+        self.pivotMotor.configurator.apply(pivotConfig)
 
         self.pivotIndex = 0 #index for the pivot angles list in constants
 
@@ -39,4 +43,4 @@ class Intake(Subsystem):
         self.pivotIndex = 2
             
     def pivotCycle(self) -> None: #set motor position to something specific
-        self.pivotIndex = (self.pivotIndex + 1) % 3
+        self.pivotIndex = (self.pivotIndex + 1) % len(IntakeConstants.PIVOTPOS)

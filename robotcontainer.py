@@ -55,12 +55,12 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kA).whileTrue(FeederTest(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        # JoystickButton(self.functionsController, XboxController.Button.kA).whileTrue(FeederTest(self.intake))
+        # JoystickButton(self.functionsController, XboxController.Button.kY).whileTrue(FeederTestDrop(self.intake))
+        # JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(FeederTestStop(self.intake))
+        # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
+        # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
