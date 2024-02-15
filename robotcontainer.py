@@ -8,6 +8,7 @@ from subsystems.elevator import Elevator
 from subsystems.intake import Intake
 from subsystems.swerve import Swerve
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
+from commands2.sysid import SysIdRoutine
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -18,6 +19,8 @@ class RobotContainer:
         self.intake = Intake()
         self.swerve: Swerve = Swerve()
         self.swerve.initialize()
+        
+        routine = SysIdRoutine(SysIdRoutine.Config(), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
         
         # PathPlanner Commands
         ## Elevator
@@ -47,6 +50,10 @@ class RobotContainer:
         self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2NoteAmp"))
         self.auto_chooser.addOption("1 Note Source", PathPlannerAuto("1NoteSource"))
         self.auto_chooser.addOption("2 Note Speaker", PathPlannerAuto("2NoteSpeaker"))
+        self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(routine.Direction.kForward))
+        self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(routine.Direction.kReverse))
+        self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(routine.Direction.kForward))
+        self.auto_chooser.addOption("Dynamic Reverse", routine.dynamic(SysIdRoutine.Direction.kReverse))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)

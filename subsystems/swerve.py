@@ -12,7 +12,8 @@ from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.controls.motion_magic_voltage import MotionMagicVoltage
 from phoenix6.signals import *
 from typing import Self
-from wpilib import DriverStation, Field2d, SmartDashboard
+from wpilib import DriverStation, Field2d, RobotController, SmartDashboard
+from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.kinematics import ChassisSpeeds, SwerveDrive4Kinematics, SwerveModulePosition, SwerveModuleState
@@ -154,6 +155,16 @@ class Swerve(Subsystem):
         self.left_rear.set_desired_state(desatStates[1])
         self.right_front.set_desired_state(desatStates[2])
         self.right_rear.set_desired_state(desatStates[3])
+        
+    def set_voltage(self, volts: float) -> None:
+        """For SysId tuning"""
+        self.left_front.drive_motor.set_control(VoltageOut(volts))
+        self.left_rear.drive_motor.set_control(VoltageOut(volts))
+        self.right_front.drive_motor.set_control(VoltageOut(volts))
+        self.right_rear.drive_motor.set_control(VoltageOut(volts))
+        
+    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoof file
+        pass
 
     def get_pose(self) -> Pose2d:
         return self.odometry.getEstimatedPosition()
@@ -164,7 +175,6 @@ class Swerve(Subsystem):
     def reset_yaw(self) -> Self:
         self.navx.reset()
         return self
-
 
     def periodic(self) -> None:
         self.field.setRobotPose(self.odometry.update(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position())))
