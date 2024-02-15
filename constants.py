@@ -26,7 +26,7 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
-    INTAKESPEED = .5
+    INTAKESPEED = .125
     STARTPOS = -0.2
     STOWPOS = 0.572
     INTAKEPOS = 0.2
@@ -75,7 +75,7 @@ class SwerveConstants:
 class DriveMotorConstants:
 
     def __init__(self, motor_id: int, 
-                 k_s: float=0.4, k_v: float=0, k_a: float=0, k_p: float=0.133, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
+                 k_s: float=0.19, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
         self.motor_id = motor_id
         
@@ -102,7 +102,7 @@ class DirectionMotorConstants:
     
     def __init__(self, motor_id: int, 
                  k_s: float=0.26, cruise_velocity: int=240, cruise_acceleration: int=600, cruise_jerk: int=6500, 
-                 k_v: float=0.1186, k_a: float=0, k_p: float=7, k_i: float=0, k_d: float=0) -> None:
+                 k_v: float=0.1186, k_a: float=0, k_p: float=6, k_i: float=0.2, k_d: float=0) -> None:
         
         self.motor_id = motor_id
         

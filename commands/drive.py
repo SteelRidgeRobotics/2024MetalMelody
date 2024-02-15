@@ -19,7 +19,7 @@ class DriveByController(Command):
 
         self.swerve = swerve
         self.camera = camera
-        self.addRequirements(self.camera, self.swerve)
+        self.addRequirements(self.swerve)
 
         self.controller = controller
         self.mode = DriveModes.NORMAL
