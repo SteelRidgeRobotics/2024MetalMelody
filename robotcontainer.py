@@ -1,5 +1,4 @@
 from commands.drive import DriveByController
-from commands.intake_commands import *
 from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
@@ -55,9 +54,9 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).whileTrue(FeederTest(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).whileTrue(FeederTestDrop(self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kX).whileTrue(FeederTestStop(self.intake))
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(InstantCommand(lambda: self.intake.consume()))
+        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber()))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.hold()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
         # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
