@@ -165,6 +165,7 @@ class Swerve(Subsystem):
         self.navx.reset()
         return self
 
+
     def periodic(self) -> None:
         self.field.setRobotPose(self.odometry.update(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position())))
         SmartDashboard.putData(self.field)
