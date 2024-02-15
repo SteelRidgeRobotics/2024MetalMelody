@@ -1,6 +1,6 @@
 import phoenix6
 from constants import *
-from commands2 import CommandScheduler, Subsystem
+from commands2 import Subsystem
 from wpimath.filter import SlewRateLimiter
 
 class Intake(Subsystem):

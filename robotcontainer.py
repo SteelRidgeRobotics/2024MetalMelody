@@ -54,9 +54,8 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(InstantCommand(lambda: self.intake.consume()))
-        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber()))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.hold()))
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).toggleOnTrue(InstantCommand(lambda: self.intake.consume())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
+        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
         # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
