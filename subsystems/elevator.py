@@ -1,5 +1,5 @@
 import phoenix6
-from phoenix6.controls import MotionMagicVoltage
+from phoenix6.controls import MotionMagicVoltage, Follower
 from constants import * 
 from commands2 import Subsystem
 import wpilib
@@ -21,31 +21,14 @@ class Elevator(Subsystem):
         
         self.elevatorMotorLeft.set_position(0)
         self.elevatorMotorRight.set_position(0)
-
-        self.stage = 0
-
-    def periodic(self) -> None:
-        wpilib.SmartDashboard.putNumber("Stage", self.stage)
+        self.elevatorMotorLeft.set_control(Follower(self.elevatorMotorRight.device_id, True))
         
     def up(self) -> None:
         self.setTo(ElevatorConstants.TOPPOSITION)
-        self.stage = 0
-        
-    def middle(self) -> None:
-        self.setTo(ElevatorConstants.MIDDLEPOSITION)
-        self.stage = 1
         
     def below(self) -> None:
         self.setTo(ElevatorConstants.BOTTOMPOSITION)
-        self.stage = 2
         
     def setTo(self, pos: float) -> None:
         self.elevatorMotorRight.set_control(MotionMagicVoltage(pos))
-        self.elevatorMotorLeft.set_control(MotionMagicVoltage(-pos))
-
-    def togglePosition(self) -> None:
-        self.setStage((self.stage + 1) % 3)
-        
-    def setStage(self, stage: int) -> None:
-        self.stage = stage
     

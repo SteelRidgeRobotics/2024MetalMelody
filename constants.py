@@ -27,26 +27,21 @@ class CANIDs:
 
 class IntakeConstants:
     INTAKESPEED = .125
-    STOWPOS = 0.572
-    INTAKEPOS = 0.2
+    STOWPOS = 0 #0.572
+    INTAKEPOS = 0 #0.2
     SCOREPOS = 0 # TODO: Find this position
 
 
 class ElevatorConstants:
-    
     CURRENTSUPPLYLIMIT = 2
     TOPPOSITION = 0
     BOTTOMPOSITION = -130
-    MIDDLEPOSITION = (TOPPOSITION + BOTTOMPOSITION)/2
-    ELEVATORPOS = [TOPPOSITION, MIDDLEPOSITION, BOTTOMPOSITION]
-    USESUPPLYLIMIT = True
     kP = 1
-    MOTIONMAGICACCELERATION = 20
-    MOTIONMAGICVELOCITY = 40
+    MOTIONMAGICACCELERATION = 10
+    MOTIONMAGICVELOCITY = 20
     MOTIONMAGICJERK = 0
 
 class LimelightConstants:
-
     RESOLUTIONX = 1280
     RESOLUTIONY = 960
 
@@ -116,7 +111,7 @@ class DirectionMotorConstants:
         self.cruise_acceleration = cruise_acceleration
         self.cruise_jerk = cruise_jerk
         
-        self.peak_volt = 16
+        self.peak_volt = 10
         
         self.neutral_mode = NeutralModeValue.BRAKE
         self.invert = InvertedValue.CLOCKWISE_POSITIVE
