@@ -63,11 +63,11 @@ class RobotContainer:
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).toggleOnTrue(InstantCommand(lambda: self.intake.consume())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
-        # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.pivotDown()))
         # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
         JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up()))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.elevator.middle()))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below()))
         
     def getAuto(self) -> PathPlannerAuto:
