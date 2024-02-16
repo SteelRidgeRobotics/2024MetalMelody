@@ -27,6 +27,8 @@ class CANIDs:
 
 class IntakeConstants:
     INTAKESPEED = .125
+    MM_ACCELERATION = 2
+    MM_CRUISE_VEL = 2
     STOWPOS = 0 #0.572
     INTAKEPOS = 0 #0.2
     SCOREPOS = 0 # TODO: Find this position
