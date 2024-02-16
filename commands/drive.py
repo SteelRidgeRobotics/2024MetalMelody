@@ -40,26 +40,17 @@ class DriveByController(Command):
                 self.swerve.pivot_around_point(rotation * SwerveConstants.k_max_rot_rate / slowdown_mult, Translation2d(3.56, Rotation2d()))
                 return
         
-        if self.mode == DriveModes.NORMAL:
-            self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
-            
+        inputted_speeds = ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult)
+        if rotation == 0:
+            inputted_speeds = self.swerve.convert_to_angle_lock(inputted_speeds)
         else:
-            angle_dist = fabs(self.getAmpAngleTarget().radians() - self.swerve.get_angle().radians())
-            
-            adjust = DriveConstants.rotation_kP * angle_dist
-            
-            angle_diff = self.getAmpAngleTarget().degrees() - self.swerve.get_angle().degrees()
-            if angle_diff < 0:
-                angle_diff += 360
-            if angle_diff > 180:
-                adjust *= -1
-            
-            if self.camera.getTagId() == self.getAmpTagID():
-                # align ourselves to all wyatt has to do is **drive forward** (forward being to the amp)
-                x_diff, unused_hi_ally = self.camera.getDistanceToTag()
-                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, -x_diff * DriveConstants.translation_kP, adjust))
-            else:
-                self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, adjust))
+            self.swerve.reset_desired_heading()
+        
+        if self.mode == DriveModes.AMP and self.camera.getTagId() == self.getAmpTagID():
+            x_diff, unused_hi_ally = self.camera.getDistanceToTag()
+            self.swerve.field_relative_drive(ChassisSpeeds(inputted_speeds.vx, -x_diff * DriveConstants.translation_kP, inputted_speeds.omega))
+        else:
+            self.swerve.field_relative_drive(inputted_speeds)
             
         # Toggle Modes
         if self.controller.getYButtonPressed():
@@ -69,6 +60,7 @@ class DriveByController(Command):
             else:
                 self.mode = DriveModes.NORMAL
                 self.camera.setPipeline(1)
+                self.swerve.set_desired_heading(self.getAmpAngleTarget().degrees())
     
     def end(self, interrupted: bool) -> None:
         return super().end(interrupted)
@@ -76,10 +68,10 @@ class DriveByController(Command):
     def isFinished(self) -> bool:
         return False
     
-    def getAmpAngleTarget(self) -> Rotation2d:
+    def getAmpAngleTarget() -> Rotation2d:
         return Rotation2d.fromDegrees(-90) if DriverStation.getAlliance() == DriverStation.Alliance.kBlue else Rotation2d.fromDegrees(90)
     
-    def getAmpTagID(self) -> int:
+    def getAmpTagID() -> int:
         return 6 if DriverStation.getAlliance() == DriverStation.Alliance.kBlue else 5
     
 def deadband(value: float, band: float):
