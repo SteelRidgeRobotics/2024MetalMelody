@@ -53,7 +53,7 @@ class ExternalConstants:
     FUNCTIONSCONTROLLER = 1
     
 class DriveConstants:
-    rotation_kP = 0.25
+    rotation_kP = 2
     translation_kP = 0.25
     
 """

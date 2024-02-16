@@ -129,6 +129,7 @@ class Swerve(Subsystem):
             )
         
         self.navx.reset()
+        self.desired_heading = 0
 
     def should_flip_auto_path(self) -> bool:
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
@@ -147,6 +148,21 @@ class Swerve(Subsystem):
 
     def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
+    
+    def convert_to_angle_lock(self, chassis_speed: ChassisSpeeds) -> ChassisSpeeds:
+        angle_diff = self.desired_heading - self.get_angle().degrees()
+        adjust = DriveConstants.rotation_kP * fabs(angle_diff)
+        if angle_diff < 0:
+            angle_diff += 360
+        if angle_diff > 180:
+            adjust *= -1
+        return ChassisSpeeds(chassis_speed.vx, chassis_speed.vy, adjust)
+    
+    def set_desired_heading(self, new_heading: float) -> None:
+        self.desired_heading = new_heading
+        
+    def reset_desired_heading(self) -> None:
+        self.desired_heading = self.get_angle().degrees()
 
     def set_module_states(self, module_states: tuple[SwerveModuleState, SwerveModuleState, SwerveModuleState, SwerveModuleState]) -> None:
         desatStates = self.kinematics.desaturateWheelSpeeds(module_states, SwerveConstants.k_max_module_speed)
