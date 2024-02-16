@@ -14,7 +14,7 @@ class Intake(Subsystem):
         config = phoenix6.configs.TalonFXConfiguration()
         config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.COAST)
         config.slot0.with_k_p(1)
-        config.feedback.sensor_to_mechanism_ratio = 48
+        config.feedback.sensor_to_mechanism_ratio = 12
         config.motion_magic.with_motion_magic_acceleration(2).with_motion_magic_cruise_velocity(2)
         self.pivotMotor.configurator.apply(config)
 
