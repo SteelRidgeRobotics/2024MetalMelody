@@ -1,5 +1,5 @@
 from commands.drive import DriveByController
-from commands2 import InstantCommand
+from commands2 import InstantCommand, ParallelCommandGroup
 from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
@@ -66,9 +66,12 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.pivotDown()))
         # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
         # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up()))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below()))
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotDown())))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotStow())))
+        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.up()), InstantCommand(lambda: self.intake.pivotAmp())))
+        # JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up()))
+        # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
+        # JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below()))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
