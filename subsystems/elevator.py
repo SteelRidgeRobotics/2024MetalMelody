@@ -1,8 +1,7 @@
 import phoenix6
-from phoenix6.controls import MotionMagicVoltage, Follower
+from phoenix6.controls import MotionMagicDutyCycle, Follower
 from constants import * 
 from commands2 import Subsystem
-import wpilib
 
 class Elevator(Subsystem):
     
@@ -30,5 +29,5 @@ class Elevator(Subsystem):
         self.setTo(ElevatorConstants.BOTTOMPOSITION)
         
     def setTo(self, pos: float) -> None:
-        self.elevatorMotorRight.set_control(MotionMagicVoltage(pos))
+        self.elevatorMotorRight.set_control(MotionMagicDutyCycle(pos))
     
