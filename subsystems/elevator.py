@@ -18,7 +18,7 @@ class Elevator(Subsystem):
         self.elevatorMotorLeft.configurator.apply(elevator_config)
         
         self.elevatorMotorLeft.set_position(0)
-        self.elevatorMotorRight.set_position(0)
+        self.elevatorMotorRight.set_position(ElevatorConstants.TOPPOSITION)
         self.elevatorMotorLeft.set_control(Follower(self.elevatorMotorRight.device_id, True))
         
     def up(self) -> None:

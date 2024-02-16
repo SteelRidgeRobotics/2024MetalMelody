@@ -33,6 +33,11 @@ class RobotContainer:
         NamedCommands.registerCommand("intakeDisencumber", InstantCommand(lambda: self.intake.disencumber()))
         NamedCommands.registerCommand("intakeStop", InstantCommand(lambda: self.intake.hold()))
         
+        ## Pivot
+        NamedCommands.registerCommand("pivotAmp", InstantCommand(lambda: self.intake.pivotAmp()))
+        NamedCommands.registerCommand("pivotStow", InstantCommand(lambda: self.intake.pivotStow()))
+        NamedCommands.registerCommand("pivotGrab", InstantCommand(lambda: self.intake.pivotDown()))
+        
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
         self.start_chooser.setDefaultOption("(0, 0)", Pose2d())

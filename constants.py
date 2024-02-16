@@ -36,8 +36,8 @@ class IntakeConstants:
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 2
-    TOPPOSITION = 0
-    BOTTOMPOSITION = 98
+    TOPPOSITION = 98
+    BOTTOMPOSITION = 0
     kP = 1
     MOTIONMAGICACCELERATION = 5
     MOTIONMAGICVELOCITY = 10
