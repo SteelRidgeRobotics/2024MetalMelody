@@ -10,8 +10,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1600",
-      "xpos": "-72",
-      "ypos": "773"
+      "xpos": "262",
+      "ypos": "389"
     }
   },
   "Table": {
@@ -35,13 +35,13 @@
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "312,581",
-      "Size": "976,179"
+      "Pos": "312,576",
+      "Size": "976,82"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "356,290",
-      "Size": "937,231"
+      "Pos": "356,-10",
+      "Size": "937,689"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",

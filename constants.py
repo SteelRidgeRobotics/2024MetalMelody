@@ -26,28 +26,27 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
-    INTAKESPEED = .125
-    STARTPOS = -0.2
-    STOWPOS = 0.572
-    INTAKEPOS = 0.2
-    PIVOTPOS = [0, 1, 2] #Please set these numbers as constants, then enter in the list. Like the elevator constants
+    INTAKESPEED = .1875 * 4
 
+class PivotConstants:
+    MM_ACCELERATION = 2
+    MM_CRUISE_VEL = 2
+    STOWPOS = 0.5
+    INTAKEPOS = 0.1487
+    SCOREPOS = 0.194
+    K_P = 10
+    K_I = 0
+    K_D = 0.2
+    GEAR_RATIO = 12
 
 class ElevatorConstants:
-    
-    CURRENTSUPPLYLIMIT = 2
-    TOPPOSITION = 0
-    BOTTOMPOSITION = -130
-    MIDDLEPOSITION = (TOPPOSITION + BOTTOMPOSITION)/2
-    ELEVATORPOS = [TOPPOSITION, MIDDLEPOSITION, BOTTOMPOSITION]
-    USESUPPLYLIMIT = True
-    kP = 1
-    MOTIONMAGICACCELERATION = 20
-    MOTIONMAGICVELOCITY = 40
-    MOTIONMAGICJERK = 0
+    CURRENTSUPPLYLIMIT = 4
+    TOPPOSITION = 123
+    BOTTOMPOSITION = 0
+    MOTIONMAGICACCELERATION = 125
+    MOTIONMAGICVELOCITY = 375
 
 class LimelightConstants:
-
     RESOLUTIONX = 1280
     RESOLUTIONY = 960
 
@@ -57,7 +56,7 @@ class ExternalConstants:
     FUNCTIONSCONTROLLER = 1
     
 class DriveConstants:
-    rotation_kP = 0.25
+    rotation_kP = 0.1
     translation_kP = 0.25
     
 """
@@ -117,7 +116,7 @@ class DirectionMotorConstants:
         self.cruise_acceleration = cruise_acceleration
         self.cruise_jerk = cruise_jerk
         
-        self.peak_volt = 16
+        self.peak_volt = 10
         
         self.neutral_mode = NeutralModeValue.BRAKE
         self.invert = InvertedValue.CLOCKWISE_POSITIVE

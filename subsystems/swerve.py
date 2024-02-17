@@ -1,6 +1,6 @@
 from math import fabs, pi, sqrt
 
-from commands2 import Subsystem
+from commands2 import InstantCommand, Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
@@ -13,6 +13,7 @@ from phoenix6.controls.motion_magic_voltage import MotionMagicVoltage
 from phoenix6.signals import *
 from typing import Self
 from wpilib import DriverStation, Field2d, SmartDashboard
+from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.kinematics import ChassisSpeeds, SwerveDrive4Kinematics, SwerveModulePosition, SwerveModuleState
@@ -108,7 +109,11 @@ class Swerve(Subsystem):
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 
         SmartDashboard.putData(self.field)
-        SmartDashboard.putData("Reset Gyro", self.runOnce(lambda: self.reset_yaw()))
+        reset_yaw = InstantCommand(lambda: self.reset_yaw())
+        reset_yaw.setName("Reset Yaw")
+        SmartDashboard.putData("Reset Gyro", reset_yaw)
+        
+        self.set_max_module_speed()
         
         if not AutoBuilder.isConfigured():
             AutoBuilder.configureHolonomic(
@@ -128,6 +133,7 @@ class Swerve(Subsystem):
             )
         
         self.navx.reset()
+        self.desired_heading = 0
 
     def should_flip_auto_path(self) -> bool:
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
@@ -135,29 +141,35 @@ class Swerve(Subsystem):
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(-self.navx.getYaw())
     
-    def field_relative_drive(self, chassis_speed: ChassisSpeeds) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
-        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle())))
+    def field_relative_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
+        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle()), centerOfRotation=center_of_rotation))
         
-    def robot_centric_drive(self, chassis_speed: ChassisSpeeds) -> None: # see drive(), but less cool to watch
+    def robot_centric_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # see drive(), but less cool to watch
         self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(chassis_speed, 0.02)))
         
-    def pivot_around_point(self, omega: float, center_of_rotation: Translation2d) -> None:
-        theta_speed = ChassisSpeeds(0, 0, omega)
-        
-        states = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(theta_speed, self.get_angle()), centerOfRotation=center_of_rotation)
-        desat_states = self.kinematics.desaturateWheelSpeeds(states, SwerveConstants.k_max_module_speed)
-        self.set_module_states(desat_states)
-
     def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
 
     def set_module_states(self, module_states: tuple[SwerveModuleState, SwerveModuleState, SwerveModuleState, SwerveModuleState]) -> None:
-        desatStates = self.kinematics.desaturateWheelSpeeds(module_states, SwerveConstants.k_max_module_speed)
+        desatStates = self.kinematics.desaturateWheelSpeeds(module_states, self.max_module_speed)
 
         self.left_front.set_desired_state(desatStates[0])
         self.left_rear.set_desired_state(desatStates[1])
         self.right_front.set_desired_state(desatStates[2])
         self.right_rear.set_desired_state(desatStates[3])
+        
+    def set_max_module_speed(self, max_module_speed: float=SwerveConstants.k_max_module_speed) -> None:
+        self.max_module_speed = max_module_speed
+
+    def set_voltage(self, volts: float) -> None:
+        """For SysId tuning"""
+        self.left_front.drive_motor.set_control(VoltageOut(volts))
+        self.left_rear.drive_motor.set_control(VoltageOut(volts))
+        self.right_front.drive_motor.set_control(VoltageOut(volts))
+        self.right_rear.drive_motor.set_control(VoltageOut(volts))
+        
+    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoof file
+        pass
 
     def get_pose(self) -> Pose2d:
         return self.odometry.getEstimatedPosition()
@@ -169,17 +181,13 @@ class Swerve(Subsystem):
         self.navx.reset()
         return self
 
-
     def periodic(self) -> None:
         self.field.setRobotPose(self.odometry.update(self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position())))
         SmartDashboard.putData(self.field)
 
     def addVisionMeasurement(self, pose: Pose2d, timestamp: float) -> None:
         current_pose = self.odometry.getEstimatedPosition()
-        diff_x = current_pose.X() - pose.X()
-        diff_y = current_pose.Y() - pose.Y()
-        distance = sqrt(diff_x**2 + diff_y**2)
-        if distance > 2:
+        if sqrt((current_pose.X() - pose.X())**2 + (current_pose.Y() - pose.Y())**2) > 1:
             return
         self.odometry.addVisionMeasurement(pose, timestamp)
         

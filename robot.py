@@ -1,5 +1,6 @@
 import commands2
 from commands2.timedcommandrobot import seconds
+from phoenix6.signal_logger import SignalLogger
 from wpilib import TimedRobot
 from robotcontainer import RobotContainer
 from wpilib.cameraserver import CameraServer
@@ -10,6 +11,8 @@ class DumpsterFire(commands2.TimedCommandRobot):
         super().__init__(period)
 
     def robotInit(self):
+        SignalLogger.set_path("/home/lvuser/logs")
+        SignalLogger.enable_auto_logging(True)
         CameraServer.launch('vision.py')
         self.container = RobotContainer()
 
@@ -17,5 +20,13 @@ class DumpsterFire(commands2.TimedCommandRobot):
         self.container.updateOdometry()
         commands2.CommandScheduler.getInstance().run()
         
+    def disabledInit(self) -> None:
+        SignalLogger.stop()
+        
     def autonomousInit(self) -> None:
         self.container.runSelectedAutoCommand()
+        
+    def testInit(self) -> None:
+        SignalLogger.start()
+        
+    

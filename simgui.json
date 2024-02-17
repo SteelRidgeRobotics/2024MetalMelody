@@ -8,6 +8,16 @@
       "/SmartDashboard/Starting Position": "String Chooser"
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Autonomous Select": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
     "visible": true
   }
