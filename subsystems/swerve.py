@@ -113,6 +113,8 @@ class Swerve(Subsystem):
         reset_yaw.setName("Reset Yaw")
         SmartDashboard.putData("Reset Gyro", reset_yaw)
         
+        self.set_max_module_speed()
+        
         if not AutoBuilder.isConfigured():
             AutoBuilder.configureHolonomic(
                 lambda: self.get_pose(),
@@ -139,41 +141,26 @@ class Swerve(Subsystem):
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(-self.navx.getYaw())
     
-    def field_relative_drive(self, chassis_speed: ChassisSpeeds) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
-        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle())))
+    def field_relative_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
+        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle()), centerOfRotation=center_of_rotation))
         
-    def robot_centric_drive(self, chassis_speed: ChassisSpeeds) -> None: # see drive(), but less cool to watch
+    def robot_centric_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # see drive(), but less cool to watch
         self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(chassis_speed, 0.02)))
         
-    def pivot_around_point(self, omega: float, center_of_rotation: Translation2d) -> None:
-        self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds(0, 0, omega), self.get_angle()), centerOfRotation=center_of_rotation))
-
     def get_robot_relative_speeds(self) -> ChassisSpeeds:
         return self.kinematics.toChassisSpeeds((self.left_front.get_state(), self.left_rear.get_state(), self.right_front.get_state(), self.right_rear.get_state()))
-    
-    def convert_to_angle_lock(self, chassis_speed: ChassisSpeeds) -> ChassisSpeeds:
-        angle_diff = self.desired_heading - self.get_angle().degrees()
-        adjust = DriveConstants.rotation_kP * fabs(angle_diff)
-        if angle_diff < 0:
-            angle_diff += 360
-        if angle_diff > 180:
-            adjust *= -1
-        return ChassisSpeeds(chassis_speed.vx, chassis_speed.vy, adjust)
-    
-    def set_desired_heading(self, new_heading: float) -> None:
-        self.desired_heading = new_heading
-        
-    def reset_desired_heading(self) -> None:
-        self.desired_heading = self.get_angle().degrees()
 
     def set_module_states(self, module_states: tuple[SwerveModuleState, SwerveModuleState, SwerveModuleState, SwerveModuleState]) -> None:
-        desatStates = self.kinematics.desaturateWheelSpeeds(module_states, SwerveConstants.k_max_module_speed)
+        desatStates = self.kinematics.desaturateWheelSpeeds(module_states, self.max_module_speed)
 
         self.left_front.set_desired_state(desatStates[0])
         self.left_rear.set_desired_state(desatStates[1])
         self.right_front.set_desired_state(desatStates[2])
         self.right_rear.set_desired_state(desatStates[3])
         
+    def set_max_module_speed(self, max_module_speed: float=SwerveConstants.k_max_module_speed) -> None:
+        self.max_module_speed = max_module_speed
+
     def set_voltage(self, volts: float) -> None:
         """For SysId tuning"""
         self.left_front.drive_motor.set_control(VoltageOut(volts))

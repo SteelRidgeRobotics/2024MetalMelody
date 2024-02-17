@@ -67,9 +67,9 @@ class RobotContainer:
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).toggleOnTrue(InstantCommand(lambda: self.intake.consume())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotDown()))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up())).onTrue(InstantCommand(lambda: self.intake.pivotAmp()))
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotDown())).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotStow())).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up())).onTrue(InstantCommand(lambda: self.intake.pivotAmp())).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4)))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()

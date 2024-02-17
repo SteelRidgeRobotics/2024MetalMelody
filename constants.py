@@ -26,22 +26,25 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
-    INTAKESPEED = .1875 * 4 # Gear ratio of intake
+    INTAKESPEED = .1875 * 4
+
+class PivotConstants:
     MM_ACCELERATION = 2
     MM_CRUISE_VEL = 2
-    STOWPOS = 0.5 #0.572
-    INTAKEPOS = 0.1487 #0.2
-    SCOREPOS = 0.128 # TODO: Find this position
-
+    STOWPOS = 0.5
+    INTAKEPOS = 0.1487
+    SCOREPOS = 0.194
+    K_P = 10
+    K_I = 0
+    K_D = 0.2
+    GEAR_RATIO = 12
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
     TOPPOSITION = 123
     BOTTOMPOSITION = 0
-    kP = 1
     MOTIONMAGICACCELERATION = 125
     MOTIONMAGICVELOCITY = 375
-    MOTIONMAGICJERK = 0
 
 class LimelightConstants:
     RESOLUTIONX = 1280

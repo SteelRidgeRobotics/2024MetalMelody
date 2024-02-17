@@ -15,27 +15,26 @@ class Intake(Subsystem):
         self.pivotMotor = TalonFX(MotorIDs.PIVOTMOTOR)
         config = phoenix6.configs.TalonFXConfiguration()
         config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE)
-        config.slot0.with_k_p(2.6).with_k_i(0.64).with_k_d(0.1).with_gravity_type(phoenix6.configs.config_groups.GravityTypeValue.ARM_COSINE)
-        config.feedback.sensor_to_mechanism_ratio = 12
-        config.motion_magic.with_motion_magic_acceleration(IntakeConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(IntakeConstants.MM_CRUISE_VEL)
+        config.slot0.with_k_p(PivotConstants.K_P).with_k_i(PivotConstants.K_I).with_k_d(PivotConstants.K_D)
+        config.feedback.with_rotor_to_sensor_ratio(PivotConstants.GEAR_RATIO)
+        config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
         self.pivotMotor.configurator.apply(config)
-
         self.pivotMotor.set_position(0)
 
-    def disencumber(self) -> None: # drop note
+    def disencumber(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(self.slew.calculate(-IntakeConstants.INTAKESPEED)))
 
-    def consume(self) -> None: # intake note
+    def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(self.slew.calculate(IntakeConstants.INTAKESPEED)))
 
-    def hold(self) -> None: # hold note
+    def hold(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
 
     def pivotDown(self) -> None:
-        self.pivotMotor.set_control(MotionMagicDutyCycle(IntakeConstants.INTAKEPOS))
+        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.INTAKEPOS))
 
     def pivotStow(self) -> None:
-        self.pivotMotor.set_control(MotionMagicDutyCycle(IntakeConstants.STOWPOS))
+        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.STOWPOS))
 
     def pivotAmp(self) -> None:
-        self.pivotMotor.set_control(MotionMagicDutyCycle(IntakeConstants.SCOREPOS))
+        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.SCOREPOS))

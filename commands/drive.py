@@ -9,11 +9,10 @@ from wpimath.geometry import Rotation2d, Translation2d
 from wpimath.kinematics import ChassisSpeeds
 
 class DriveModes(Enum):
-    NORMAL = 0
-    AMP = 1
+    FIELD_RELATIVE = 0
+    ROBOT_CENTRIC = 1
 
 class DriveByController(Command):
-
     def __init__(self, camera: Camera, swerve: Swerve, controller: XboxController) -> None:
         super().__init__()
 
@@ -22,8 +21,7 @@ class DriveByController(Command):
         self.addRequirements(self.swerve)
 
         self.controller = controller
-        self.mode = DriveModes.NORMAL
-        self.camera.setPipeline(0)
+        self.mode = DriveModes.FIELD_RELATIVE
     
     def execute(self) -> None:
         translation_x = (-deadband(self.controller.getLeftY(), ExternalConstants.DEADBAND) ** 3) * SwerveConstants.k_max_module_speed
@@ -31,49 +29,30 @@ class DriveByController(Command):
         rotation = (-deadband(self.controller.getRightX(), ExternalConstants.DEADBAND) ** 3) * SwerveConstants.k_max_rot_rate
         
         slowdown_mult = 1
-        if self.controller.getLeftBumper():
-            slowdown_mult += 0.5
         if self.controller.getRightBumper():
-            slowdown_mult += 0.5
+            slowdown_mult += 1
             
-        if self.controller.getAButton():
-                self.swerve.pivot_around_point(rotation * SwerveConstants.k_max_rot_rate / slowdown_mult, Translation2d(3.56, Rotation2d()))
-                return
+        center_of_rotation = Translation2d()
+        if self.controller.getLeftBumper():
+            center_of_rotation.x = 3.56
         
-        inputted_speeds = ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult)
-        if rotation == 0:
-            pass
-            #inputted_speeds = self.swerve.convert_to_angle_lock(inputted_speeds)
+        if self.mode == DriveModes.FIELD_RELATIVE:
+            self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), center_of_rotation=center_of_rotation)
         else:
-            self.swerve.reset_desired_heading()
-        
-        if self.mode == DriveModes.AMP and self.camera.getTagId() == self.getAmpTagID():
-            x_diff, unused_hi_ally = self.camera.getDistanceToTag()
-            self.swerve.field_relative_drive(ChassisSpeeds(inputted_speeds.vx, -x_diff * DriveConstants.translation_kP, inputted_speeds.omega))
-        else:
-            self.swerve.field_relative_drive(inputted_speeds)
+            self.swerve.robot_centric_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), center_of_rotation=center_of_rotation)
             
         # Toggle Modes
         if self.controller.getYButtonPressed():
-            if self.mode == DriveModes.NORMAL:
-                self.mode = DriveModes.AMP
-                self.camera.setPipeline(0)
+            if self.mode == DriveModes.FIELD_RELATIVE:
+                self.mode = DriveModes.ROBOT_CENTRIC
             else:
-                self.mode = DriveModes.NORMAL
-                self.camera.setPipeline(1)
-                self.swerve.set_desired_heading(self.getAmpAngleTarget().degrees())
+                self.mode = DriveModes.FIELD_RELATIVE
     
     def end(self, interrupted: bool) -> None:
         return super().end(interrupted)
     
     def isFinished(self) -> bool:
         return False
-    
-    def getAmpAngleTarget() -> Rotation2d:
-        return Rotation2d.fromDegrees(-90) if DriverStation.getAlliance() == DriverStation.Alliance.kBlue else Rotation2d.fromDegrees(90)
-    
-    def getAmpTagID() -> int:
-        return 6 if DriverStation.getAlliance() == DriverStation.Alliance.kBlue else 5
     
 def deadband(value: float, band: float):
     if fabs(value) <= band:
