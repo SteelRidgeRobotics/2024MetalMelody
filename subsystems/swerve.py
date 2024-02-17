@@ -1,6 +1,6 @@
 from math import fabs, pi, sqrt
 
-from commands2 import Subsystem
+from commands2 import InstantCommand, Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
@@ -12,7 +12,7 @@ from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.controls.motion_magic_voltage import MotionMagicVoltage
 from phoenix6.signals import *
 from typing import Self
-from wpilib import DriverStation, Field2d, RobotController, SmartDashboard
+from wpilib import DriverStation, Field2d, SmartDashboard
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
@@ -109,7 +109,9 @@ class Swerve(Subsystem):
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 
         SmartDashboard.putData(self.field)
-        SmartDashboard.putData("Reset Gyro", self.runOnce(lambda: self.reset_yaw()))
+        reset_yaw = InstantCommand(lambda: self.reset_yaw())
+        reset_yaw.setName("Reset Yaw")
+        SmartDashboard.putData("Reset Gyro", reset_yaw)
         
         if not AutoBuilder.isConfigured():
             AutoBuilder.configureHolonomic(
