@@ -42,7 +42,8 @@ class DriveByController(Command):
         
         inputted_speeds = ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult)
         if rotation == 0:
-            inputted_speeds = self.swerve.convert_to_angle_lock(inputted_speeds)
+            pass
+            #inputted_speeds = self.swerve.convert_to_angle_lock(inputted_speeds)
         else:
             self.swerve.reset_desired_heading()
         

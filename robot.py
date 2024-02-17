@@ -13,7 +13,6 @@ class DumpsterFire(commands2.TimedCommandRobot):
     def robotInit(self):
         SignalLogger.set_path("/home/lvuser/logs")
         SignalLogger.enable_auto_logging(True)
-        SignalLogger.start()
         CameraServer.launch('vision.py')
         self.container = RobotContainer()
 
@@ -26,5 +25,8 @@ class DumpsterFire(commands2.TimedCommandRobot):
         
     def autonomousInit(self) -> None:
         self.container.runSelectedAutoCommand()
+        
+    def testInit(self) -> None:
+        SignalLogger.start()
         
     

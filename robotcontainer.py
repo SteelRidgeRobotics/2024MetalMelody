@@ -24,9 +24,8 @@ class RobotContainer:
         
         # PathPlanner Commands
         ## Elevator
-        NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.setStage(0)))
-        NamedCommands.registerCommand("elevatorMid", InstantCommand(lambda: self.elevator.setStage(1)))
-        NamedCommands.registerCommand("elevatorBottom", InstantCommand(lambda: self.elevator.setStage(2)))
+        NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.up()))
+        NamedCommands.registerCommand("elevatorBelow", InstantCommand(lambda: self.elevator.below()))
 
         ## Intake
         NamedCommands.registerCommand("intakeConsume", InstantCommand(lambda: self.intake.consume()))
@@ -68,16 +67,9 @@ class RobotContainer:
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).toggleOnTrue(InstantCommand(lambda: self.intake.consume())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.pivotDown()))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
-        # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotCycle()))
-        # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.togglePosition()))
-        ###JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotDown())))
-        ###JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotStow())))
-        ###JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.up()), InstantCommand(lambda: self.intake.pivotAmp())))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up()))
-        # JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.intake.pivotStow()))
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below()))
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotDown())))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.below()), InstantCommand(lambda: self.intake.pivotStow())))
+        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(ParallelCommandGroup(InstantCommand(lambda: self.elevator.up()), InstantCommand(lambda: self.intake.pivotAmp())))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
