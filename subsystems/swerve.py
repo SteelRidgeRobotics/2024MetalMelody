@@ -54,7 +54,7 @@ class SwerveModule(Subsystem):
         return Rotation2d.fromDegrees(rots_to_degs(self.direction_motor.get_rotor_position().value / k_direction_gear_ratio))
     
     def reset_sensor_position(self) -> None:
-        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().refresh().value * k_direction_gear_ratio)
+        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().wait_for_update(0.02).value * k_direction_gear_ratio)
 
     def get_state(self) -> SwerveModuleState:
         return SwerveModuleState(rots_to_meters(self.drive_motor.get_velocity().value), self.get_angle())
