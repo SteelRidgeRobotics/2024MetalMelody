@@ -4,6 +4,7 @@ from commands2 import InstantCommand, Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
+from phoenix6 import BaseStatusSignal
 from phoenix6.configs.cancoder_configs import *
 from phoenix6.configs.talon_fx_configs import *
 from phoenix6.configs.config_groups import MagnetSensorConfigs
@@ -36,9 +37,15 @@ class SwerveModule(Subsystem):
         
         self.drive_motor = TalonFX(drive_motor_constants.motor_id, "rio")
         drive_motor_constants.apply_configuration(self.drive_motor)
+        
+        BaseStatusSignal.set_update_frequency_for_all(250, self.drive_motor.get_velocity(), self.drive_motor.get_position(), self.drive_motor.get_motor_voltage())
+        self.drive_motor.optimize_bus_utilization()
 
         self.direction_motor = TalonFX(direction_motor_constants.motor_id, "rio")
         direction_motor_constants.apply_configuration(self.direction_motor)
+        
+        BaseStatusSignal.set_update_frequency_for_all(250, self.direction_motor.get_rotor_position())
+        self.direction_motor.optimize_bus_utilization()
         
         self.directionTargetPos = self.directionTargetAngle = 0.0
 
@@ -49,10 +56,10 @@ class SwerveModule(Subsystem):
         self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().value * k_direction_gear_ratio)
 
     def get_state(self) -> SwerveModuleState:
-        return SwerveModuleState(rots_to_meters(self.drive_motor.get_rotor_velocity().value, k_drive_gear_ratio), self.get_angle())
+        return SwerveModuleState(rots_to_meters(self.drive_motor.get_velocity().value), self.get_angle())
     
     def get_position(self) -> SwerveModulePosition:
-        return SwerveModulePosition(rots_to_meters(self.drive_motor.get_rotor_position().value, k_drive_gear_ratio), self.get_angle())
+        return SwerveModulePosition(rots_to_meters(self.drive_motor.get_position().value), self.get_angle())
 
     def set_desired_state(self, desiredState: SwerveModuleState) -> None:
         desiredState.optimize(desiredState, self.get_angle())
