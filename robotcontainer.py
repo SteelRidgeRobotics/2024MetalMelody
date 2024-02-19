@@ -23,7 +23,9 @@ class RobotContainer:
         self.swerve: Swerve = Swerve()
         self.swerve.initialize()
         
-        routine = SysIdRoutine(SysIdRoutine.Config(recordState=lambda state: SignalLogger.write_string("state", str(state))), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
+        routines = ["quasistatic-forward", "quasistatic-reverse", "dynamic-forward", "dynamic-reverse", "none"]
+        
+        routine = SysIdRoutine(SysIdRoutine.Config(recordState=lambda state: SignalLogger.write_string("state", str(routines[state.value]))), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
         
         # PathPlanner Commands
         ## Elevator
@@ -57,9 +59,9 @@ class RobotContainer:
         self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2NoteAmp"))
         self.auto_chooser.addOption("1 Note Source", PathPlannerAuto("1NoteSource"))
         self.auto_chooser.addOption("2 Note Speaker", PathPlannerAuto("2NoteSpeaker"))
-        self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(routine.Direction.kForward))
-        self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(routine.Direction.kReverse))
-        self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(routine.Direction.kForward))
+        self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(SysIdRoutine.Direction.kForward))
+        self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(SysIdRoutine.Direction.kReverse))
+        self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(SysIdRoutine.Direction.kForward))
         self.auto_chooser.addOption("Dynamic Reverse", routine.dynamic(SysIdRoutine.Direction.kReverse))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 

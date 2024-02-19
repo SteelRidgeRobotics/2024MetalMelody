@@ -29,24 +29,18 @@ class SwerveModule(Subsystem):
         super().__init__()
 
         self.module_name = module_name
+        self.setName("Swerve-Module-" + module_name)
 
         self.turning_encoder = CANcoder(CANcoder_id, "rio")
         encoder_config = CANcoderConfiguration()
         encoder_config.magnet_sensor = MagnetSensorConfigs().with_sensor_direction(SensorDirectionValue.CLOCKWISE_POSITIVE).with_magnet_offset(CAN_offset).with_absolute_sensor_range(AbsoluteSensorRangeValue.UNSIGNED_0_TO1)
         self.turning_encoder.configurator.apply(encoder_config)
-        self.turning_encoder.optimize_bus_utilization() # Will likely turn the encoder into a SyncedCANcoder in the future, but for now we literally only get its pos on startup.
         
         self.drive_motor = TalonFX(drive_motor_constants.motor_id, "rio")
         drive_motor_constants.apply_configuration(self.drive_motor)
-        
-        BaseStatusSignal.set_update_frequency_for_all(250, self.drive_motor.get_velocity(), self.drive_motor.get_position(), self.drive_motor.get_motor_voltage())
-        self.drive_motor.optimize_bus_utilization()
 
         self.direction_motor = TalonFX(direction_motor_constants.motor_id, "rio")
         direction_motor_constants.apply_configuration(self.direction_motor)
-        
-        BaseStatusSignal.set_update_frequency_for_all(250, self.direction_motor.get_rotor_position())
-        self.direction_motor.optimize_bus_utilization()
         
         self.directionTargetPos = self.directionTargetAngle = 0.0
 
@@ -113,6 +107,7 @@ class Swerve(Subsystem):
     
     def __init__(self):
         super().__init__()
+        self.setName("drivetrain")
 
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 

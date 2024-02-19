@@ -34,7 +34,7 @@ class Intake(Subsystem):
         self.intakeMotor.set_control(DutyCycleOut(0))
         
     def periodic(self) -> None:
-        if self.intakeMotor.get_forward_limit().value is ForwardLimitValue.OPEN:
+        if self.intakeMotor.get_forward_limit().value is ForwardLimitValue.CLOSED_TO_GROUND:
             self.has_note = True
         else:
             self.has_note = False
