@@ -2,6 +2,7 @@ from commands2 import Subsystem
 import phoenix6
 from phoenix6.controls import MotionMagicDutyCycle, DutyCycleOut
 from phoenix6.hardware import TalonFX
+from phoenix6.signals import ForwardLimitValue
 from wpimath.filter import SlewRateLimiter
 from constants import *
 
@@ -20,6 +21,8 @@ class Intake(Subsystem):
         config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
         self.pivotMotor.configurator.apply(config)
         self.pivotMotor.set_position(0)
+        
+        self.has_note = False
 
     def disencumber(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(self.slew.calculate(-IntakeConstants.INTAKESPEED)))
@@ -29,6 +32,15 @@ class Intake(Subsystem):
 
     def hold(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
+        
+    def periodic(self) -> None:
+        if self.intakeMotor.get_forward_limit().value is ForwardLimitValue.OPEN:
+            self.has_note = True
+        else:
+            self.has_note = False
+            
+    def hasNote(self) -> bool:
+        return self.has_note
 
     def pivotDown(self) -> None:
         self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.INTAKEPOS))
