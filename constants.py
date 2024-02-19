@@ -87,7 +87,7 @@ class DriveMotorConstants:
         
         self.inverted = inverted
         
-        self.neutral_mode = NeutralModeValue.BRAKE
+        self.neutral_mode = NeutralModeValue.COAST
         
     def apply_configuration(self, motor: TalonFX) -> TalonFX:
         config = TalonFXConfiguration()

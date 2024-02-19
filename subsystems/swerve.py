@@ -95,7 +95,7 @@ class SwerveModule(Subsystem):
         self.directionTargetAngle = targetAngle
 
         self.direction_motor.set_control(MotionMagicVoltage(self.directionTargetPos * k_direction_gear_ratio))
-        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio)))
+        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio), override_brake_dur_neutral=True))
        
 
 class Swerve(Subsystem):
@@ -171,10 +171,10 @@ class Swerve(Subsystem):
 
     def set_voltage(self, volts: float) -> None:
         """For SysId tuning"""
-        self.left_front.drive_motor.set_control(VoltageOut(volts))
-        self.left_rear.drive_motor.set_control(VoltageOut(volts))
-        self.right_front.drive_motor.set_control(VoltageOut(volts))
-        self.right_rear.drive_motor.set_control(VoltageOut(volts))
+        self.left_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.left_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.right_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.right_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
         
     def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoot file
         pass
