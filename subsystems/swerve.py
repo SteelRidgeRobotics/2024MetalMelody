@@ -176,7 +176,7 @@ class Swerve(Subsystem):
         self.right_front.drive_motor.set_control(VoltageOut(volts))
         self.right_rear.drive_motor.set_control(VoltageOut(volts))
         
-    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoof file
+    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoot file
         pass
 
     def get_pose(self) -> Pose2d:

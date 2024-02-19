@@ -5,6 +5,7 @@ from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
+from phoenix6 import SignalLogger
 from subsystems.camera import Camera
 from subsystems.elevator import Elevator
 from subsystems.intake import Intake
@@ -22,7 +23,7 @@ class RobotContainer:
         self.swerve: Swerve = Swerve()
         self.swerve.initialize()
         
-        routine = SysIdRoutine(SysIdRoutine.Config(), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
+        routine = SysIdRoutine(SysIdRoutine.Config(recordState=lambda state: SignalLogger.write_string("state", str(state))), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
         
         # PathPlanner Commands
         ## Elevator
