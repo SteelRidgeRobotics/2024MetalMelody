@@ -34,6 +34,7 @@ class SwerveModule(Subsystem):
         encoder_config = CANcoderConfiguration()
         encoder_config.magnet_sensor = MagnetSensorConfigs().with_sensor_direction(SensorDirectionValue.CLOCKWISE_POSITIVE).with_magnet_offset(CAN_offset).with_absolute_sensor_range(AbsoluteSensorRangeValue.UNSIGNED_0_TO1)
         self.turning_encoder.configurator.apply(encoder_config)
+        self.turning_encoder.optimize_bus_utilization() # Will likely turn the encoder into a SyncedCANcoder in the future, but for now we literally only get its pos on startup.
         
         self.drive_motor = TalonFX(drive_motor_constants.motor_id, "rio")
         drive_motor_constants.apply_configuration(self.drive_motor)
@@ -53,7 +54,7 @@ class SwerveModule(Subsystem):
         return Rotation2d.fromDegrees(rots_to_degs(self.direction_motor.get_rotor_position().value / k_direction_gear_ratio))
     
     def reset_sensor_position(self) -> None:
-        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().value * k_direction_gear_ratio)
+        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().refresh().value * k_direction_gear_ratio)
 
     def get_state(self) -> SwerveModuleState:
         return SwerveModuleState(rots_to_meters(self.drive_motor.get_velocity().value), self.get_angle())
