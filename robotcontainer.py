@@ -1,5 +1,7 @@
 from commands.drive import DriveByController
-from commands2 import InstantCommand, ParallelCommandGroup
+from commands.intake_and_stow import IntakeAndStow
+from commands.vibrate import VibrateController
+from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
@@ -65,7 +67,7 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).toggleOnTrue(InstantCommand(lambda: self.intake.consume())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.driverController, self.functionsController).andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotDown())).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())).onTrue(InstantCommand(lambda: self.intake.pivotStow())).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
