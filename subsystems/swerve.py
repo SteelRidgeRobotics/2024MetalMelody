@@ -34,6 +34,8 @@ class SwerveModule(Subsystem):
         encoder_config = CANcoderConfiguration()
         encoder_config.magnet_sensor = MagnetSensorConfigs().with_sensor_direction(SensorDirectionValue.CLOCKWISE_POSITIVE).with_magnet_offset(CAN_offset).with_absolute_sensor_range(AbsoluteSensorRangeValue.UNSIGNED_0_TO1)
         self.turning_encoder.configurator.apply(encoder_config)
+        self.turning_encoder.get_absolute_position().set_update_frequency(1000)
+        self.turning_encoder.optimize_bus_utilization()
         
         self.drive_motor = TalonFX(drive_motor_constants.motor_id, "rio")
         drive_motor_constants.apply_configuration(self.drive_motor)

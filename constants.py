@@ -1,3 +1,4 @@
+from phoenix6 import BaseStatusSignal
 from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, TalonFXConfiguration
 from phoenix6.hardware.talon_fx import TalonFX
 
@@ -95,6 +96,9 @@ class DriveMotorConstants:
         config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.inverted)
         config.feedback.sensor_to_mechanism_ratio = k_drive_gear_ratio
         motor.configurator.apply(config)
+        
+        BaseStatusSignal.set_update_frequency_for_all(4, motor.get_velocity(), motor.get_position(), motor.get_motor_voltage())
+        motor.optimize_bus_utilization()
         return motor
         
 class DirectionMotorConstants:
@@ -128,6 +132,9 @@ class DirectionMotorConstants:
         config.voltage.with_peak_forward_voltage(self.peak_volt).with_peak_reverse_voltage(-self.peak_volt)
         config.motion_magic.with_motion_magic_cruise_velocity(self.cruise_velocity).with_motion_magic_acceleration(self.cruise_acceleration).with_motion_magic_jerk(self.cruise_jerk)
         motor.configurator.apply(config)
+        
+        BaseStatusSignal.set_update_frequency_for_all(4, motor.get_rotor_position())
+        motor.optimize_bus_utilization()
         return motor
     
 k_direction_gear_ratio = 150 / 7
