@@ -28,8 +28,7 @@ class SwerveModule(Subsystem):
     def __init__(self, module_name: str, drive_motor_constants: DriveMotorConstants, direction_motor_constants: DirectionMotorConstants, CANcoder_id: int, CAN_offset: float) -> None:
         super().__init__()
 
-        self.module_name = module_name
-        self.setName("Swerve-Module-" + module_name)
+        self.setName("SwerveModule" + module_name)
 
         self.turning_encoder = CANcoder(CANcoder_id, "rio")
         encoder_config = CANcoderConfiguration()
@@ -104,7 +103,7 @@ class Swerve(Subsystem):
     right_front: SwerveModule = SwerveModule("RF", DriveMotorConstants(MotorIDs.RIGHT_FRONT_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_FRONT_DIRECTION), CANIDs.RIGHT_FRONT, -0.430419921875)
     right_rear: SwerveModule = SwerveModule("RR", DriveMotorConstants(MotorIDs.RIGHT_REAR_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_REAR_DIRECTION), CANIDs.RIGHT_REAR, -0.403564453125)
     
-    
+
     def __init__(self):
         super().__init__()
         self.setName("drivetrain")
