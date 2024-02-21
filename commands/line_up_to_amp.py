@@ -34,7 +34,7 @@ class LineUpToAmp(Command):
         return self.camera.getTagId() == 6 and self.offsetX == 0 and self.offsetY == 0 #offsets to be determined
     
     def end(self):
-
+        pass
         # stop robot
 
 

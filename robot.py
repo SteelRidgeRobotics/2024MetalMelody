@@ -15,7 +15,7 @@ class DumpsterFire(commands2.TimedCommandRobot):
         SignalLogger.enable_auto_logging(True)
         CameraServer.launch('vision.py')
         self.container = RobotContainer()
-        SignalLogger.start()
+        #SignalLogger.start()
 
     def robotPeriodic(self):
         self.container.updateOdometry()
