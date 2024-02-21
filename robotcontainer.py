@@ -24,7 +24,6 @@ class RobotContainer:
         self.swerve.initialize()
         
         routines = ["quasistatic-forward", "quasistatic-reverse", "dynamic-forward", "dynamic-reverse", "none"]
-        
         routine = SysIdRoutine(SysIdRoutine.Config(recordState=lambda state: SignalLogger.write_string("state", str(routines[state.value]))), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
         
         # PathPlanner Commands
@@ -69,21 +68,21 @@ class RobotContainer:
         self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
+        self.intake.pivotAmp()
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.driverController, self.functionsController).andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.driverController, self.functionsController)
+                                                                                           .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotDown())
-                                                                                           ).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed))
-                                                                                                    ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotDown()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+                                                                                           ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(InstantCommand(lambda: self.elevator.climbDown()))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotStow())
-                                                                                           ).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed))
-                                                                                                    ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotStow()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+                                                                                            ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
         JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotAmp())
-                                                                                           ).onTrue(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4))
-                                                                                                    ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(False)))
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotAmp()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4)))
+                                                                                            ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(False)))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()

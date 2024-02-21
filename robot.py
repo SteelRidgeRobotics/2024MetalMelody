@@ -5,7 +5,7 @@ from wpilib import TimedRobot
 from robotcontainer import RobotContainer
 from wpilib.cameraserver import CameraServer
 
-class DumpsterFire(commands2.TimedCommandRobot):
+class TheIronMaiden(commands2.TimedCommandRobot):
 
     def __init__(self, period: float = TimedRobot.kDefaultPeriod / 1000) -> None:
         super().__init__(period)
@@ -23,10 +23,13 @@ class DumpsterFire(commands2.TimedCommandRobot):
         
     def disabledInit(self) -> None:
         pass
-        #SignalLogger.stop()
         
     def autonomousInit(self) -> None:
+        self.container.camera.setPipeline(0)
         self.container.runSelectedAutoCommand()
+
+    def teleopInit(self) -> None:
+        self.container.camera.setPipeline(1)
         
     def testInit(self) -> None:
         pass
