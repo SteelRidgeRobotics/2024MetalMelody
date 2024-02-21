@@ -1,5 +1,6 @@
 from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
+from commands.score_in_amp import ScoreInAmp
 from commands.vibrate import VibrateController
 from commands2 import InstantCommand
 from commands2.button import JoystickButton
@@ -41,21 +42,24 @@ class RobotContainer:
         NamedCommands.registerCommand("pivotStow", InstantCommand(lambda: self.intake.pivotStow()))
         NamedCommands.registerCommand("pivotGrab", InstantCommand(lambda: self.intake.pivotDown()))
         
+        ## Misc
+        NamedCommands.registerCommand("scoreInAmp", ScoreInAmp(self.camera, self.swerve))
+        
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
         self.start_chooser.setDefaultOption("(0, 0)", Pose2d())
-        self.start_chooser.addOption("Blue Amp", Pose2d(0.48, 7.32, Rotation2d()))
+        self.start_chooser.addOption("Blue Amp", Pose2d(1.41, 7.29, Rotation2d()))
         self.start_chooser.addOption("Blue Speaker", Pose2d(1.34, 5.48, Rotation2d()))
         self.start_chooser.addOption("Blue Source", Pose2d(0.52, 2.1, Rotation2d()))
-        self.start_chooser.addOption("Red Amp", Pose2d(16.062, 7.32, Rotation2d()))
-        self.start_chooser.addOption("Red Speaker", Pose2d(15.202, 5.48, Rotation2d()))
-        self.start_chooser.addOption("Red Source", Pose2d(16.022, 2.1, Rotation2d()))
+        self.start_chooser.addOption("Red Amp", Pose2d(15.132, 7.29, Rotation2d.fromDegrees(180)))
+        self.start_chooser.addOption("Red Speaker", Pose2d(15.202, 5.48, Rotation2d.fromDegrees(180)))
+        self.start_chooser.addOption("Red Source", Pose2d(16.022, 2.1, Rotation2d.fromDegrees(180)))
         
         self.start_chooser.onChange(lambda pose: self.swerve.reset_odometry(pose=pose))
         SmartDashboard.putData("Starting Position", self.start_chooser)
         
         self.auto_chooser = SendableChooser()
-        self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2NoteAmp"))
+        self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2Amp"))
         self.auto_chooser.addOption("1 Note Source", PathPlannerAuto("1NoteSource"))
         self.auto_chooser.addOption("2 Note Speaker", PathPlannerAuto("2NoteSpeaker"))
         self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(SysIdRoutine.Direction.kForward))
