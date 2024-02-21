@@ -24,11 +24,11 @@ class Elevator(Subsystem):
     def up(self) -> None:
         self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
 
-    def climbUp(self) -> None:
+    def robotDown(self) -> None:
         self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
 
     def below(self) -> None:
         self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
 
-    def climbDown(self) -> None:
+    def robotUp(self) -> None:
         self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
