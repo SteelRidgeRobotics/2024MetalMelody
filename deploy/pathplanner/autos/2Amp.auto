@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.41,
+      "y": 7.29
+    },
+    "rotation": 0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -14,25 +20,31 @@
         {
           "type": "named",
           "data": {
-            "name": "LineUpAmp"
+            "name": "scoreInAmp"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "AmpToSecondMNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SecondMNoteToAmp"
+            "pathName": "AmpToCloseNote"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "LineUpToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CloseNoteToAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreInAmp"
           }
         }
       ]

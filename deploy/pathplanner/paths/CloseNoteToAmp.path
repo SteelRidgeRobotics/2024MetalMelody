@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.4499707772596704,
+        "x": 2.55,
         "y": 7.003080254377342
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4499707772596704,
-        "y": 6.003080254377342
+        "x": 1.9999999999999998,
+        "y": 7.003080254377342
       },
       "isLocked": false,
       "linkedName": "CloseNote"
     },
     {
       "anchor": {
-        "x": 1.8292964403332503,
-        "y": 7.003080254377342
-      },
-      "prevControl": {
-        "x": 1.8292964403332503,
-        "y": 6.003080254377342
-      },
-      "nextControl": {
-        "x": 1.8292964403332503,
-        "y": 7.303080254377342
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 1.852718113424813,
-        "y": 7.4949353893001645
+        "y": 7.49
       },
       "prevControl": {
         "x": 1.852718113424813,
-        "y": 6.9949353893001645
+        "y": 6.99
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,13 +30,66 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": 90.0,
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
-  "eventMarkers": [],
+  "constraintZones": [
+    {
+      "name": "SLOW DOWN RAHH",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 0.5,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 180.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Score Prep",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotAmp"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeStop"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "litf",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "elevatorUp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 1.0,
     "maxAcceleration": 1.0,
