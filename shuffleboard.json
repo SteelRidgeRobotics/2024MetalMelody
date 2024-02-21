@@ -13,7 +13,7 @@
         "tiles": {
           "0,0": {
             "size": [
-              8,
+              6,
               4
             ],
             "content": {
@@ -27,9 +27,9 @@
               "Visuals/Show Outside Circles": false
             }
           },
-          "8,0": {
+          "6,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -40,7 +40,7 @@
               "_showGlyph": false
             }
           },
-          "8,2": {
+          "9,0": {
             "size": [
               1,
               1
@@ -53,7 +53,7 @@
               "_showGlyph": false
             }
           },
-          "8,1": {
+          "7,0": {
             "size": [
               2,
               1
@@ -68,7 +68,7 @@
           },
           "0,4": {
             "size": [
-              8,
+              6,
               1
             ],
             "content": {
@@ -78,30 +78,25 @@
               "_showGlyph": false
             }
           },
-          "9,2": {
+          "6,1": {
             "size": [
-              1,
-              1
+              4,
+              4
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Reset Odometry",
-              "_title": "Reset Odometry",
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
               "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Auto Route",
-              "_title": "Auto Route",
-              "_glyph": 148,
-              "_showGlyph": false
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }
@@ -109,9 +104,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1536.0,
-    "height": 864.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }
