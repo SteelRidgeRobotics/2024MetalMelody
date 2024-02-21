@@ -68,7 +68,7 @@ class RobotContainer:
         self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
         
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
-        self.intake.pivotAmp()
+        #self.intake.pivotAmp()
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.driverController, self.functionsController)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))

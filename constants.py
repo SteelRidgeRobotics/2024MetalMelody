@@ -75,7 +75,7 @@ class SwerveConstants:
 class DriveMotorConstants:
 
     def __init__(self, motor_id: int, 
-                 k_s: float=0.19, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
+                 k_s: float=0.0, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
         self.motor_id = motor_id
         
@@ -97,8 +97,6 @@ class DriveMotorConstants:
         config.feedback.sensor_to_mechanism_ratio = k_drive_gear_ratio
         motor.configurator.apply(config)
         
-        BaseStatusSignal.set_update_frequency_for_all(4, motor.get_velocity(), motor.get_position(), motor.get_motor_voltage())
-        motor.optimize_bus_utilization()
         return motor
         
 class DirectionMotorConstants:
@@ -132,9 +130,6 @@ class DirectionMotorConstants:
         config.voltage.with_peak_forward_voltage(self.peak_volt).with_peak_reverse_voltage(-self.peak_volt)
         config.motion_magic.with_motion_magic_cruise_velocity(self.cruise_velocity).with_motion_magic_acceleration(self.cruise_acceleration).with_motion_magic_jerk(self.cruise_jerk)
         motor.configurator.apply(config)
-        
-        BaseStatusSignal.set_update_frequency_for_all(4, motor.get_rotor_position())
-        motor.optimize_bus_utilization()
         return motor
     
 k_direction_gear_ratio = 150 / 7
