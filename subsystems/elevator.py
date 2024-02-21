@@ -9,27 +9,26 @@ class Elevator(Subsystem):
     
     def __init__(self):
         super().__init__()
-        self.elevatorMotorRight = TalonFX(MotorIDs.ELEVATORMOTOR_RIGHT)
-        self.elevatorMotorLeft = TalonFX(MotorIDs.ELEVATORMOTOR_LEFT)
+        self.master_motor = TalonFX(MotorIDs.ELEVATORMOTOR_RIGHT) # Right Motor
+        self.follower_motor = TalonFX(MotorIDs.ELEVATORMOTOR_LEFT) # Left Motor
         elevator_config = TalonFXConfiguration()
         elevator_config.slot0.with_k_p(1)
         elevator_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
-        elevator_config.motion_magic.with_motion_magic_acceleration(ElevatorConstants.MOTIONMAGICACCELERATION).with_motion_magic_cruise_velocity(ElevatorConstants.MOTIONMAGICVELOCITY)
         elevator_config.current_limits.with_supply_current_limit_enable(True).with_supply_current_limit(ElevatorConstants.CURRENTSUPPLYLIMIT)
-        self.elevatorMotorRight.configurator.apply(elevator_config)
-        self.elevatorMotorLeft.configurator.apply(elevator_config)
+        self.master_motor.configurator.apply(elevator_config)
+        self.follower_motor.configurator.apply(elevator_config)
 
-        self.elevatorMotorRight.set_position(ElevatorConstants.TOPPOSITION)
-        self.elevatorMotorLeft.set_control(Follower(self.elevatorMotorRight.device_id, True))
+        self.master_motor.set_position(ElevatorConstants.TOPPOSITION)
+        self.follower_motor.set_control(Follower(self.master_motor.device_id, True))
          
     def up(self) -> None:
-        self.elevatorMotorRight.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
+        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
 
     def climbUp(self) -> None:
-        self.elevatorMotorRight.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.MOTIONMAGICVELOCITY / 10, ElevatorConstants.MOTIONMAGICACCELERATION / 10, 0))
+        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
 
     def below(self) -> None:
-        self.elevatorMotorRight.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
+        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
 
     def climbDown(self) -> None:
-        self.elevatorMotorRight.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.MOTIONMAGICVELOCITY / 10, ElevatorConstants.MOTIONMAGICACCELERATION / 10, 0))
+        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
