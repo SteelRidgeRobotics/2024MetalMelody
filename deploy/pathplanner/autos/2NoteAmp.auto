@@ -12,6 +12,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "LineUpAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "AmpToSecondMNote"
@@ -21,6 +27,12 @@
           "type": "path",
           "data": {
             "pathName": "SecondMNoteToAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LineUpToAmp"
           }
         }
       ]

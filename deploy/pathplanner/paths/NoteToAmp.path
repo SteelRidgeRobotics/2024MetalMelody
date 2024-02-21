@@ -3,37 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.48255023756837656,
-        "y": 7.319272841113443
+        "x": 7.848666424864946,
+        "y": 5.773442417070284
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9229831326995024,
-        "y": 6.698598504187022
+        "x": 7.403654636125246,
+        "y": 6.183321696172636
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SecondMiddleNote"
     },
     {
       "anchor": {
-        "x": 1.852718113424813,
-        "y": 7.4949353893001645
+        "x": 1.8292964403332503,
+        "y": 7.647176264395325
       },
       "prevControl": {
-        "x": 1.8761397865163756,
-        "y": 7.026501927468904
+        "x": 2.584956854585962,
+        "y": 7.647176264395325
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Formation",
-      "waypointRelativePos": 0.15,
+      "name": "Formation3",
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,13 +41,13 @@
             {
               "type": "named",
               "data": {
-                "name": "elevatorUp"
+                "name": "pivotAmp"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "pivotAmp"
+                "name": "elevatorUp"
               }
             }
           ]
@@ -55,7 +55,7 @@
       }
     },
     {
-      "name": "Disencumber",
+      "name": "Disencumber2",
       "waypointRelativePos": 0.95,
       "command": {
         "type": "parallel",
@@ -80,7 +80,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 91.43209618416466,
+    "rotation": 91.20604877921997,
     "rotateFast": false
   },
   "reversed": false,

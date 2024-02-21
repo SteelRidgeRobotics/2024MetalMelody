@@ -1,6 +1,6 @@
 from phoenix6.configs import TalonFXConfiguration
 from phoenix6.configs.config_groups import NeutralModeValue
-from phoenix6.controls import Follower, MotionMagicDutyCycle
+from phoenix6.controls import DynamicMotionMagicDutyCycle, Follower, MotionMagicDutyCycle
 from phoenix6.hardware import TalonFX
 from commands2 import Subsystem
 from constants import *
@@ -24,6 +24,12 @@ class Elevator(Subsystem):
          
     def up(self) -> None:
         self.elevatorMotorRight.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
-        
+
+    def climbUp(self) -> None:
+        self.elevatorMotorRight.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.MOTIONMAGICVELOCITY / 10, ElevatorConstants.MOTIONMAGICACCELERATION / 10, 0))
+
     def below(self) -> None:
         self.elevatorMotorRight.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
+
+    def climbDown(self) -> None:
+        self.elevatorMotorRight.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.MOTIONMAGICVELOCITY / 10, ElevatorConstants.MOTIONMAGICACCELERATION / 10, 0))

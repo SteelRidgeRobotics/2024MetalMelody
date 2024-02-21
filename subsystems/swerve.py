@@ -4,6 +4,7 @@ from commands2 import InstantCommand, Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
+from phoenix6 import BaseStatusSignal
 from phoenix6.configs.cancoder_configs import *
 from phoenix6.configs.talon_fx_configs import *
 from phoenix6.configs.config_groups import MagnetSensorConfigs
@@ -27,7 +28,7 @@ class SwerveModule(Subsystem):
     def __init__(self, module_name: str, drive_motor_constants: DriveMotorConstants, direction_motor_constants: DirectionMotorConstants, CANcoder_id: int, CAN_offset: float) -> None:
         super().__init__()
 
-        self.module_name = module_name
+        self.setName("SwerveModule" + module_name)
 
         self.turning_encoder = CANcoder(CANcoder_id, "rio")
         encoder_config = CANcoderConfiguration()
@@ -46,15 +47,15 @@ class SwerveModule(Subsystem):
         return Rotation2d.fromDegrees(rots_to_degs(self.direction_motor.get_rotor_position().value / k_direction_gear_ratio))
     
     def reset_sensor_position(self) -> None:
-        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().value * k_direction_gear_ratio)
+        self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().wait_for_update(0.02).value * k_direction_gear_ratio)
 
     def get_state(self) -> SwerveModuleState:
-        return SwerveModuleState(rots_to_meters(self.drive_motor.get_rotor_velocity().value, k_drive_gear_ratio), self.get_angle())
+        return SwerveModuleState(rots_to_meters(self.drive_motor.get_velocity().value), self.get_angle())
     
     def get_position(self) -> SwerveModulePosition:
-        return SwerveModulePosition(rots_to_meters(self.drive_motor.get_rotor_position().value, k_drive_gear_ratio), self.get_angle())
+        return SwerveModulePosition(rots_to_meters(self.drive_motor.get_position().value), self.get_angle())
 
-    def set_desired_state(self, desiredState: SwerveModuleState) -> None:
+    def set_desired_state(self, desiredState: SwerveModuleState, override_brake_dur_neutral: bool=True) -> None:
         desiredState.optimize(desiredState, self.get_angle())
         desiredAngle = desiredState.angle.degrees() % 360
 
@@ -87,7 +88,7 @@ class SwerveModule(Subsystem):
         self.directionTargetAngle = targetAngle
 
         self.direction_motor.set_control(MotionMagicVoltage(self.directionTargetPos * k_direction_gear_ratio))
-        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio)))
+        self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio), override_brake_dur_neutral=override_brake_dur_neutral))
        
 
 class Swerve(Subsystem):
@@ -102,9 +103,10 @@ class Swerve(Subsystem):
     right_front: SwerveModule = SwerveModule("RF", DriveMotorConstants(MotorIDs.RIGHT_FRONT_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_FRONT_DIRECTION), CANIDs.RIGHT_FRONT, -0.430419921875)
     right_rear: SwerveModule = SwerveModule("RR", DriveMotorConstants(MotorIDs.RIGHT_REAR_DRIVE), DirectionMotorConstants(MotorIDs.RIGHT_REAR_DIRECTION), CANIDs.RIGHT_REAR, -0.403564453125)
     
-    
+
     def __init__(self):
         super().__init__()
+        self.setName("drivetrain")
 
         self.odometry = SwerveDrive4PoseEstimator(self.kinematics, self.get_angle(), (self.left_front.get_position(), self.left_rear.get_position(), self.right_front.get_position(), self.right_rear.get_position()), Pose2d())
 
@@ -134,6 +136,7 @@ class Swerve(Subsystem):
         
         self.navx.reset()
         self.desired_heading = 0
+        self.obdn = True
 
     def should_flip_auto_path(self) -> bool:
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
@@ -153,22 +156,25 @@ class Swerve(Subsystem):
     def set_module_states(self, module_states: tuple[SwerveModuleState, SwerveModuleState, SwerveModuleState, SwerveModuleState]) -> None:
         desatStates = self.kinematics.desaturateWheelSpeeds(module_states, self.max_module_speed)
 
-        self.left_front.set_desired_state(desatStates[0])
-        self.left_rear.set_desired_state(desatStates[1])
-        self.right_front.set_desired_state(desatStates[2])
-        self.right_rear.set_desired_state(desatStates[3])
+        self.left_front.set_desired_state(desatStates[0], override_brake_dur_neutral=self.obdn)
+        self.left_rear.set_desired_state(desatStates[1], override_brake_dur_neutral=self.obdn)
+        self.right_front.set_desired_state(desatStates[2], override_brake_dur_neutral=self.obdn)
+        self.right_rear.set_desired_state(desatStates[3], override_brake_dur_neutral=self.obdn)
         
     def set_max_module_speed(self, max_module_speed: float=SwerveConstants.k_max_module_speed) -> None:
         self.max_module_speed = max_module_speed
+        
+    def set_module_override_brake(self, new_obdn: bool) -> None:
+        self.obdn = new_obdn
 
     def set_voltage(self, volts: float) -> None:
         """For SysId tuning"""
-        self.left_front.drive_motor.set_control(VoltageOut(volts))
-        self.left_rear.drive_motor.set_control(VoltageOut(volts))
-        self.right_front.drive_motor.set_control(VoltageOut(volts))
-        self.right_rear.drive_motor.set_control(VoltageOut(volts))
+        self.left_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
+        self.left_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
+        self.right_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
+        self.right_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
         
-    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoof file
+    def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoot file
         pass
 
     def get_pose(self) -> Pose2d:

@@ -1,3 +1,4 @@
+from phoenix6 import BaseStatusSignal
 from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, TalonFXConfiguration
 from phoenix6.hardware.talon_fx import TalonFX
 
@@ -43,8 +44,8 @@ class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
     TOPPOSITION = 123
     BOTTOMPOSITION = 0
-    MOTIONMAGICACCELERATION = 125
-    MOTIONMAGICVELOCITY = 375
+    MOTIONMAGICACCELERATION = 100 / 10
+    MOTIONMAGICVELOCITY = 100 / 10
 
 class LimelightConstants:
     RESOLUTIONX = 1280
@@ -74,7 +75,7 @@ class SwerveConstants:
 class DriveMotorConstants:
 
     def __init__(self, motor_id: int, 
-                 k_s: float=0.19, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
+                 k_s: float=0.0, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
         self.motor_id = motor_id
         
@@ -87,7 +88,7 @@ class DriveMotorConstants:
         
         self.inverted = inverted
         
-        self.neutral_mode = NeutralModeValue.BRAKE
+        self.neutral_mode = NeutralModeValue.COAST
         
     def apply_configuration(self, motor: TalonFX) -> TalonFX:
         config = TalonFXConfiguration()
@@ -95,6 +96,7 @@ class DriveMotorConstants:
         config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.inverted)
         config.feedback.sensor_to_mechanism_ratio = k_drive_gear_ratio
         motor.configurator.apply(config)
+        
         return motor
         
 class DirectionMotorConstants:

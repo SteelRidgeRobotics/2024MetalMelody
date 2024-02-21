@@ -32,9 +32,10 @@ class DriveByController(Command):
         if self.controller.getRightBumper():
             slowdown_mult += 1
             
-        center_of_rotation = Translation2d()
         if self.controller.getLeftBumper():
-            center_of_rotation.x = 3.56
+            center_of_rotation = Translation2d(3.56, 0)
+        else:
+            center_of_rotation = Translation2d()
         
         if self.mode == DriveModes.FIELD_RELATIVE:
             self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), center_of_rotation=center_of_rotation)
