@@ -169,10 +169,17 @@ class Swerve(Subsystem):
 
     def set_voltage(self, volts: float) -> None:
         """For SysId tuning"""
-        self.left_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
-        self.left_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
-        self.right_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
-        self.right_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=self.obdn))
+        steady_dir = self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(volts, 0, 0, 0.02), self.get_angle()))
+        
+        self.left_front.direction_motor.set_control(MotionMagicVoltage(degs_to_rots(steady_dir[0].angle.degrees())))
+        self.left_rear.direction_motor.set_control(MotionMagicVoltage(degs_to_rots(steady_dir[1].angle.degrees())))
+        self.right_front.direction_motor.set_control(MotionMagicVoltage(degs_to_rots(steady_dir[2].angle.degrees())))
+        self.left_front.direction_motor.set_control(MotionMagicVoltage(degs_to_rots(steady_dir[3].angle.degrees())))
+        
+        self.left_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.left_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.right_front.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
+        self.right_rear.drive_motor.set_control(VoltageOut(volts, override_brake_dur_neutral=True))
         
     def log_motor_output(self, log: SysIdRoutineLog) -> None: # Unsued since we just convert the hoot file
         pass
