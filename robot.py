@@ -3,6 +3,7 @@ from commands2.timedcommandrobot import seconds
 from phoenix6.signal_logger import SignalLogger
 from wpilib import TimedRobot
 from robotcontainer import RobotContainer
+from wpilib import DriverStation
 from wpilib.cameraserver import CameraServer
 
 class TheIronMaiden(commands2.TimedCommandRobot):
@@ -11,9 +12,13 @@ class TheIronMaiden(commands2.TimedCommandRobot):
         super().__init__(period)
 
     def robotInit(self):
+        DriverStation.silenceJoystickConnectionWarning(True)
+        
         SignalLogger.set_path("/home/lvuser/logs")
         SignalLogger.enable_auto_logging(True)
+        
         CameraServer.launch('vision.py')
+        
         self.container = RobotContainer()
 
     def robotPeriodic(self):
