@@ -12,13 +12,17 @@ class IntakeAndStow(Command):
         self.functions = functions
         
         self.timer = Timer()
-        
         self.addRequirements(self.intake)
+        
+        self.already_has_note = self.intake.hasNote()
         
     def initialize(self):
         self.timer.reset()
         self.timer.start()
         self.intake.consume()
+        
+        if self.already_has_note:
+            self.cancel()
         
     def execute(self):
         if self.functions.getRightBumper():
