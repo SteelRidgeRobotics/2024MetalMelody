@@ -38,8 +38,8 @@
   "constraintZones": [
     {
       "name": "SLOW DOWN RAHH",
-      "minWaypointRelativePos": 0.5,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.5,
       "constraints": {
         "maxVelocity": 0.5,
         "maxAcceleration": 1.0,
@@ -91,8 +91,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 0.25,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 180.0
   },
@@ -107,5 +107,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
