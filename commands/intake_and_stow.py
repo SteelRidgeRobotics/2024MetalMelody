@@ -1,15 +1,14 @@
 from commands2 import Command
 from subsystems.intake import Intake
 from wpilib import Timer
-from wpilib.interfaces import GenericHID
+from wpilib import XboxController
 
 class IntakeAndStow(Command):
     
-    def __init__(self, intake: Intake, driver: GenericHID, functions: GenericHID):
+    def __init__(self, intake: Intake, functions: XboxController):
         super().__init__()
         
         self.intake = intake
-        self.driver = driver
         self.functions = functions
         
         self.timer = Timer()
@@ -20,6 +19,10 @@ class IntakeAndStow(Command):
         self.timer.reset()
         self.timer.start()
         self.intake.consume()
+        
+    def execute(self):
+        if self.functions.getRightBumper():
+            self.cancel()
         
     def isFinished(self) -> bool:
         return self.intake.hasNote() or self.timer.get() >= 10
