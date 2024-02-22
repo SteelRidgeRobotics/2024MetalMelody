@@ -43,7 +43,7 @@ class RobotContainer:
         NamedCommands.registerCommand("pivotGrab", InstantCommand(lambda: self.intake.pivotDown()))
         
         ## Misc
-        NamedCommands.registerCommand("scoreInAmp", ScoreInAmp(self.camera, self.swerve))
+        #NamedCommands.registerCommand("scoreInAmp", ScoreInAmp(self.camera, self.swerve))
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()

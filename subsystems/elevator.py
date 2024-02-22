@@ -15,6 +15,7 @@ class Elevator(Subsystem):
         elevator_config.slot0.with_k_p(1)
         elevator_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
         elevator_config.current_limits.with_supply_current_limit_enable(True).with_supply_current_limit(ElevatorConstants.CURRENTSUPPLYLIMIT)
+        elevator_config.motion_magic.with_motion_magic_cruise_velocity(ElevatorConstants.MM_VEL).with_motion_magic_acceleration(ElevatorConstants.MM_ACCEL)
         self.master_motor.configurator.apply(elevator_config)
         self.follower_motor.configurator.apply(elevator_config)
 
@@ -22,13 +23,13 @@ class Elevator(Subsystem):
         self.follower_motor.set_control(Follower(self.master_motor.device_id, True))
          
     def up(self) -> None:
-        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
+        self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
 
     def robotDown(self) -> None:
-        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.TOPPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
+        self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
 
     def below(self) -> None:
-        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.MM_VEL, ElevatorConstants.MM_ACCEL, 0))
+        self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
 
     def robotUp(self) -> None:
-        self.master_motor.set_control(DynamicMotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION, ElevatorConstants.CLIMB_MM_VEL, ElevatorConstants.CLIMB_MM_ACCEL, 0))
+        self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))

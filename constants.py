@@ -38,7 +38,7 @@ class PivotConstants:
     K_P = 10
     K_I = 0
     K_D = 0.2
-    GEAR_RATIO = 12
+    GEAR_RATIO = 48
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4

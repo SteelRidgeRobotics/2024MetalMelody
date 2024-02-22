@@ -15,7 +15,6 @@ class TheIronMaiden(commands2.TimedCommandRobot):
         SignalLogger.enable_auto_logging(True)
         CameraServer.launch('vision.py')
         self.container = RobotContainer()
-        SignalLogger.start()
 
     def robotPeriodic(self):
         self.container.updateOdometry()
