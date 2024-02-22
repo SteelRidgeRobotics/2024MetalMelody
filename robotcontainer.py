@@ -62,6 +62,7 @@ class RobotContainer:
         self.auto_chooser = SendableChooser()
         self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2Amp"))
         self.auto_chooser.addOption("1 Note Source", PathPlannerAuto("1NoteSource"))
+        self.auto_chooser.addOption("0 Note Speaker", PathPlannerAuto("0NoteSpeaker"))
         self.auto_chooser.addOption("2 Note Speaker", PathPlannerAuto("2NoteSpeaker"))
         self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(SysIdRoutine.Direction.kForward))
         self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(SysIdRoutine.Direction.kReverse))
