@@ -21,7 +21,7 @@ class TheIronMaiden(commands2.TimedCommandRobot):
         commands2.CommandScheduler.getInstance().run()
         
     def disabledInit(self) -> None:
-        pass
+        SignalLogger.stop()
         
     def autonomousInit(self) -> None:
         self.container.camera.setPipeline(0)
