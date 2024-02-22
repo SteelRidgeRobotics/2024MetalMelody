@@ -1,4 +1,3 @@
-from phoenix6 import BaseStatusSignal
 from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, TalonFXConfiguration
 from phoenix6.hardware.talon_fx import TalonFX
 
@@ -14,7 +13,6 @@ class MotorIDs:
     RIGHT_REAR_DIRECTION = 8
     
     PIVOTMOTOR = 9
-    
     INTAKEMOTOR = 10
     
     ELEVATORMOTOR_RIGHT = 11
@@ -27,7 +25,7 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
-    INTAKESPEED = .1875 * 4
+    INTAKESPEED = 0.75
 
 class PivotConstants:
     MM_ACCELERATION = 2
@@ -46,8 +44,6 @@ class ElevatorConstants:
     BOTTOMPOSITION = 0
     MM_ACCEL = 100
     MM_VEL = 100
-    CLIMB_MM_ACCEL = 10
-    CLIMB_MM_VEL = 25
 
 class LimelightConstants:
     RESOLUTIONX = 1280
