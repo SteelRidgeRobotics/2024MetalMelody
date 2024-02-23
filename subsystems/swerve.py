@@ -102,6 +102,7 @@ class SwerveModule(Subsystem):
 
 class Swerve(Subsystem):
     navx = navx.AHRS.create_spi()
+    navx.enableLogging(False)
 
     kinematics = SwerveDrive4Kinematics(Translation2d(1, 1), Translation2d(-1, 1), Translation2d(1, -1), Translation2d(-1, -1)) # LF, LR, RF, RR
     
