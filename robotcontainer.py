@@ -68,6 +68,7 @@ class RobotContainer:
         self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(SysIdRoutine.Direction.kReverse))
         self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(SysIdRoutine.Direction.kForward))
         self.auto_chooser.addOption("Dynamic Reverse", routine.dynamic(SysIdRoutine.Direction.kReverse))
+        self.auto_chooser.addOption("0 Note Source", PathPlannerAuto("0NoteSource"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)
