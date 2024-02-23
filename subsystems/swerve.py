@@ -13,7 +13,7 @@ from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.controls.motion_magic_voltage import MotionMagicVoltage
 from phoenix6.signals import *
 from typing import Self
-from wpilib import DriverStation, Field2d, SmartDashboard
+from wpilib import DriverStation, Field2d, RobotBase, SmartDashboard
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from wpimath.estimator import SwerveDrive4PoseEstimator
@@ -42,12 +42,19 @@ class SwerveModule(Subsystem):
         direction_motor_constants.apply_configuration(self.direction_motor)
         
         self.directionTargetPos = self.directionTargetAngle = 0.0
+        
+        self.sim_drive = 0
 
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(rots_to_degs(self.direction_motor.get_rotor_position().value / k_direction_gear_ratio))
     
+    def simulationPeriodic(self) -> None:
+        self.sim_drive += self.drive_motor.get_velocity().value * 0.02 * 4
+        self.drive_motor.sim_state.set_raw_rotor_position(self.sim_drive)
+    
     def reset_sensor_position(self) -> None:
         self.direction_motor.set_position(-self.turning_encoder.get_absolute_position().wait_for_update(0.02).value * k_direction_gear_ratio)
+        self.direction_motor.sim_state.set_raw_rotor_position(0)
 
     def get_state(self) -> SwerveModuleState:
         return SwerveModuleState(rots_to_meters(self.drive_motor.get_velocity().value), self.get_angle())
@@ -88,7 +95,9 @@ class SwerveModule(Subsystem):
         self.directionTargetAngle = targetAngle
 
         self.direction_motor.set_control(MotionMagicVoltage(self.directionTargetPos * k_direction_gear_ratio))
+        self.direction_motor.sim_state.set_raw_rotor_position(self.directionTargetPos * -k_direction_gear_ratio)
         self.drive_motor.set_control(VelocityVoltage(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio), override_brake_dur_neutral=override_brake_dur_neutral))
+        self.drive_motor.sim_state.set_rotor_velocity(meters_to_rots(self.invert_factor * desiredState.speed, k_drive_gear_ratio))
        
 
 class Swerve(Subsystem):
@@ -121,8 +130,8 @@ class Swerve(Subsystem):
             AutoBuilder.configureHolonomic(
                 lambda: self.get_pose(),
                 lambda pose: self.reset_odometry(pose),
-                lambda: self.get_robot_relative_speeds(),
-                lambda chassisSpeed: self.robot_centric_drive(chassisSpeed),
+                lambda: (self.get_robot_relative_speeds() if RobotBase.isReal() else self.get_field_relative_speeds()),
+                lambda chassisSpeed: (self.robot_centric_drive(chassisSpeed) if RobotBase.isReal() else self.field_relative_drive(chassisSpeed)),
                 HolonomicPathFollowerConfig(
                     PIDConstants(SwerveConstants.auto_kP_translation, 0.0, 0.0, 0.0), # translation
                     PIDConstants(SwerveConstants.auto_kP_rotation, 0.0, 0.0, 0.0), # rotation
@@ -135,17 +144,22 @@ class Swerve(Subsystem):
             )
         
         self.navx.reset()
-        self.desired_heading = 0
         self.obdn = True
 
     def should_flip_auto_path(self) -> bool:
-        return DriverStation.getAlliance() == DriverStation.Alliance.kRed
+        if RobotBase.isReal():
+            return DriverStation.getAlliance() == DriverStation.Alliance.kRed
+        else:
+            return False
 
     def get_angle(self) -> Rotation2d:
         return Rotation2d.fromDegrees(-self.navx.getYaw())
     
     def field_relative_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # Discretizes the chassis speeds, then transforms it into individual swerve module states (field relative)
         self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(ChassisSpeeds.discretize(chassis_speed, 0.02), self.get_angle()), centerOfRotation=center_of_rotation))
+        
+    def get_field_relative_speeds(self) -> ChassisSpeeds:
+        return ChassisSpeeds.fromRobotRelativeSpeeds(self.get_robot_relative_speeds(), self.get_angle())
         
     def robot_centric_drive(self, chassis_speed: ChassisSpeeds, center_of_rotation: Translation2d=Translation2d()) -> None: # see drive(), but less cool to watch
         self.set_module_states(self.kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(chassis_speed, 0.02)))
