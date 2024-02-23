@@ -25,7 +25,7 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
-    INTAKESPEED = 0.75
+    INTAKESPEED = 0.9375
 
 class PivotConstants:
     MM_ACCELERATION = 2
@@ -36,7 +36,7 @@ class PivotConstants:
     K_P = 10
     K_I = 0
     K_D = 0.2
-    GEAR_RATIO = 48
+    GEAR_RATIO = 50
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
