@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.5193500777128124,
+        "y": 2.098068363592784
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.0193500777128124,
+        "y": 2.098068363592784
+      },
+      "isLocked": true,
+      "linkedName": "Source Endpoint Made for Engineered Nonmanual (SEMEN)"
+    },
+    {
+      "anchor": {
+        "x": 3.52,
+        "y": 2.098068363592784
+      },
+      "prevControl": {
+        "x": 3.02,
+        "y": 2.098068363592784
+      },
+      "nextControl": null,
+      "isLocked": true,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 180.0,
+    "maxAngularAcceleration": 180.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Source",
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0.0
+  },
+  "useDefaultConstraints": true
+}
