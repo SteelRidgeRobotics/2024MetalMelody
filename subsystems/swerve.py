@@ -130,8 +130,8 @@ class Swerve(Subsystem):
             AutoBuilder.configureHolonomic(
                 lambda: self.get_pose(),
                 lambda pose: self.reset_odometry(pose),
-                lambda: (self.get_robot_relative_speeds() if RobotBase.isReal() else self.get_field_relative_speeds()),
-                lambda chassisSpeed: (self.robot_centric_drive(chassisSpeed) if RobotBase.isReal() else self.field_relative_drive(chassisSpeed)),
+                lambda: self.get_robot_relative_speeds(),
+                lambda chassisSpeed: self.robot_centric_drive(chassisSpeed),
                 HolonomicPathFollowerConfig(
                     PIDConstants(SwerveConstants.auto_kP_translation, 0.0, 0.0, 0.0), # translation
                     PIDConstants(SwerveConstants.auto_kP_rotation, 0.0, 0.0, 0.0), # rotation
