@@ -8,9 +8,10 @@ from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6 import SignalLogger
+from phoenix6.controls import DutyCycleOut
 from subsystems.camera import Camera
 from subsystems.elevator import Elevator
-from subsystems.intake import Intake
+from subsystems.intake import Intake, IntakeStates
 from subsystems.swerve import Swerve
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from commands2.sysid import SysIdRoutine
@@ -77,13 +78,14 @@ class RobotContainer:
         self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
         #self.intake.pivotAmp()
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.functionsController)
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.functionsController).onlyIf(lambda: self.intake.getIntakeState() is not IntakeStates.GRAB)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
-        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber())).toggleOnFalse(InstantCommand(lambda: self.intake.hold()))
+        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber(), self.intake).onlyIf(lambda: self.intake.getIntakeState() is not IntakeStates.TOSS)
+                                                                                            ).onFalse(InstantCommand(lambda: self.intake.hold(), self.intake))
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())
                                                                                   ).onTrue(InstantCommand(lambda: self.intake.pivotDown()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                            ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
-        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(ManualElevator(self.elevator, self.functionsController))
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(-0.25)))).onFalse(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(0))))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())
                                                                                   ).onTrue(InstantCommand(lambda: self.intake.pivotStow()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                             ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
