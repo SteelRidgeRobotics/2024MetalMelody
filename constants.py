@@ -32,8 +32,8 @@ class PivotConstants:
     MM_ACCELERATION = 2
     MM_CRUISE_VEL = 2
     STOWPOS = 0
-    INTAKEPOS = -0.35
-    SCOREPOS = -0.3
+    INTAKEPOS = 0.35
+    SCOREPOS = 0.3
     K_P = 10
     K_I = 0
     K_D = 0.2

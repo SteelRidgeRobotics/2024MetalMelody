@@ -25,7 +25,7 @@ class Intake(Subsystem):
         
         self.pivotMotor = TalonFX(MotorIDs.PIVOTMOTOR)
         pivot_config = phoenix6.configs.TalonFXConfiguration()
-        pivot_config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE)
+        pivot_config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE).with_inverted(InvertedValue.CLOCKWISE_POSITIVE)
         pivot_config.slot0.with_k_p(PivotConstants.K_P).with_k_i(PivotConstants.K_I).with_k_d(PivotConstants.K_D)
         pivot_config.feedback.with_sensor_to_mechanism_ratio(PivotConstants.GEAR_RATIO)
         pivot_config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
