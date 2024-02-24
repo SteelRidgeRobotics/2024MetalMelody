@@ -19,7 +19,7 @@ class Intake(Subsystem):
         
         self.intakeMotor = TalonFX(MotorIDs.INTAKEMOTOR)
         intake_config = phoenix6.configs.TalonFXConfiguration()
-        intake_config.motor_output.neutral_mode = NeutralModeValue.BRAKE
+        intake_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE).with_inverted(InvertedValue.CLOCKWISE_POSITIVE)
         intake_config.feedback.sensor_to_mechanism_ratio = IntakeConstants.GEAR_RATIO
         self.intakeMotor.configurator.apply(intake_config)
         
@@ -39,11 +39,11 @@ class Intake(Subsystem):
         self.intake_state = IntakeStates.HOLD
 
     def disencumber(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED))
+        self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
         self.intake_state = IntakeStates.TOSS
 
     def consume(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
+        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED))
         self.intake_state = IntakeStates.GRAB
 
     def hold(self) -> None:
