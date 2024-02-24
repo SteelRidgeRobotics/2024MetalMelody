@@ -25,6 +25,7 @@ class CANIDs:
     RIGHT_REAR = 8
 
 class IntakeConstants:
+    GEAR_RATIO = 5
     INTAKESPEED = 0.9375
 
 class PivotConstants:

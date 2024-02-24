@@ -18,13 +18,20 @@ class Intake(Subsystem):
         super().__init__()
         
         self.intakeMotor = TalonFX(MotorIDs.INTAKEMOTOR)
+        intake_config = phoenix6.configs.TalonFXConfiguration()
+        intake_config.motor_output.neutral_mode = NeutralModeValue.BRAKE
+        intake_config.feedback.sensor_to_mechanism_ratio = IntakeConstants.GEAR_RATIO
+        self.intakeMotor.configurator.apply(intake_config)
+        
         self.pivotMotor = TalonFX(MotorIDs.PIVOTMOTOR)
-        config = phoenix6.configs.TalonFXConfiguration()
-        config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE)
-        config.slot0.with_k_p(PivotConstants.K_P).with_k_i(PivotConstants.K_I).with_k_d(PivotConstants.K_D)
-        config.feedback.with_sensor_to_mechanism_ratio(PivotConstants.GEAR_RATIO)
-        config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
-        self.pivotMotor.configurator.apply(config)
+        pivot_config = phoenix6.configs.TalonFXConfiguration()
+        pivot_config.motor_output.with_neutral_mode(phoenix6.configs.config_groups.NeutralModeValue.BRAKE)
+        pivot_config.slot0.with_k_p(PivotConstants.K_P).with_k_i(PivotConstants.K_I).with_k_d(PivotConstants.K_D)
+        pivot_config.feedback.with_sensor_to_mechanism_ratio(PivotConstants.GEAR_RATIO)
+        pivot_config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
+        self.pivotMotor.configurator.apply(pivot_config)
+        
+        self.intakeMotor.set_position(0)
         self.pivotMotor.set_position(0)
         
         self.has_note = False
