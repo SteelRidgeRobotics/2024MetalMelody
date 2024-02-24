@@ -19,10 +19,10 @@ class ManualElevator(Command):
         self.elevator.setDutyCycle(DutyCycleOut(0))
         
     def execute(self):
-       self.elevator.setDutyCycle(deadband(-self.controller.getLeftY() ** 3 * 0.25, ExternalConstants.DEADBAND))
+       self.elevator.setDutyCycle(deadband(-self.controller.getLeftY() , ExternalConstants.DEADBAND) ** 3 * 0.25)
        
     def isFinished(self) -> bool:
-        return self.controller.getBButtonPressed()
+        return self.controller.getBButtonReleased()
     
     def end(self, interrupted: bool):
         self.elevator.setDutyCycle(0)
