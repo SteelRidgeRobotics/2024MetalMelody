@@ -4,7 +4,6 @@ import phoenix6
 from phoenix6.controls import MotionMagicDutyCycle, DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
-from wpimath.filter import SlewRateLimiter
 from constants import *
 
 class IntakeStates(Enum):
