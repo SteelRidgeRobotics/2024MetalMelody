@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.3443159154836832,
-        "y": 5.484563001533411
+        "x": 1.5013930170513679,
+        "y": 5.527514849608872
       },
       "prevControl": {
-        "x": 1.3443159154836832,
-        "y": 6.484563001533411
+        "x": 1.5013930170513679,
+        "y": 6.527514849608872
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "SpeakerForwardStart"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
