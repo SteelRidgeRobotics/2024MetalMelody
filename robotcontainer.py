@@ -5,7 +5,9 @@ from commands.score_in_amp import ScoreInAmp
 from commands.vibrate import VibrateController
 from commands2 import InstantCommand
 from commands2.button import JoystickButton
+from commands2.button import Trigger
 from constants import *
+from frc6343.controller.deadband import deadband
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6 import SignalLogger
 from phoenix6.controls import DutyCycleOut
@@ -82,15 +84,19 @@ class RobotContainer:
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(InstantCommand(lambda: self.intake.disencumber(), self.intake).onlyIf(lambda: self.intake.getIntakeState() is not IntakeStates.TOSS)
                                                                                             ).onFalse(InstantCommand(lambda: self.intake.hold(), self.intake))
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotDown()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+        
+        Trigger(lambda: abs(getTriggerCombinedValue(self.functionsController.getLeftTriggerAxis(), self.functionsController.getRightTriggerAxis())) > 0
+                ).whileTrue(InstantCommand(lambda: self.elevator.setDutyCycle(getTriggerCombinedValue(self.functionsController.getLeftTriggerAxis(), self.functionsController.getRightTriggerAxis()))).repeatedly())
+        
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below(), self.elevator)
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotDown(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                            ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(-0.25)))).onFalse(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(0))))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotStow()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+        #JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(-0.25)), self.elevator)).onFalse(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(0)), self.elevator))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below(), self.elevator)
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotStow(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                             ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up())
-                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotAmp()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4)))
+        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(InstantCommand(lambda: self.elevator.up(), self.elevator)
+                                                                                  ).onTrue(InstantCommand(lambda: self.intake.pivotAmp(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4)))
                                                                                             ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(False)))
         
     def getAuto(self) -> PathPlannerAuto:
@@ -103,3 +109,6 @@ class RobotContainer:
     def updateOdometry(self) -> None:
         if self.camera.getTagId() != -1:
             self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())
+            
+def getTriggerCombinedValue(leftTrigger: float, rightTrigger: float) -> float:
+    return deadband(rightTrigger, ExternalConstants.TRIGGER_DEADBAND) - deadband(leftTrigger, ExternalConstants.TRIGGER_DEADBAND)
