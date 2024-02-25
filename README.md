@@ -1,6 +1,6 @@
-# The Iron Maiden
+# Metal Melody
 
-This is the repository for Steel Ridge Robotics' 2024 robot. We named it Iron Maiden on accident. 
+This is the repository for Steel Ridge Robotics' 2024 robot. We named it Metal Melody on purpose, unlike the last name. 
 
 This year, there are 3 main elements of the robot, the swerve drive (our first competition robot with swerve!), the elevator (and climber), and the intake. We also did some work with autonomous routines and vision.
 
