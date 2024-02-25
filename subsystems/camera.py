@@ -13,7 +13,7 @@ class Camera(Subsystem):
         self.offsetX = self.offsetY = 0
         self.totalLatency = 0
         
-        self.setPipeline(0)
+        self.setPipeline(1)
 
     def getField2dPose(self) -> Pose2d:
         return Pose2d(self.fieldPose[0], self.fieldPose[1], Rotation2d.fromDegrees(self.fieldPose[5]))
