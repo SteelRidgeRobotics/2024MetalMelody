@@ -26,7 +26,7 @@ class CANIDs:
 
 class IntakeConstants:
     GEAR_RATIO = 5
-    INTAKESPEED = 0.9375
+    INTAKESPEED = 1
 
 class PivotConstants:
     MM_ACCELERATION = 2
