@@ -1,8 +1,6 @@
 from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
-from commands.manual_elevator import ManualElevator
 from commands.reset_pivot import ResetPivot
-from commands.score_in_amp import ScoreInAmp
 from commands.vibrate import VibrateController
 from commands2 import InstantCommand
 from commands2.button import JoystickButton
@@ -11,7 +9,6 @@ from constants import *
 from frc6343.controller.deadband import deadband
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6 import SignalLogger
-from phoenix6.controls import DutyCycleOut
 from subsystems.camera import Camera
 from subsystems.elevator import Elevator
 from subsystems.intake import Intake, IntakeStates
