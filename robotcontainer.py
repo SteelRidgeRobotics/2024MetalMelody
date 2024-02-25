@@ -1,6 +1,7 @@
 from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_elevator import ManualElevator
+from commands.reset_pivot import ResetPivot
 from commands.score_in_amp import ScoreInAmp
 from commands.vibrate import VibrateController
 from commands2 import InstantCommand
@@ -91,7 +92,7 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(InstantCommand(lambda: self.elevator.below(), self.elevator)
                                                                                   ).onTrue(InstantCommand(lambda: self.intake.pivotDown(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                            ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
-        #JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(-0.25)), self.elevator)).onFalse(InstantCommand(lambda: self.elevator.setDutyCycle(DutyCycleOut(0)), self.elevator))
+        JoystickButton(self.functionsController, XboxController.Button.kB).onTrue(ResetPivot(self.intake))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.elevator.below(), self.elevator)
                                                                                   ).onTrue(InstantCommand(lambda: self.intake.pivotStow(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                             ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
