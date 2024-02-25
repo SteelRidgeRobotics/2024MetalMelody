@@ -8,37 +8,31 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.19284405290754,
-        "y": 4.636034864109554
+        "x": 1.3443159154836832,
+        "y": 6.484563001533411
       },
       "isLocked": false,
-      "linkedName": "StartHomeToMiddleBottomNote"
+      "linkedName": "SpeakerForwardStart"
     },
     {
       "anchor": {
-        "x": 4.34,
-        "y": 5.484563001533411
+        "x": 3.831849489661888,
+        "y": 6.2887192250846695
       },
       "prevControl": {
-        "x": 3.4914718625761427,
-        "y": 4.636034864109554
+        "x": 2.831849489661888,
+        "y": 6.2887192250846695
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SpeakerForwardEnd"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 90.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Pivot",
+      "name": "Prep",
       "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
@@ -49,18 +43,7 @@
               "data": {
                 "name": "pivotStow"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Lift",
-      "waypointRelativePos": 1.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
@@ -73,14 +56,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 180.0,
-    "maxAngularAcceleration": 180.0
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

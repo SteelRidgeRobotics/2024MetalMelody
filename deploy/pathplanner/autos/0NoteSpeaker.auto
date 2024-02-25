@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HomeForward"
+            "pathName": "SpeakerForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SpeakerBackward"
           }
         }
       ]
