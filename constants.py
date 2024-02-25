@@ -118,7 +118,7 @@ class DirectionMotorConstants:
         self.cruise_acceleration = cruise_acceleration
         self.cruise_jerk = cruise_jerk
         
-        self.peak_volt = 10
+        self.peak_volt = 5
         
         self.neutral_mode = NeutralModeValue.BRAKE
         self.invert = InvertedValue.CLOCKWISE_POSITIVE
