@@ -4,11 +4,13 @@
   "holonomicMode": true,
   "pathFolders": [
     "Amp",
+    "Test",
     "Source",
     "Speaker"
   ],
   "autoFolders": [
     "Amp",
+    "Test",
     "Source",
     "Speaker"
   ],
