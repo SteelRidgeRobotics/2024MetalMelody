@@ -6,7 +6,7 @@ from robotcontainer import RobotContainer
 from wpilib import DriverStation
 from wpilib.cameraserver import CameraServer
 
-class TheIronMaiden(commands2.TimedCommandRobot):
+class MetalMelody(commands2.TimedCommandRobot):
 
     def __init__(self, period: float = TimedRobot.kDefaultPeriod / 1000) -> None:
         super().__init__(period)
