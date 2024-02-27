@@ -32,16 +32,16 @@ class RobotContainer:
         # PathPlanner Commands
         ## Elevator
         
-        NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.up()))
-        NamedCommands.registerCommand("elevatorBelow", InstantCommand(lambda: self.elevator.below()))
+        NamedCommands.registerCommand("elevatorUp", InstantCommand(lambda: self.elevator.up(), self.elevator))
+        NamedCommands.registerCommand("elevatorBelow", InstantCommand(lambda: self.elevator.below(), self.elevator))
 
         ## Intake
-        NamedCommands.registerCommand("intakeConsume", InstantCommand(lambda: self.intake.consume()))
-        NamedCommands.registerCommand("intakeDisencumber", InstantCommand(lambda: self.intake.disencumber()))
-        NamedCommands.registerCommand("intakeStop", InstantCommand(lambda: self.intake.hold()))
+        NamedCommands.registerCommand("intakeConsume", InstantCommand(lambda: self.intake.consume(), self.intake))
+        NamedCommands.registerCommand("intakeDisencumber", InstantCommand(lambda: self.intake.disencumber(), self.intake))
+        NamedCommands.registerCommand("intakeStop", InstantCommand(lambda: self.intake.hold(), self.intake))
         
         ## Pivot
-        NamedCommands.registerCommand("pivotAmp", InstantCommand(lambda: self.intake.pivotAmp()))
+        NamedCommands.registerCommand("pivotAmp", InstantCommand(lambda: self.intake.pivotAmp(), self.intake))
         NamedCommands.registerCommand("pivotStow", InstantCommand(lambda: self.intake.pivotStow(), self.intake))
         NamedCommands.registerCommand("pivotGrab", InstantCommand(lambda: self.intake.pivotDown(), self.intake))
         
