@@ -35,7 +35,7 @@
       "name": "Game Prep",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -48,6 +48,35 @@
               "type": "named",
               "data": {
                 "name": "elevatorUp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Score",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeDisencumber"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.25
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeStop"
               }
             }
           ]

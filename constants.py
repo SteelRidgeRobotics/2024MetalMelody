@@ -29,14 +29,15 @@ class IntakeConstants:
     INTAKESPEED = 1
 
 class PivotConstants:
-    MM_ACCELERATION = 2
-    MM_CRUISE_VEL = 2
+    MM_ACCELERATION = 4
+    MM_CRUISE_VEL = 4
     STOWPOS = 0
-    INTAKEPOS = 0.35
-    SCOREPOS = 0.3
+    INTAKEPOS = 0.366
+    SCOREPOS = 0.35
     K_P = 10
     K_I = 0
     K_D = 0.2
+    K_S = 0.2
     GEAR_RATIO = 50
 
 class ElevatorConstants:
@@ -69,8 +70,8 @@ class SwerveConstants:
     k_max_module_speed = 4.25 # m/s
     k_max_rot_rate = 10 # rad/s
     k_drive_base_radius = 0.43 # meters
-    auto_kP_translation = 1.5
-    auto_kP_rotation = 2.5
+    auto_kP_translation = 7
+    auto_kP_rotation = 4
 
 class DriveMotorConstants:
 
@@ -118,7 +119,7 @@ class DirectionMotorConstants:
         self.cruise_acceleration = cruise_acceleration
         self.cruise_jerk = cruise_jerk
         
-        self.peak_volt = 5
+        self.peak_volt = 10
         
         self.neutral_mode = NeutralModeValue.BRAKE
         self.invert = InvertedValue.CLOCKWISE_POSITIVE

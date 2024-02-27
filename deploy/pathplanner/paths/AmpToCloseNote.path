@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.55,
-        "y": 7.003080254377342
+        "x": 2.496814123442796,
+        "y": 7.120188619835157
       },
       "prevControl": {
-        "x": 2.3499999999999996,
-        "y": 7.003080254377342
+        "x": 2.296814123442796,
+        "y": 7.120188619835157
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,7 +41,7 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 0.5,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.35,
         "maxAcceleration": 0.25,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 180.0
@@ -74,9 +74,9 @@
     },
     {
       "name": "Consume",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.25,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

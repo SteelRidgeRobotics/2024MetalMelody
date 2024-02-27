@@ -18,22 +18,9 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "wait",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeDisencumber"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
-                }
-              }
-            ]
+            "waitTime": 0.3
           }
         },
         {
@@ -49,28 +36,9 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "wait",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeDisencumber"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeStop"
-                }
-              }
-            ]
+            "waitTime": 0.3
           }
         },
         {

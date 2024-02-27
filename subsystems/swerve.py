@@ -4,7 +4,6 @@ from commands2 import InstantCommand, Subsystem
 import navx
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants, ReplanningConfig
-from phoenix6 import BaseStatusSignal
 from phoenix6.configs.cancoder_configs import *
 from phoenix6.configs.talon_fx_configs import *
 from phoenix6.configs.config_groups import MagnetSensorConfigs

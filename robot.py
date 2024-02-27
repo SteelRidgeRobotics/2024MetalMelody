@@ -1,3 +1,4 @@
+from commands.reset_pivot import ResetPivot
 import commands2
 from commands2.timedcommandrobot import seconds
 from phoenix6.signal_logger import SignalLogger
@@ -17,7 +18,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         SignalLogger.set_path("/home/lvuser/logs")
         SignalLogger.enable_auto_logging(True)
         
-        CameraServer.launch('vision.py')
+        CameraServer.launch("vision.py")
         
         self.container = RobotContainer()
 
@@ -32,7 +33,11 @@ class MetalMelody(commands2.TimedCommandRobot):
         self.container.runSelectedAutoCommand()
 
     def teleopInit(self) -> None:
-        self.container.camera.setPipeline(1)
+        pass
+        #self.container.camera.setPipeline(1)
+
+    def testInit(self) -> None:
+        commands2.CommandScheduler.getInstance().schedule(ResetPivot(self.container.intake))
     
     def testExit(self) -> None:
         SignalLogger.stop()

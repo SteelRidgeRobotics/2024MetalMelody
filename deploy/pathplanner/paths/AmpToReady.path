@@ -58,7 +58,7 @@
       "name": "Ready",
       "waypointRelativePos": 0.05,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

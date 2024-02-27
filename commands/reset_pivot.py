@@ -1,6 +1,7 @@
 from commands2 import Command
 from phoenix6.controls import DutyCycleOut
 from subsystems.intake import Intake
+from wpilib import Timer
 
 class ResetPivot(Command):
     
@@ -9,15 +10,20 @@ class ResetPivot(Command):
         
         self.intake = intake
         self.addRequirements(self.intake)
+
+        self.timer = Timer()
         
     def initialize(self):
-        self.intake.pivotMotor.set_control(DutyCycleOut(-0.075))
+        self.timer.reset()
+        self.timer.start()
+        self.intake.pivotMotor.set_control(DutyCycleOut(-0.125))
         
     def isFinished(self) -> bool:
-        return abs(self.intake.pivotMotor.get_rotor_velocity().value) <= 0.001
+        return abs(self.intake.pivotMotor.get_rotor_velocity().value) <= 0 and self.timer.get() >= 0.25
     
     def end(self, interrupted: bool):
+        self.timer.stop()
         if not interrupted:
-            self.intake.pivotMotor.set_position(0)
+            self.intake.pivotMotor.set_position(-0.019)
         self.intake.pivotMotor.set_control(DutyCycleOut(0))
         

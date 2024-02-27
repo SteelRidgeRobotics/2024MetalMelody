@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.55,
-        "y": 7.003080254377342
+        "x": 2.496814123442796,
+        "y": 7.120188619835157
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9999999999999996,
-        "y": 7.003080254377342
+        "x": 1.9468141234427958,
+        "y": 7.120188619835157
       },
       "isLocked": false,
       "linkedName": "CloseNote"
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "GRAHH",
-      "minWaypointRelativePos": 0.4,
+      "minWaypointRelativePos": 0.25,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 0.3,
@@ -47,13 +47,53 @@
       "name": "Score Prep",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "pivotAmp"
+                "name": "intakeStop"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "litf",
+      "waypointRelativePos": 0.25,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "elevatorUp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Score",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeDisencumber"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.25
               }
             },
             {
@@ -67,16 +107,16 @@
       }
     },
     {
-      "name": "litf",
-      "waypointRelativePos": 0.4,
+      "name": "pls work",
+      "waypointRelativePos": 0.05,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "elevatorUp"
+                "name": "pivotAmp"
               }
             }
           ]
