@@ -21,9 +21,6 @@ class MetalMelody(commands2.TimedCommandRobot):
         self.container = RobotContainer()
         
         CameraServer.launch()
-
-    def robotPeriodic(self):
-        self.container.updateOdometry()
         
     def disabledInit(self) -> None:
         SignalLogger.stop()

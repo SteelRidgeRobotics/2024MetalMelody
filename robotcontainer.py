@@ -3,17 +3,15 @@ from commands.intake_and_stow import IntakeAndStow
 from commands.manual_elevator import ManualElevator
 from commands.reset_pivot import ResetPivot
 from commands.vibrate import VibrateController
-from commands2 import InstantCommand, CommandScheduler
+from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
-from frc6343.controller.deadband import deadband
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6 import SignalLogger
-from subsystems.camera import Camera
 from subsystems.elevator import Elevator
 from subsystems.intake import Intake, IntakeStates
 from subsystems.swerve import Swerve
-from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
+from wpilib import SendableChooser, SmartDashboard, XboxController
 from commands2.sysid import SysIdRoutine
 from wpimath.geometry import Pose2d, Rotation2d
 
@@ -21,7 +19,6 @@ class RobotContainer:
     
     def __init__(self):
         self.swerve: Swerve = Swerve()
-        self.camera: Camera = Camera()
         self.elevator: Elevator = Elevator()
         self.intake = Intake()
         self.swerve.initialize()
@@ -73,7 +70,7 @@ class RobotContainer:
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)
         self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
         
-        self.swerve.setDefaultCommand(DriveByController(self.camera, self.swerve, self.driverController))
+        self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.functionsController).onlyIf(lambda: self.intake.getIntakeState() is not IntakeStates.GRAB)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
@@ -98,7 +95,3 @@ class RobotContainer:
     def runSelectedAutoCommand(self) -> None:
         self.swerve.reset_yaw().reset_odometry(self.start_chooser.getSelected())
         self.getAuto().schedule()
-
-    def updateOdometry(self) -> None:
-        if self.camera.getTagId() != -1:
-            self.swerve.addVisionMeasurement(self.camera.getField2dPose(), Timer.getFPGATimestamp() + self.camera.getTotalLatency())

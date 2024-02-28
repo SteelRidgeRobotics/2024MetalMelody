@@ -2,10 +2,9 @@ from commands2 import Command
 from constants import *
 from enum import Enum
 from math import fabs
-from subsystems.camera import Camera
 from subsystems.swerve import Swerve
-from wpilib import DriverStation, XboxController
-from wpimath.geometry import Rotation2d, Translation2d
+from wpilib import XboxController
+from wpimath.geometry import Translation2d
 from wpimath.kinematics import ChassisSpeeds
 
 class DriveModes(Enum):
@@ -13,11 +12,10 @@ class DriveModes(Enum):
     ROBOT_CENTRIC = 1
 
 class DriveByController(Command):
-    def __init__(self, camera: Camera, swerve: Swerve, controller: XboxController) -> None:
+    def __init__(self, swerve: Swerve, controller: XboxController) -> None:
         super().__init__()
 
         self.swerve = swerve
-        self.camera = camera
         self.addRequirements(self.swerve)
 
         self.controller = controller
