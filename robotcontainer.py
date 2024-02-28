@@ -63,7 +63,7 @@ class RobotContainer:
         self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(SysIdRoutine.Direction.kForward))
         self.auto_chooser.addOption("Dynamic Reverse", routine.dynamic(SysIdRoutine.Direction.kReverse))
         self.auto_chooser.addOption("0 Note Source", PathPlannerAuto("0NoteSource"))
-        self.auto_chooser.addOption("Rotation Test", PathPlannerAuto("RotationTest"))
+        self.auto_chooser.addOption("Rotation Test", PathPlannerAuto("RotateTest"))
         self.auto_chooser.addOption("Translation Test", PathPlannerAuto("TranslateTest"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
