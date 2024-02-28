@@ -4,6 +4,13 @@ from phoenix6.controls import DutyCycleOut, Follower, MotionMagicDutyCycle
 from phoenix6.hardware import TalonFX
 from commands2 import Subsystem
 from constants import *
+from enum import Enum
+from wpilib import Timer
+
+class ElevatorStates(Enum):
+    LOWERED = 0
+    RAISED = 1
+    CONTROLLED = 2
 
 class Elevator(Subsystem):
     
@@ -22,11 +29,27 @@ class Elevator(Subsystem):
         self.master_motor.set_position(ElevatorConstants.TOPPOSITION)
         self.follower_motor.set_control(Follower(self.master_motor.device_id, True))
         
+        self.status_timer = Timer()
+        self.state = ElevatorStates.RAISED
+        
+    def periodic(self) -> None:
+        if self.state == ElevatorStates.LOWERED and self.master_motor.get_rotor_velocity().value == 0:
+            self.status_timer.start()
+        else:
+            self.status_timer.reset()
+            self.status_timer.stop()
+            
+        if self.status_timer.get() >= 0.25:
+            self.master_motor.set_position(ElevatorConstants.BOTTOMPOSITION)
+        
     def setDutyCycle(self, duty_cycle: DutyCycleOut) -> None:
         self.master_motor.set_control(duty_cycle)
+        self.state = ElevatorStates.CONTROLLED
          
     def up(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
+        self.state = ElevatorStates.RAISED
 
     def below(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
+        self.state = ElevatorStates.LOWERED
