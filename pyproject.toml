@@ -14,7 +14,8 @@ robotpy_extras = [
     "commands2",
     "navx",
     "pathplannerlib",
-    "phoenix6"
+    "phoenix6",
+    "cscore"
 ]
 
 # Other pip packages to install
