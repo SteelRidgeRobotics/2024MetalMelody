@@ -177,7 +177,7 @@
       "name": "Spit and Tuck",
       "waypointRelativePos": 1.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

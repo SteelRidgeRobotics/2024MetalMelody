@@ -8,20 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.828718756897501,
-        "y": 7.143069613212762
+        "x": 1.7590314210585625,
+        "y": 7.230270483365503
       },
       "isLocked": false,
       "linkedName": "Amp"
     },
     {
       "anchor": {
-        "x": 2.496814123442796,
-        "y": 7.120188619835157
+        "x": 1.828718756897501,
+        "y": 6.99136941783156
       },
       "prevControl": {
-        "x": 2.296814123442796,
-        "y": 7.120188619835157
+        "x": 1.6287187568975008,
+        "y": 6.99136941783156
+      },
+      "nextControl": {
+        "x": 2.0287187568975016,
+        "y": 6.99136941783156
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.4499707772596713,
+        "y": 6.99136941783156
+      },
+      "prevControl": {
+        "x": 2.145658074712334,
+        "y": 6.979658581285778
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +46,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.05,
+      "rotationDegrees": 90.0,
       "rotateFast": false
     }
   ],
@@ -53,7 +74,7 @@
       "name": "Note Prep",
       "waypointRelativePos": 0.05,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
@@ -74,7 +95,7 @@
     },
     {
       "name": "Consume",
-      "waypointRelativePos": 0.25,
+      "waypointRelativePos": 1.0,
       "command": {
         "type": "sequential",
         "data": {

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 7.29
+      "x": 1.4077063246851163,
+      "y": 7.286482498785255
     },
     "rotation": 0
   },
@@ -18,9 +18,28 @@
           }
         },
         {
-          "type": "wait",
+          "type": "sequential",
           "data": {
-            "waitTime": 0.3
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeDisencumber"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeStop"
+                }
+              }
+            ]
           }
         },
         {
@@ -30,15 +49,40 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "intakeStop"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CloseNoteToAmp"
           }
         },
         {
-          "type": "wait",
+          "type": "sequential",
           "data": {
-            "waitTime": 0.3
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeDisencumber"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeStop"
+                }
+              }
+            ]
           }
         },
         {
