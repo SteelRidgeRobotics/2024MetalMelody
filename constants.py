@@ -47,10 +47,6 @@ class ElevatorConstants:
     MM_ACCEL = 100
     MM_VEL = 100
 
-class LimelightConstants:
-    RESOLUTIONX = 1280
-    RESOLUTIONY = 960
-
 class ExternalConstants:
     DRIVERCONTROLLER = 0
     DEADBAND = 0.15

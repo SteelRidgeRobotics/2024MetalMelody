@@ -18,9 +18,9 @@ class MetalMelody(commands2.TimedCommandRobot):
         SignalLogger.set_path("/home/lvuser/logs")
         SignalLogger.enable_auto_logging(True)
         
-        CameraServer.launch("vision.py")
-        
         self.container = RobotContainer()
+        
+        CameraServer.launch()
 
     def robotPeriodic(self):
         self.container.updateOdometry()
