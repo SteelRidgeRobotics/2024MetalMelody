@@ -9,18 +9,18 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.3443159154836832,
-        "y": 6.484563001533411
+        "y": 6.544563001533412
       },
       "isLocked": false,
       "linkedName": "SpeakerForwardStart"
     },
     {
       "anchor": {
-        "x": 3.831849489661888,
+        "x": 4.83,
         "y": 6.2887192250846695
       },
       "prevControl": {
-        "x": 2.831849489661888,
+        "x": 3.83,
         "y": 6.2887192250846695
       },
       "nextControl": null,
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.5,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 180.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "Prep",
