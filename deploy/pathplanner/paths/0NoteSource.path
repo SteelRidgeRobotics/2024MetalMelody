@@ -16,102 +16,6 @@
     },
     {
       "anchor": {
-        "x": 1.9581156423368469,
-        "y": 0.9485777602083012
-      },
-      "prevControl": {
-        "x": 0.9581156423368469,
-        "y": 0.9485777602083012
-      },
-      "nextControl": {
-        "x": 2.958115642336847,
-        "y": 0.9485777602083012
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.976958421819838,
-        "y": 2.0376855589659812
-      },
-      "prevControl": {
-        "x": 2.3445732483476367,
-        "y": 2.0142638858744184
-      },
-      "nextControl": {
-        "x": 3.5212206495942553,
-        "y": 2.0578434192539223
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.831849489661888,
-        "y": 0.9954211063914283
-      },
-      "prevControl": {
-        "x": 3.375126864376409,
-        "y": 0.8314693947504864
-      },
-      "nextControl": {
-        "x": 4.41612884140419,
-        "y": 1.2051624121450764
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.0309337109401735,
-        "y": 2.2719022898816124
-      },
-      "prevControl": {
-        "x": 3.7523035936576274,
-        "y": 2.144196819460446
-      },
-      "nextControl": {
-        "x": 4.31199378803893,
-        "y": 2.4007214918852084
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.014643980785821,
-        "y": 1.475565404768469
-      },
-      "prevControl": {
-        "x": 4.677671249244067,
-        "y": 2.5200256391953575
-      },
-      "nextControl": {
-        "x": 5.351616712327575,
-        "y": 0.4311051703415809
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 6.630739424103669,
-        "y": 1.9088663569623863
-      },
-      "prevControl": {
-        "x": 6.412768183863756,
-        "y": 0.7952389941869751
-      },
-      "nextControl": {
-        "x": 6.8487106643435816,
-        "y": 3.0224937197377972
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 7.251413761030089,
         "y": 0.9251560871167382
       },
@@ -124,23 +28,12 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -90.0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 3.0,
-      "rotationDegrees": 180.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.5999999999999999,
+      "maxWaypointRelativePos": 0.25,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
@@ -175,7 +68,7 @@
     },
     {
       "name": "Spit and Tuck",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "sequential",
         "data": {
