@@ -12,7 +12,6 @@ from subsystems.elevator import Elevator
 from subsystems.intake import Intake, IntakeStates
 from subsystems.swerve import Swerve
 from wpilib import SendableChooser, SmartDashboard, XboxController
-from commands2.sysid import SysIdRoutine
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -22,10 +21,7 @@ class RobotContainer:
         self.elevator: Elevator = Elevator()
         self.intake = Intake()
         self.swerve.initialize()
-        
-        routines = ["quasistatic-forward", "quasistatic-reverse", "dynamic-forward", "dynamic-reverse", "none"]
-        routine = SysIdRoutine(SysIdRoutine.Config(recordState=lambda state: SignalLogger.write_string("state", str(routines[state.value]))), SysIdRoutine.Mechanism(lambda volts: self.swerve.set_voltage(volts), lambda unused: self.swerve.log_motor_output(unused), self.swerve, "drivetrain"))
-        
+                
         # PathPlanner Commands
         ## Elevator
         
@@ -57,11 +53,8 @@ class RobotContainer:
         
         self.auto_chooser = SendableChooser()
         self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2NoteAmp"))
+        self.auto_chooser.addOption("0 Note Amp", PathPlannerAuto("0NoteAmp"))
         self.auto_chooser.addOption("0 Note Speaker", PathPlannerAuto("0NoteSpeaker"))
-        #self.auto_chooser.addOption("Quasistatic Forward", routine.quasistatic(SysIdRoutine.Direction.kForward))
-        #self.auto_chooser.addOption("Quasistatic Reverse", routine.quasistatic(SysIdRoutine.Direction.kReverse))
-        #self.auto_chooser.addOption("Dynamic Forward", routine.dynamic(SysIdRoutine.Direction.kForward))
-        #self.auto_chooser.addOption("Dynamic Reverse", routine.dynamic(SysIdRoutine.Direction.kReverse))
         self.auto_chooser.addOption("0 Note Source", PathPlannerAuto("0NoteSource"))
         self.auto_chooser.addOption("Rotation Test", PathPlannerAuto("RotateTest"))
         self.auto_chooser.addOption("Translation Test", PathPlannerAuto("TranslateTest"))
