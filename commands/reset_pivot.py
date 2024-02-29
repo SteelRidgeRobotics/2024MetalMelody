@@ -16,10 +16,10 @@ class ResetPivot(Command):
     def initialize(self):
         self.timer.reset()
         self.timer.start()
-        self.intake.pivotMotor.set_control(DutyCycleOut(-0.125))
+        self.intake.pivotMotor.set_control(DutyCycleOut(-0.2))
         
     def isFinished(self) -> bool:
-        return abs(self.intake.pivotMotor.get_rotor_velocity().value) <= 0 and self.timer.get() >= 0.25
+        return abs(self.intake.pivotMotor.get_rotor_velocity().value) <= 0 and self.timer.get() >= 0.2
     
     def end(self, interrupted: bool):
         self.timer.stop()
