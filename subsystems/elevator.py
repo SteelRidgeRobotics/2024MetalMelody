@@ -11,6 +11,7 @@ class ElevatorStates(Enum):
     LOWERED = 0
     RAISED = 1
     CONTROLLED = 2
+    CALIBRATED = 3
 
 class Elevator(Subsystem):
     
@@ -41,6 +42,7 @@ class Elevator(Subsystem):
             
         if self.status_timer.get() >= 0.25:
             self.master_motor.set_position(ElevatorConstants.BOTTOMPOSITION)
+            self.state = ElevatorStates.CALIBRATED
         
     def setDutyCycle(self, duty_cycle: DutyCycleOut) -> None:
         self.master_motor.set_control(duty_cycle)

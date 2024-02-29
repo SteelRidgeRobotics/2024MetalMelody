@@ -42,8 +42,8 @@ class PivotConstants:
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
-    TOPPOSITION = 123
-    BOTTOMPOSITION = 0
+    TOPPOSITION = 115.855 - 6
+    BOTTOMPOSITION = -6
     MM_ACCEL = 100
     MM_VEL = 100
 
