@@ -42,7 +42,7 @@ class PivotConstants:
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
-    TOPPOSITION = 115.855 - 6
+    TOPPOSITION = 115.855 - 6 # -6 to account for motors "letting up" after calibrating
     BOTTOMPOSITION = -6
     MM_ACCEL = 100
     MM_VEL = 100
@@ -52,10 +52,6 @@ class ExternalConstants:
     DEADBAND = 0.15
     FUNCTIONSCONTROLLER = 1
     TRIGGER_DEADBAND = 0.1
-    
-class DriveConstants:
-    rotation_kP = 0.1
-    translation_kP = 0.25
     
 """
 SWERVE
