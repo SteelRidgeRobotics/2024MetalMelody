@@ -24,6 +24,6 @@ class ResetPivot(Command):
     def end(self, interrupted: bool):
         self.timer.stop()
         if not interrupted:
-            self.intake.pivotMotor.set_position(-0.019)
+            self.intake.pivotMotor.set_position(-0.026)
         self.intake.pivotMotor.set_control(DutyCycleOut(0))
         
