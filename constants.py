@@ -41,9 +41,9 @@ class PivotConstants:
     GEAR_RATIO = 50
 
 class ElevatorConstants:
-    CURRENTSUPPLYLIMIT = 4
-    TOPPOSITION = 115.855 - 6 # -6 to account for motors "letting up" after calibrating
-    BOTTOMPOSITION = -6
+    CURRENTSUPPLYLIMIT = 40
+    TOPPOSITION = -115.855 + 6 # 6 to account for motors "letting up" after calibrating
+    BOTTOMPOSITION = 6
     MM_ACCEL = 100
     MM_VEL = 100
 
@@ -64,6 +64,7 @@ class SwerveConstants:
     k_drive_base_radius = 0.43 # meters
     auto_kP_translation = 7
     auto_kP_rotation = 4
+    auto_kD_rotation = 0
 
 class DriveMotorConstants:
 

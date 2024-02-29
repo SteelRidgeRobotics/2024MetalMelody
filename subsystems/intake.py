@@ -26,7 +26,7 @@ class Intake(Subsystem):
         pivot_config.motion_magic.with_motion_magic_acceleration(PivotConstants.MM_ACCELERATION).with_motion_magic_cruise_velocity(PivotConstants.MM_CRUISE_VEL)
         self.pivotMotor.configurator.apply(pivot_config)
         
-        self.intakeMotor.set_position(0)
+        self.intakeMotor.set_position(0.026)
         
         self.has_note = False
 

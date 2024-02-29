@@ -134,7 +134,7 @@ class Swerve(Subsystem):
                 lambda chassisSpeed: self.robot_centric_drive(chassisSpeed),
                 HolonomicPathFollowerConfig(
                     PIDConstants(SwerveConstants.auto_kP_translation, 0.0, 0.0, 0.0), # translation
-                    PIDConstants(SwerveConstants.auto_kP_rotation, 0.0, 0.0, 0.0), # rotation
+                    PIDConstants(SwerveConstants.auto_kP_rotation, 0.0, SwerveConstants.auto_kD_rotation, 0.0), # rotation
                     SwerveConstants.k_max_module_speed,
                     SwerveConstants.k_drive_base_radius,
                     ReplanningConfig()
