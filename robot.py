@@ -15,7 +15,6 @@ class MetalMelody(commands2.TimedCommandRobot):
     def robotInit(self):
         DriverStation.silenceJoystickConnectionWarning(True)
         
-        SignalLogger.set_path("/home/lvuser/logs")
         SignalLogger.enable_auto_logging(False)
         
         self.container = RobotContainer()

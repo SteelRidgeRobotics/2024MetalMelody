@@ -1,15 +1,12 @@
 from commands2 import Command
 from subsystems.intake import Intake
-from wpilib import XboxController
 
 class IntakeAndStow(Command):
     
-    def __init__(self, intake: Intake, functions: XboxController):
+    def __init__(self, intake: Intake):
         super().__init__()
         
         self.intake = intake
-        self.functions = functions
-        
         self.addRequirements(self.intake)
         
     def initialize(self):
