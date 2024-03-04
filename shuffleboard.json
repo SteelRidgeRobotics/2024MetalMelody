@@ -11,25 +11,9 @@
         "vgap": 16.0,
         "titleType": 2,
         "tiles": {
-          "0,0": {
+          "5,0": {
             "size": [
-              6,
-              4
-            ],
-            "content": {
-              "_type": "Field",
-              "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "Field",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Game/Game": "k2024Crescendo",
-              "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -66,22 +50,10 @@
               "_showGlyph": false
             }
           },
-          "0,4": {
+          "0,0": {
             "size": [
-              6,
-              1
-            ],
-            "content": {
-              "_type": "Basic FMS Info",
-              "_title": "Basic FMS Info",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,1": {
-            "size": [
-              4,
-              3
+              5,
+              4
             ],
             "content": {
               "_type": "Camera Stream",
@@ -97,6 +69,19 @@
               "fps": 30,
               "imageWidth": 160,
               "imageHeight": 120
+            }
+          },
+          "5,1": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "Field",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

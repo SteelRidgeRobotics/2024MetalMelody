@@ -22,4 +22,4 @@ class ManualElevator(Command):
         self.elevator.setDutyCycle(DutyCycleOut(0))
 
     def getTriggerCombinedValue(self) -> float:
-        return deadband(self.controller.getRightTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) - deadband(self.controller.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND)
+        return -deadband(self.controller.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND)

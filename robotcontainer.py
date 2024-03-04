@@ -52,11 +52,10 @@ class RobotContainer:
         
         self.auto_chooser = SendableChooser()
         self.auto_chooser.setDefaultOption("2 Note Amp", PathPlannerAuto("2NoteAmp"))
+        self.auto_chooser.addOption("1 Note Amp", PathPlannerAuto("1NoteAmp"))
         self.auto_chooser.addOption("0 Note Amp", PathPlannerAuto("0NoteAmp"))
         self.auto_chooser.addOption("0 Note Speaker", PathPlannerAuto("0NoteSpeaker"))
         self.auto_chooser.addOption("0 Note Source", PathPlannerAuto("0NoteSource"))
-        self.auto_chooser.addOption("Rotation Test", PathPlannerAuto("RotateTest"))
-        self.auto_chooser.addOption("Translation Test", PathPlannerAuto("TranslateTest"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)

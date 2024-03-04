@@ -33,7 +33,7 @@ class PivotConstants:
     MM_CRUISE_VEL = 4
     STOWPOS = 0
     INTAKEPOS = 0.375
-    SCOREPOS = 0.35
+    SCOREPOS = 0.3
     K_P = 10
     K_I = 0
     K_D = 0.2
@@ -41,9 +41,9 @@ class PivotConstants:
     GEAR_RATIO = 50
 
 class ElevatorConstants:
-    CURRENTSUPPLYLIMIT = 40
-    TOPPOSITION = -115.855 + 6 # 6 to account for motors "letting up" after calibrating
-    BOTTOMPOSITION = 6
+    CURRENTSUPPLYLIMIT = 4
+    TOPPOSITION = 115.855 # 6 to account for motors "letting up" after calibrating
+    BOTTOMPOSITION = -6
     MM_ACCEL = 100
     MM_VEL = 100
 

@@ -28,11 +28,12 @@ class Elevator(Subsystem):
         self.follower_motor.configurator.apply(elevator_config)
 
         self.master_motor.set_position(ElevatorConstants.TOPPOSITION)
-        self.follower_motor.set_control(Follower(self.master_motor.device_id, True))
+        self.follower_motor.set_control(Follower(self.master_motor.device_id, False))
         
         self.status_timer = Timer()
         self.state = ElevatorStates.RAISED
         
+    """    
     def periodic(self) -> None:
         if self.state == ElevatorStates.LOWERED and self.master_motor.get_rotor_velocity().value == 0:
             self.status_timer.start()
@@ -43,6 +44,7 @@ class Elevator(Subsystem):
         if self.status_timer.get() >= 0.25:
             self.master_motor.set_position(ElevatorConstants.BOTTOMPOSITION)
             self.state = ElevatorStates.CALIBRATED
+    """
         
     def setDutyCycle(self, duty_cycle: DutyCycleOut) -> None:
         self.master_motor.set_control(duty_cycle)
