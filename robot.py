@@ -29,7 +29,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         self.container.runSelectedAutoCommand()
 
     def teleopInit(self) -> None:
-        commands2.CommandScheduler.getInstance().schedule(ResetPivot(self.container.intake))
+        pass
     
     def teleopPeriodic(self) -> None:
         pass
