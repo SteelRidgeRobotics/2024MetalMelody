@@ -10,6 +10,7 @@ class IntakeAndStow(Command):
         self.addRequirements(self.intake)
         
     def initialize(self):
+        self.intake.pivotDown()
         self.intake.consume()
         
     def isFinished(self) -> bool:

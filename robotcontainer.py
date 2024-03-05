@@ -65,9 +65,10 @@ class RobotContainer:
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake).andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(lambda: self.intake.disencumber())).onFalse(self.intake.runOnce(lambda: self.intake.hold()))
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.elevator.runOnce(lambda: self.elevator.below())
-                                                                                  ).onTrue(self.intake.runOnce(lambda: self.intake.pivotDown()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
-                                                                                           ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
+        
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.elevator.runOnce(lambda: self.elevator.below()
+                                                                                                        ).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed))
+                                                                                                                  ).alongWith(InstantCommand(lambda: self.swerve.set_module_override_brake(True))))
         JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualElevator(self.functionsController, self.elevator))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.intake.runOnce(lambda: self.intake.pivotStow()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                   ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
