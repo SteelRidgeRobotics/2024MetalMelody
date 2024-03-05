@@ -21,9 +21,18 @@ class MetalMelody(commands2.TimedCommandRobot):
         
         if RobotBase.isReal():
             CameraServer.launch()
+            
+    def robotPeriodic(self) -> None:
+        pass
+    
+    def _simulationPeriodic(self) -> None:
+        pass
         
     def disabledInit(self) -> None:
         SignalLogger.stop()
+        
+    def disabledPeriodic(self) -> None:
+        pass
         
     def autonomousInit(self) -> None:
         self.container.runSelectedAutoCommand()
