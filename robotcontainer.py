@@ -77,6 +77,8 @@ class RobotContainer:
                                                                                             ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(False)))
         
         JoystickButton(self.driverController, XboxController.Button.kB).onTrue(ResetPivot(self.intake))
+        JoystickButton(self.driverController, XboxController.Button.kX).onTrue(InstantCommand(lambda: self.intake.pivotStow(), self.intake).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+                                                                                  ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
