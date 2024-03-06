@@ -56,6 +56,9 @@ class RobotContainer:
         self.auto_chooser.addOption("0 Note Amp", PathPlannerAuto("0NoteAmp"))
         self.auto_chooser.addOption("0 Note Speaker", PathPlannerAuto("0NoteSpeaker"))
         self.auto_chooser.addOption("0 Note Source", PathPlannerAuto("0NoteSource"))
+        self.auto_chooser.addOption("1 Note Source", PathPlannerAuto("1NoteSource"))
+        self.auto_chooser.addOption("1 Disrupt Source", PathPlannerAuto("1DisruptSource"))
+        self.auto_chooser.addOption("1 Disrupt Source to Ready", PathPlannerAuto("1DisruptSourceToReady"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)

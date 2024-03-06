@@ -1,0 +1,131 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.258545703967298,
+        "y": 0.7846260485673593
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.759378343498567,
+        "y": 3.383182806713161
+      },
+      "isLocked": false,
+      "linkedName": "BottomMiddle"
+    },
+    {
+      "anchor": {
+        "x": 6.677582770286794,
+        "y": 5.831996599799192
+      },
+      "prevControl": {
+        "x": 7.122594559026493,
+        "y": 4.848286329953544
+      },
+      "nextControl": {
+        "x": 6.355593011603837,
+        "y": 6.543763434782567
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.8904036723907955,
+        "y": 7.29585116802188
+      },
+      "prevControl": {
+        "x": 4.8904036723907955,
+        "y": 7.29585116802188
+      },
+      "nextControl": {
+        "x": 2.8904036723907955,
+        "y": 7.29585116802188
+      },
+      "isLocked": false,
+      "linkedName": "TopMiddle"
+    },
+    {
+      "anchor": {
+        "x": 1.8175856037874687,
+        "y": 7.635465427849543
+      },
+      "prevControl": {
+        "x": 1.8410072768790318,
+        "y": 7.14361029292672
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Score Ready",
+      "minWaypointRelativePos": 2.0,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 0.6,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 180.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Score Ready",
+      "waypointRelativePos": 1.9,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "elevatorUp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pivot Down",
+      "waypointRelativePos": 2.9499999999999997,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotAmp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0.5,
+    "rotation": 90.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Source",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": -0.25
+  },
+  "useDefaultConstraints": true
+}
