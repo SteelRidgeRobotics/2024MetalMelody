@@ -37,13 +37,14 @@ class PivotConstants:
     K_P = 10
     K_I = 0
     K_D = 0.2
+    K_V = 0.12
     K_S = 0.2
     GEAR_RATIO = 50
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
-    TOPPOSITION = 115.855 # 6 to account for motors "letting up" after calibrating
-    BOTTOMPOSITION = -6
+    TOPPOSITION = 61.508192307692307692307692307692 # lol big number
+    BOTTOMPOSITION = -3.25
     MM_ACCEL = 100
     MM_VEL = 100
 
@@ -69,7 +70,7 @@ class SwerveConstants:
 class DriveMotorConstants:
 
     def __init__(self, motor_id: int, 
-                 k_s: float=0.0, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
+                 k_s: float=0.0, k_v: float=0.12, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
         self.motor_id = motor_id
         

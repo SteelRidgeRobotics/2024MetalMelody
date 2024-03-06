@@ -3,65 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.828718756897501,
-        "y": 7.643069613212762
+        "x": 0.52,
+        "y": 2.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7691391054543695,
-        "y": 7.30517661916417
+        "x": 1.8058747672416873,
+        "y": 1.8268905011419148
       },
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": "SourceStart"
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 6.99136941783156
+        "x": 8.258545703967298,
+        "y": 0.7846260485673593
       },
       "prevControl": {
-<<<<<<< Updated upstream
-        "x": 2.3798748056279635,
-        "y": 6.979658581285778
-=======
-        "x": 1.9788379947130266,
-        "y": 7.050291512620063
->>>>>>> Stashed changes
+        "x": 2.366586529944855,
+        "y": 0.7846260485673593
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CloseNote"
+      "linkedName": "BottomMiddle"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
-      "rotationDegrees": 0,
-      "rotateFast": false
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 90.0,
+      "rotateFast": true
     },
     {
-      "waypointRelativePos": 0.05,
-      "rotationDegrees": 90.0,
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Lift Up",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.65,
-      "constraints": {
-        "maxVelocity": 0.35,
-        "maxAcceleration": 0.25,
-        "maxAngularVelocity": 180.0,
-        "maxAngularAcceleration": 180.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Note Prep",
-      "waypointRelativePos": 0.0,
+      "name": "Lower Lift",
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -75,6 +58,41 @@
             {
               "type": "named",
               "data": {
+                "name": "pivotAmp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Spit",
+      "waypointRelativePos": 0.3,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeDisencumber"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.25
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeStop"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
                 "name": "pivotStow"
               }
             }
@@ -83,12 +101,18 @@
       }
     },
     {
-      "name": "Pivot",
-      "waypointRelativePos": 0.5,
+      "name": "Intake",
+      "waypointRelativePos": 0.7,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeConsume"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -98,40 +122,23 @@
           ]
         }
       }
-    },
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.85,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "intakeConsume"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 0.0,
     "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp",
+  "folder": "Source",
   "previewStartingState": {
-    "rotation": 90.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false

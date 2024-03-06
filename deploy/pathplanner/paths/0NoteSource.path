@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.52,
+        "x": 1.5199999999999998,
         "y": 2.0999999999999996
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SourceStart"
     },
     {
       "anchor": {

@@ -36,7 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "intakeConsume"
+                  "name": "intakeStop"
                 }
               }
             ]
@@ -49,6 +49,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "pivotAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CloseNoteToAmp"
@@ -58,6 +64,18 @@
           "type": "sequential",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "pivotAmp"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -82,7 +100,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpToReady"
+            "pathName": "AmpToMiddle"
           }
         }
       ]

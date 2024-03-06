@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.41,
-      "y": 7.29
+      "x": 0.52,
+      "y": 2.1
     },
     "rotation": 0
   },
@@ -14,7 +14,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartToAmp"
+            "pathName": "SourceToBottomMiddle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pivotStow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeStop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BottomMiddleToAmp"
           }
         },
         {
@@ -41,16 +59,10 @@
               }
             ]
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AmpToCloseReady"
-          }
         }
       ]
     }
   },
-  "folder": "Amp",
+  "folder": "Source",
   "choreoAuto": false
 }

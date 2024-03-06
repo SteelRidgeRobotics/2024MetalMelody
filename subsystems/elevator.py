@@ -33,18 +33,8 @@ class Elevator(Subsystem):
         self.status_timer = Timer()
         self.state = ElevatorStates.RAISED
         
-    """    
-    def periodic(self) -> None:
-        if self.state == ElevatorStates.LOWERED and self.master_motor.get_rotor_velocity().value == 0:
-            self.status_timer.start()
-        else:
-            self.status_timer.reset()
-            self.status_timer.stop()
-            
-        if self.status_timer.get() >= 0.25:
-            self.master_motor.set_position(ElevatorConstants.BOTTOMPOSITION)
-            self.state = ElevatorStates.CALIBRATED
-    """
+    def getState(self) -> ElevatorStates:
+        return self.state
         
     def setDutyCycle(self, duty_cycle: DutyCycleOut) -> None:
         self.master_motor.set_control(duty_cycle)
