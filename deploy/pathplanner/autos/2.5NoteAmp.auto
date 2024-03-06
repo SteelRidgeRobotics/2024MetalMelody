@@ -129,9 +129,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "AmpToCloseReady"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeStop"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorBelow"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pivotStow"
+                }
+              }
+            ]
           }
         }
       ]
