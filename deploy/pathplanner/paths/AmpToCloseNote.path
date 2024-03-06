@@ -20,8 +20,13 @@
         "y": 6.99136941783156
       },
       "prevControl": {
-        "x": 0.9938979017483798,
-        "y": 6.99136941783156
+<<<<<<< Updated upstream
+        "x": 2.3798748056279635,
+        "y": 6.979658581285778
+=======
+        "x": 1.9788379947130266,
+        "y": 7.050291512620063
+>>>>>>> Stashed changes
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,10 +51,10 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 0.65,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 0.5,
-        "maxAngularVelocity": 360.0,
-        "maxAngularAcceleration": 360.0
+        "maxVelocity": 0.35,
+        "maxAcceleration": 0.25,
+        "maxAngularVelocity": 180.0,
+        "maxAngularAcceleration": 180.0
       }
     }
   ],

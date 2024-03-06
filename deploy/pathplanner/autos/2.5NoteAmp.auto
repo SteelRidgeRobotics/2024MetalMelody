@@ -125,7 +125,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpForward"
+            "pathName": "TopMiddleToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpToCloseReady"
           }
         }
       ]

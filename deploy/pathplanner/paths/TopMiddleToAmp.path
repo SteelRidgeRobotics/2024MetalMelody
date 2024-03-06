@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4077063246851163,
-        "y": 7.286482498785255
+        "x": 8.28012348332389,
+        "y": 7.429807936538951
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9077063246851163,
-        "y": 7.286482498785255
+        "x": 6.9436095353672185,
+        "y": 6.615122790430767
       },
       "isLocked": false,
-      "linkedName": "AmpStart"
+      "linkedName": "TopMiddle"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 7.643069613212762
       },
       "prevControl": {
-        "x": 1.828718756897501,
-        "y": 7.393069613212762
+        "x": 2.223382863432394,
+        "y": 6.963946626967329
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,25 +29,37 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "GOOBERR",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.2,
+      "constraints": {
+        "maxVelocity": 1.25,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 360.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
-      "name": "Game Prep",
+      "name": "filt",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "pivotAmp"
+                "name": "elevatorUp"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "elevatorUp"
+                "name": "pivotStow"
               }
             }
           ]
@@ -56,15 +68,15 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 180.0
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 90.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp",
@@ -72,5 +84,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
