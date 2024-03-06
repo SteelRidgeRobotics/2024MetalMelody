@@ -45,7 +45,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpToReady"
+            "pathName": "AmpToCloseReady"
           }
         }
       ]

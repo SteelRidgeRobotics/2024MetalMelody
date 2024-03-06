@@ -8,46 +8,41 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7691391054543695,
-        "y": 7.30517661916417
+        "x": 2.281022254352202,
+        "y": 7.143666595025498
       },
       "isLocked": false,
       "linkedName": "Amp"
     },
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 6.99136941783156
+        "x": 8.28012348332389,
+        "y": 7.439674879349759
       },
       "prevControl": {
-        "x": 0.9938979017483798,
-        "y": 6.99136941783156
+        "x": 5.408419318906277,
+        "y": 7.439674879349759
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CloseNote"
+      "linkedName": "TopMiddle"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.75,
       "rotationDegrees": 0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 0.05,
-      "rotationDegrees": 90.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [
     {
-      "name": "Lift Up",
+      "name": "Lower Lift",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.65,
+      "maxWaypointRelativePos": 0.35,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 0.5,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 360.0,
         "maxAngularAcceleration": 360.0
       }
@@ -55,8 +50,8 @@
   ],
   "eventMarkers": [
     {
-      "name": "Note Prep",
-      "waypointRelativePos": 0.0,
+      "name": "Lower Lift",
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -79,7 +74,7 @@
     },
     {
       "name": "Pivot",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -95,8 +90,8 @@
       }
     },
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.85,
+      "name": "Consume",
+      "waypointRelativePos": 0.9,
       "command": {
         "type": "parallel",
         "data": {
@@ -113,13 +108,13 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
-    "velocity": 0.5,
+    "velocity": 0,
     "rotation": 0,
     "rotateFast": false
   },
@@ -129,5 +124,5 @@
     "rotation": 90.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

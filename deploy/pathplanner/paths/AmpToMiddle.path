@@ -3,40 +3,46 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 6.99136941783156
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.324595871866664,
-        "y": 7.198979745852689
-      },
-      "isLocked": false,
-      "linkedName": "CloseNote"
-    },
-    {
-      "anchor": {
         "x": 1.828718756897501,
         "y": 7.643069613212762
       },
-      "prevControl": {
+      "prevControl": null,
+      "nextControl": {
         "x": 1.828718756897501,
-        "y": 7.181975770636909
+        "y": 7.143069613212762
+      },
+      "isLocked": false,
+      "linkedName": "Amp"
+    },
+    {
+      "anchor": {
+        "x": 6.671811805162074,
+        "y": 6.719388054160724
+      },
+      "prevControl": {
+        "x": 5.671811805162074,
+        "y": 6.719388054160724
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [
     {
-      "name": "GRAHH",
-      "minWaypointRelativePos": 0.35,
-      "maxWaypointRelativePos": 1.0,
+      "name": "Drop Down Elevator + Ready",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.2,
       "constraints": {
-        "maxVelocity": 0.5,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 0.25,
         "maxAngularVelocity": 180.0,
         "maxAngularAcceleration": 180.0
       }
@@ -44,16 +50,16 @@
   ],
   "eventMarkers": [
     {
-      "name": "litf",
+      "name": "Ready",
       "waypointRelativePos": 0.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "elevatorUp"
+                "name": "elevatorBelow"
               }
             },
             {
@@ -75,14 +81,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0,
-    "rotateFast": true
+    "rotation": 0,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 90.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

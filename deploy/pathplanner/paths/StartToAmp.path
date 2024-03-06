@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9077063246851163,
-        "y": 7.286482498785255
+        "x": 1.7711688370837277,
+        "y": 7.271763360596617
       },
       "isLocked": false,
       "linkedName": "AmpStart"
@@ -20,8 +20,8 @@
         "y": 7.643069613212762
       },
       "prevControl": {
-        "x": 1.828718756897501,
-        "y": 7.393069613212762
+        "x": 1.8289803391144988,
+        "y": 7.458044867140213
       },
       "nextControl": null,
       "isLocked": false,
@@ -57,9 +57,9 @@
   ],
   "globalConstraints": {
     "maxVelocity": 2.0,
-    "maxAcceleration": 0.4,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 90.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,
