@@ -37,6 +37,7 @@ class PivotConstants:
     K_P = 10
     K_I = 0
     K_D = 0.2
+    K_V = 0.12
     K_S = 0.2
     GEAR_RATIO = 50
 
