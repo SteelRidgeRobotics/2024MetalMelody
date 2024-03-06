@@ -1,3 +1,4 @@
+from commands.control_swerve_speed import ControlSwerveSpeed
 from commands.reset_pivot import ResetPivot
 import commands2
 from commands2.timedcommandrobot import seconds
@@ -30,6 +31,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         
     def disabledInit(self) -> None:
         SignalLogger.stop()
+        commands2.CommandScheduler.getInstance().cancelAll()
         
     def disabledPeriodic(self) -> None:
         pass
@@ -38,7 +40,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         self.container.runSelectedAutoCommand()
 
     def teleopInit(self) -> None:
-        pass
+        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.elevator, self.container.swerve, self.container.driverController.getLeftBumper))
     
     def teleopPeriodic(self) -> None:
         pass
