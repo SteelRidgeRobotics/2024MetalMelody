@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 6.99136941783156
+        "x": 8.28012348332389,
+        "y": 7.429807936538951
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1341875081753003,
-        "y": 6.99136941783156
+        "x": 6.9436095353672185,
+        "y": 6.615122790430767
       },
       "isLocked": false,
-      "linkedName": "CloseNote"
+      "linkedName": "TopMiddle"
     },
     {
       "anchor": {
@@ -20,13 +20,8 @@
         "y": 7.643069613212762
       },
       "prevControl": {
-<<<<<<< Updated upstream
-        "x": 1.828718756897501,
-        "y": 7.143069613212762
-=======
-        "x": 2.10051658529243,
-        "y": 7.24275628180886
->>>>>>> Stashed changes
+        "x": 2.223382863432394,
+        "y": 6.963946626967329
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,27 +31,23 @@
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "GRAHH",
-      "minWaypointRelativePos": 0.25,
-      "maxWaypointRelativePos": 1.0,
+      "name": "GOOBERR",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.2,
       "constraints": {
-<<<<<<< Updated upstream
-        "maxVelocity": 0.2,
-=======
-        "maxVelocity": 1.5,
->>>>>>> Stashed changes
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 180.0,
-        "maxAngularAcceleration": 180.0
+        "maxVelocity": 1.25,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 360.0
       }
     }
   ],
   "eventMarkers": [
     {
-      "name": "litf",
-      "waypointRelativePos": 0.25,
+      "name": "filt",
+      "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -64,22 +55,11 @@
               "data": {
                 "name": "elevatorUp"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "pls work",
-      "waypointRelativePos": 0.05,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
-                "name": "pivotAmp"
+                "name": "pivotStow"
               }
             }
           ]
@@ -89,14 +69,14 @@
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 90.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp",

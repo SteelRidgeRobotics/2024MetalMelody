@@ -8,8 +8,13 @@
       },
       "prevControl": null,
       "nextControl": {
+<<<<<<< Updated upstream
         "x": 1.9077063246851163,
         "y": 7.286482498785255
+=======
+        "x": 1.7876796818408454,
+        "y": 7.310929547785022
+>>>>>>> Stashed changes
       },
       "isLocked": false,
       "linkedName": "AmpStart"
@@ -20,8 +25,13 @@
         "y": 7.643069613212762
       },
       "prevControl": {
+<<<<<<< Updated upstream
         "x": 1.828718756897501,
         "y": 7.393069613212762
+=======
+        "x": 1.7154088937807508,
+        "y": 7.468535687071375
+>>>>>>> Stashed changes
       },
       "nextControl": null,
       "isLocked": false,
