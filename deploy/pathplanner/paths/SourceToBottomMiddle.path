@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.3,
       "rotationDegrees": 90.0,
       "rotateFast": true
     },
@@ -67,7 +67,7 @@
     },
     {
       "name": "Spit",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "sequential",
         "data": {

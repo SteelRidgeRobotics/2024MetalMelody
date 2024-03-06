@@ -20,31 +20,15 @@
         "y": 5.831996599799192
       },
       "prevControl": {
-        "x": 7.122594559026493,
-        "y": 4.848286329953544
+        "x": 7.123135662996449,
+        "y": 4.848531294404458
       },
       "nextControl": {
-        "x": 6.355593011603837,
-        "y": 6.543763434782567
+        "x": 6.069928293702742,
+        "y": 7.173267423457925
       },
       "isLocked": false,
       "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.28012348332389,
-        "y": 7.439674879349759
-      },
-      "prevControl": {
-        "x": 9.28012348332389,
-        "y": 7.439674879349759
-      },
-      "nextControl": {
-        "x": 7.280123483323891,
-        "y": 7.439674879349759
-      },
-      "isLocked": false,
-      "linkedName": "TopMiddle"
     },
     {
       "anchor": {
@@ -52,8 +36,8 @@
         "y": 7.635465427849543
       },
       "prevControl": {
-        "x": 1.8410072768790318,
-        "y": 7.14361029292672
+        "x": 1.8172759422441938,
+        "y": 6.591117797620211
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,8 +48,8 @@
   "constraintZones": [
     {
       "name": "Score Ready",
-      "minWaypointRelativePos": 2.0,
-      "maxWaypointRelativePos": 3.0,
+      "minWaypointRelativePos": 1.5,
+      "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 0.6,
@@ -77,7 +61,7 @@
   "eventMarkers": [
     {
       "name": "Score Ready",
-      "waypointRelativePos": 1.9,
+      "waypointRelativePos": 1.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -94,7 +78,7 @@
     },
     {
       "name": "Pivot Down",
-      "waypointRelativePos": 2.9499999999999997,
+      "waypointRelativePos": 2.0,
       "command": {
         "type": "parallel",
         "data": {
