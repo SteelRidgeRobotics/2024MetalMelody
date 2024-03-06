@@ -75,7 +75,7 @@ class RobotContainer:
                                                                                                         ).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed))
                                                                                                                   ).alongWith(InstantCommand(lambda: self.swerve.set_module_override_brake(True))))
         JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualElevator(self.functionsController, self.elevator))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.intake.runOnce(lambda: self.intake.pivotStow()).alongWith(self.intake.runOnce(lambda: self.intake.hold())).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.intake.runOnce(lambda: self.intake.pivotStow()).andThen(self.intake.runOnce(lambda: self.intake.hold())).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed)))
                                                                                   ).onTrue(InstantCommand(lambda: self.swerve.set_module_override_brake(True)))
         JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.elevator.runOnce(lambda: self.elevator.up())
                                                                                   ).onTrue(self.intake.runOnce(lambda: self.intake.pivotAmp()).andThen(InstantCommand(lambda: self.swerve.set_max_module_speed(SwerveConstants.k_max_module_speed / 4)))
