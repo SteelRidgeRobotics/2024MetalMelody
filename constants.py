@@ -42,8 +42,8 @@ class PivotConstants:
 
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
-    TOPPOSITION = 115.855 # 6 to account for motors "letting up" after calibrating
-    BOTTOMPOSITION = -6
+    TOPPOSITION = 61.508192307692307692307692307692 # lol big number
+    BOTTOMPOSITION = -3.25
     MM_ACCEL = 100
     MM_VEL = 100
 
