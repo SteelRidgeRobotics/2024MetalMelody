@@ -32,8 +32,8 @@ class PivotConstants:
     MM_ACCELERATION = 4
     MM_CRUISE_VEL = 4
     STOWPOS = 0
-    INTAKEPOS = 0.41
-    SCOREPOS = 0.367
+    INTAKEPOS = 0.335
+    SCOREPOS = 0.3
     K_P = 10
     K_I = 0
     K_D = 0.2
@@ -42,9 +42,9 @@ class PivotConstants:
     GEAR_RATIO = 50
 
 class ElevatorConstants:
-    CURRENTSUPPLYLIMIT = 4
+    CURRENTSUPPLYLIMIT = 8
     TOPPOSITION = 61.508192307692307692307692307692 # lol big number
-    BOTTOMPOSITION = -10
+    BOTTOMPOSITION = -7.15
     MM_ACCEL = 75
     MM_VEL = 100
 
