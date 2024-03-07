@@ -28,7 +28,7 @@ class Elevator(Subsystem):
         self.follower_motor.configurator.apply(elevator_config)
 
         self.master_motor.set_position(ElevatorConstants.TOPPOSITION)
-        self.follower_motor.set_control(Follower(self.master_motor.device_id, False))
+        self.follower_motor.set_control(Follower(self.master_motor.device_id, True))
         
         self.status_timer = Timer()
         self.state = ElevatorStates.RAISED

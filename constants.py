@@ -32,8 +32,8 @@ class PivotConstants:
     MM_ACCELERATION = 4
     MM_CRUISE_VEL = 4
     STOWPOS = 0
-    INTAKEPOS = 0.375
-    SCOREPOS = 0.3
+    INTAKEPOS = 0.41
+    SCOREPOS = 0.367
     K_P = 10
     K_I = 0
     K_D = 0.2
@@ -44,8 +44,8 @@ class PivotConstants:
 class ElevatorConstants:
     CURRENTSUPPLYLIMIT = 4
     TOPPOSITION = 61.508192307692307692307692307692 # lol big number
-    BOTTOMPOSITION = -3.25
-    MM_ACCEL = 100
+    BOTTOMPOSITION = -10
+    MM_ACCEL = 75
     MM_VEL = 100
 
 class ExternalConstants:
@@ -70,7 +70,7 @@ class SwerveConstants:
 class DriveMotorConstants:
 
     def __init__(self, motor_id: int, 
-                 k_s: float=0.0, k_v: float=0.12, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
+                 k_s: float=0.0, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
         
         self.motor_id = motor_id
         
