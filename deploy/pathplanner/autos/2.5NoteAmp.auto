@@ -141,7 +141,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "elevatorBelow"
+                  "name": "elevatorCompress"
                 }
               },
               {

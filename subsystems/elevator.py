@@ -40,10 +40,10 @@ class Elevator(Subsystem):
         self.master_motor.set_control(duty_cycle)
         self.state = ElevatorStates.CONTROLLED
          
-    def up(self) -> None:
+    def extend(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.TOPPOSITION))
         self.state = ElevatorStates.RAISED
 
-    def below(self) -> None:
+    def compress(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(ElevatorConstants.BOTTOMPOSITION))
         self.state = ElevatorStates.LOWERED
