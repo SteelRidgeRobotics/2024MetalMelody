@@ -86,7 +86,7 @@
             {
               "type": "named",
               "data": {
-                "name": "pivotAmp"
+                "name": "pivotScore"
               }
             }
           ]

@@ -1,16 +1,18 @@
 from commands2 import Command
 from subsystems.intake import Intake
+from subsystems.pivot import Pivot
 
 class IntakeAndStow(Command):
     
-    def __init__(self, intake: Intake):
+    def __init__(self, intake: Intake, pivot: Pivot):
         super().__init__()
         
         self.intake = intake
-        self.addRequirements(self.intake)
+        self.pivot = pivot
+        self.addRequirements(self.intake, self.pivot)
         
     def initialize(self):
-        self.intake.pivotDown()
+        self.pivot.intake()
         self.intake.consume()
         
     def isFinished(self) -> bool:
@@ -18,4 +20,4 @@ class IntakeAndStow(Command):
     
     def end(self, interrupted: bool):
         if not interrupted:
-            self.intake.pivotStow()
+            self.pivot.stow()

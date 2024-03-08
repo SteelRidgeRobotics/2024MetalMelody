@@ -1,5 +1,4 @@
 from commands.control_swerve_speed import ControlSwerveSpeed
-from commands.reset_pivot import ResetPivot
 import commands2
 from commands2.timedcommandrobot import seconds
 from phoenix6.signal_logger import SignalLogger
@@ -46,7 +45,6 @@ class MetalMelody(commands2.TimedCommandRobot):
         pass
 
     def testInit(self) -> None:
-        commands2.CommandScheduler.getInstance().schedule(ResetPivot(self.container.intake))
-    
+        pass    
     def testExit(self) -> None:
         SignalLogger.stop()
