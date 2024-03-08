@@ -1,6 +1,6 @@
 from commands2 import Command
 from constants import *
-from subsystems.elevator import Elevator, ElevatorStates
+from subsystems.lift import Lift, LiftStates
 from subsystems.swerve import Swerve
 from typing import Callable
 from wpimath.filter import SlewRateLimiter
@@ -8,10 +8,10 @@ from wpimath.filter import SlewRateLimiter
 class ControlSwerveSpeed(Command):
     speed_controller = SlewRateLimiter(2.5, -2.5)
     
-    def __init__(self, elevator: Elevator, swerve: Swerve, override: Callable[[None],bool]):
+    def __init__(self, lift: Lift, swerve: Swerve, override: Callable[[None],bool]):
         super().__init__()
         
-        self.elevator = elevator
+        self.lift = lift
         self.swerve = swerve
         self.override = override
         
@@ -29,7 +29,7 @@ class ControlSwerveSpeed(Command):
             self.swerve.set_max_module_speed(self.desired_speed)
             return
 
-        if self.elevator.getState() is ElevatorStates.RAISED:
+        if self.lift.getState() is LiftStates.RAISED or self.lift.getState() is LiftStates.CONTROLLED:
             self.desired_speed = self.speed_controller.calculate(SwerveConstants.k_max_module_speed / 3.5)
             self.swerve.set_max_module_speed(self.desired_speed)
             self.swerve.set_module_override_brake(False)

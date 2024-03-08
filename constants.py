@@ -15,8 +15,8 @@ class MotorIDs:
     PIVOTMOTOR = 9
     INTAKEMOTOR = 10
     
-    ELEVATORMOTOR_RIGHT = 11
-    ELEVATORMOTOR_LEFT = 12
+    LIFTMOTOR_RIGHT = 11
+    LIFTMOTOR_LEFT = 12
     
 class CANIDs:
     LEFT_FRONT = 5
@@ -41,7 +41,7 @@ class PivotConstants:
     K_S = 0.2
     GEAR_RATIO = 50
 
-class ElevatorConstants:
+class LiftConstants:
     CURRENTSUPPLYLIMIT = 8
     TOPPOSITION = 89.23 # lol big number
     BOTTOMPOSITION = 0

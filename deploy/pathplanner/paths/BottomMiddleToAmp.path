@@ -69,7 +69,7 @@
             {
               "type": "named",
               "data": {
-                "name": "elevatorExtend"
+                "name": "liftExtend"
               }
             }
           ]

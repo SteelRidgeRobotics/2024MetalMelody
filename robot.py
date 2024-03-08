@@ -39,7 +39,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         self.container.runSelectedAutoCommand()
 
     def teleopInit(self) -> None:
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.elevator, self.container.swerve, self.container.driverController.getLeftBumper))
+        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
     
     def teleopPeriodic(self) -> None:
         pass
