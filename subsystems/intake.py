@@ -25,7 +25,7 @@ class Intake(Subsystem):
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
 
-    def hold(self) -> None:
+    def stop(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
         
     def periodic(self) -> None:
