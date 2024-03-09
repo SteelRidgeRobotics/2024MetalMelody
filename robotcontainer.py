@@ -35,7 +35,7 @@ class RobotContainer:
         ## Pivot
         NamedCommands.registerCommand("pivotScore", self.pivot.runOnce(self.pivot.score))
         NamedCommands.registerCommand("pivotStow", self.pivot.runOnce(self.pivot.stow))
-        NamedCommands.registerCommand("pivotGrab", self.pivot.runOnce(self.pivot.intake))
+        NamedCommands.registerCommand("pivotIntake", self.pivot.runOnce(self.pivot.intake))
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
