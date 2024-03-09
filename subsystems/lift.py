@@ -11,6 +11,7 @@ class LiftStates(Enum):
     LOWERED = 0
     RAISED = 1
     CONTROLLED = 2
+    STOPPED = 3
 
 class Lift(Subsystem):
     
@@ -37,9 +38,13 @@ class Lift(Subsystem):
     def getState(self) -> LiftStates:
         return self.state
         
-    def setDutyCycle(self, duty_cycle: DutyCycleOut) -> None:
-        self.master_motor.set_control(duty_cycle)
+    def setControl(self, control) -> None:
+        self.master_motor.set_control(control)
         self.state = LiftStates.CONTROLLED
+    
+    def stop(self) -> None:
+        self.master_motor.set_control(DutyCycleOut(0))
+        self.state = LiftStates.STOPPED
          
     def extend(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.TOPPOSITION))

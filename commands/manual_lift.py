@@ -1,7 +1,7 @@
 from commands2 import Command
 from constants import *
 from frc6343.controller.deadband import deadband
-from phoenix6.controls import DutyCycleOut
+from phoenix6.controls import TorqueCurrentFOC
 from subsystems.lift import Lift
 from wpilib import XboxController
 
@@ -16,10 +16,10 @@ class ManualLift(Command):
         self.addRequirements(self.lift)
 
     def execute(self):
-        self.lift.setDutyCycle(DutyCycleOut(-self.getTriggerCombinedValue()))
+        self.lift.master_motor.set_control(TorqueCurrentFOC(-self.getTriggerCombinedValue() * 100, limit_forward_motion=True))
 
     def end(self, interrupted: bool):
-        self.lift.setDutyCycle(DutyCycleOut(0))
+        self.lift.stop()
 
     def getTriggerCombinedValue(self) -> float:
         return deadband(self.controller.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND)
