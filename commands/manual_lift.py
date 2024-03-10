@@ -19,7 +19,11 @@ class ManualLift(Command):
         self.lift.activateFollower()
 
     def execute(self):
-        self.lift.setControl(TorqueCurrentFOC(-self.getTriggerCombinedValue() * 325, max_abs_duty_cycle=0.75, limit_forward_motion=True))
+        trigger_value = self.getTriggerCombinedValue()
+        if trigger_value == 0:
+            self.lift.stop()
+        else:
+            self.lift.setControl(TorqueCurrentFOC(-325, max_abs_duty_cycle=self.getTriggerCombinedValue(), limit_forward_motion=True))
 
     def end(self, interrupted: bool):
         self.lift.disableFollower()
