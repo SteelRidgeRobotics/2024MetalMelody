@@ -42,7 +42,7 @@ class PivotConstants:
     GEAR_RATIO = 50
 
 class LiftConstants:
-    CURRENTSUPPLYLIMIT = 8
+    CURRENTSUPPLYLIMIT = 25
     TOPPOSITION = 89.23 # lol big number
     BOTTOMPOSITION = 0
     GEARRATIO = 12
@@ -65,7 +65,7 @@ class SwerveConstants:
     k_max_rot_rate = 10 # rad/s
     k_drive_base_radius = 0.43 # meters
     auto_kP_translation = 7
-    auto_kP_rotation = 4
+    auto_kP_rotation = 2.5
     auto_kD_rotation = 0
 
 class DriveMotorConstants:

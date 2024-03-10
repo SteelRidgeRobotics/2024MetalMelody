@@ -14,11 +14,15 @@ class ManualLift(Command):
         self.lift = lift
 
         self.addRequirements(self.lift)
+    
+    def initialize(self):
+        self.lift.activateFollower()
 
     def execute(self):
-        self.lift.master_motor.set_control(TorqueCurrentFOC(-self.getTriggerCombinedValue() * 100, limit_forward_motion=True))
+        self.lift.setControl(TorqueCurrentFOC(-self.getTriggerCombinedValue() * 325, max_abs_duty_cycle=0.75, limit_forward_motion=True))
 
     def end(self, interrupted: bool):
+        self.lift.disableFollower()
         self.lift.stop()
 
     def getTriggerCombinedValue(self) -> float:

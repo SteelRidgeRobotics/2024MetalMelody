@@ -96,12 +96,6 @@
               }
             ]
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AmpToMiddle"
-          }
         }
       ]
     }

@@ -22,6 +22,8 @@ class RobotContainer:
         self.swerve.initialize()
                 
         # PathPlanner Commands
+        NamedCommands.registerCommand("initialize", self.swerve.runOnce(self.swerve.initialize))
+        
         ## Lift
         
         NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.extend))
@@ -71,7 +73,7 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot).andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(self.intake.disencumber)).onFalse(self.intake.runOnce(self.intake.stop))
         
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compress).alongWith(self.pivot.runOnce(self.pivot.intake)))
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compress).alongWith(self.pivot.runOnce(self.pivot.stow)))
 
         JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))

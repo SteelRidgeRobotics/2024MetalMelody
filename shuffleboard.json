@@ -24,19 +24,6 @@
               "_showGlyph": false
             }
           },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Reset Gyro",
-              "_title": "Reset Gyro",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "7,0": {
             "size": [
               2,
@@ -80,6 +67,19 @@
               "_type": "Network Table Tree",
               "_source0": "network_table:///SmartDashboard/Field",
               "_title": "Field",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Reset Gyro",
+              "_title": "Reset Gyro",
               "_glyph": 148,
               "_showGlyph": false
             }

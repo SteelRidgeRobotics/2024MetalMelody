@@ -3,48 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.828718756897501,
-        "y": 7.643069613212762
+        "x": 1.8761397865163765,
+        "y": 7.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.828718756897501,
-        "y": 7.143069613212762
+        "x": 1.8878506230621581,
+        "y": 6.899590682348269
       },
       "isLocked": false,
       "linkedName": "Amp"
     },
     {
       "anchor": {
-        "x": 2.894982565999367,
-        "y": 6.979658581285779
+        "x": 2.8715608929078047,
+        "y": 7.190453639109847
       },
       "prevControl": {
-        "x": 1.144982565999367,
-        "y": 6.979658581285779
+        "x": 1.3842846515935536,
+        "y": 7.167031966018284
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CloseNote"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0.55,
       "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
   "constraintZones": [
     {
-      "name": "New Constraints Zone",
+      "name": "SLOWWW",
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 0.45,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 0.25,
         "maxAcceleration": 3.0,
-        "maxAngularVelocity": 360.0,
-        "maxAngularAcceleration": 180.0
+        "maxAngularVelocity": 90.0,
+        "maxAngularAcceleration": 360.0
       }
     }
   ],
@@ -73,18 +73,12 @@
       }
     },
     {
-      "name": "Consume",
-      "waypointRelativePos": 0.6,
+      "name": "Pivot",
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "intakeConsume"
-              }
-            },
             {
               "type": "named",
               "data": {
@@ -94,11 +88,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.65,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakeConsume"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0
   },
