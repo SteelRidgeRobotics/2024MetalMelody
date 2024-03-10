@@ -37,6 +37,9 @@ class MetalMelody(commands2.TimedCommandRobot):
         
     def autonomousInit(self) -> None:
         self.container.runSelectedAutoCommand()
+    
+    def autonomousPeriodic(self) -> None:
+        pass
 
     def teleopInit(self) -> None:
         commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
