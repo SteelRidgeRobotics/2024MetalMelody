@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8878506230621581,
-        "y": 6.899590682348269
+        "x": 1.8761397865163765,
+        "y": 7.4
       },
       "isLocked": false,
       "linkedName": "Amp"
@@ -20,8 +20,8 @@
         "y": 7.190453639109847
       },
       "prevControl": {
-        "x": 1.3842846515935536,
-        "y": 7.167031966018284
+        "x": 1.8715608929078047,
+        "y": 7.190453639109847
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 0.25,
       "rotationDegrees": 0,
       "rotateFast": false
     }

@@ -53,6 +53,7 @@ class RobotContainer:
         SmartDashboard.putData("Starting Position", self.start_chooser)
         
         self.auto_chooser = SendableChooser()
+        self.auto_chooser.setDefaultOption("2.5 Amp to Ready", PathPlannerAuto("2.5NoteToReady"))
         self.auto_chooser.setDefaultOption("2.5 Amp", PathPlannerAuto("2.5NoteAmp"))
         self.auto_chooser.addOption("2 Amp", PathPlannerAuto("2NoteAmp"))
         self.auto_chooser.addOption("1 Amp", PathPlannerAuto("1NoteAmp"))

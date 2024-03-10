@@ -100,7 +100,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpToCloseReady"
+            "pathName": "AmpToTopMiddle"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "pivotStow"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeStop"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TopMiddleToReady"
           }
         }
       ]

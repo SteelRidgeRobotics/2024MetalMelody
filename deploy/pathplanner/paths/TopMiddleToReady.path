@@ -3,49 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8715608929078047,
-        "y": 7.190453639109847
+        "x": 8.28012348332389,
+        "y": 7.429807936538951
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5119692565991683,
-        "y": 7.398063967130976
+        "x": 7.280123483323891,
+        "y": 7.429807936538951
       },
       "isLocked": false,
-      "linkedName": "CloseNote"
+      "linkedName": "TopMiddle"
     },
     {
       "anchor": {
-        "x": 1.8761397865163765,
-        "y": 7.46
+        "x": 1.8410072768790318,
+        "y": 7.272429494930317
       },
       "prevControl": {
-        "x": 1.8761397865163765,
-        "y": 6.96
+        "x": 2.841007276879032,
+        "y": 7.272429494930317
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "GRAHH",
-      "minWaypointRelativePos": 0.35,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 180.0,
-        "maxAngularAcceleration": 180.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "litf",
-      "waypointRelativePos": 0.0,
+      "name": "Begin Extension",
+      "waypointRelativePos": 0.9,
       "command": {
         "type": "parallel",
         "data": {
@@ -55,12 +43,6 @@
               "data": {
                 "name": "liftExtend"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "pivotStow"
-              }
             }
           ]
         }
@@ -68,8 +50,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 0.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.2,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0
   },

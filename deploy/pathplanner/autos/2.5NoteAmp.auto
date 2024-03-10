@@ -121,37 +121,6 @@
               }
             ]
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TopMiddleToAmp"
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeStop"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "liftCompress"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pivotStow"
-                }
-              }
-            ]
-          }
         }
       ]
     }

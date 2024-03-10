@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.511429392820787,
-        "y": 6.943174518905131
+        "x": 2.9535367667608234,
+        "y": 7.46
       },
       "isLocked": false,
       "linkedName": "Amp"
@@ -32,11 +32,6 @@
     {
       "waypointRelativePos": 0.75,
       "rotationDegrees": 0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 0.25,
-      "rotationDegrees": 90.0,
       "rotateFast": false
     }
   ],
@@ -78,8 +73,8 @@
       }
     },
     {
-      "name": "Pivot",
-      "waypointRelativePos": 0.65,
+      "name": "Note Ready",
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
         "data": {
@@ -89,18 +84,7 @@
               "data": {
                 "name": "pivotIntake"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Consume",
-      "waypointRelativePos": 0.9,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
@@ -113,8 +97,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0
   },
@@ -129,5 +113,5 @@
     "rotation": 90.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
