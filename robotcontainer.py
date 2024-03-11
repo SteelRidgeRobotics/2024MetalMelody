@@ -21,9 +21,7 @@ class RobotContainer:
         self.pivot: Pivot = Pivot()
         self.swerve.initialize()
                 
-        # PathPlanner Commands
-        NamedCommands.registerCommand("initialize", self.swerve.runOnce(self.swerve.initialize))
-        
+        # PathPlanner Commands        
         ## Lift
         
         NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.extend))

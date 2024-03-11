@@ -36,6 +36,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         pass
         
     def autonomousInit(self) -> None:
+        self.container.swerve.navx.reset()
         self.container.runSelectedAutoCommand()
     
     def autonomousPeriodic(self) -> None:
