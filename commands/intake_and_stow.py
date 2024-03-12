@@ -19,5 +19,6 @@ class IntakeAndStow(Command):
         return self.intake.hasNote()
     
     def end(self, interrupted: bool):
+        self.intake.stop()
         if not interrupted:
             self.pivot.stow()
