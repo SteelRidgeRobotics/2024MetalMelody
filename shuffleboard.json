@@ -24,6 +24,19 @@
               "_showGlyph": false
             }
           },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Reset Gyro",
+              "_title": "Reset Gyro",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
           "7,0": {
             "size": [
               2,
@@ -60,28 +73,18 @@
           },
           "5,1": {
             "size": [
-              3,
-              1
+              5,
+              3
             ],
             "content": {
-              "_type": "Network Table Tree",
+              "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
               "_title": "Field",
               "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Reset Gyro",
-              "_title": "Reset Gyro",
-              "_glyph": 148,
-              "_showGlyph": false
+              "_showGlyph": false,
+              "Game/Game": "k2024Crescendo",
+              "Visuals/Robot Icon Size": 40.0,
+              "Visuals/Show Outside Circles": false
             }
           }
         }
@@ -89,9 +92,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }
