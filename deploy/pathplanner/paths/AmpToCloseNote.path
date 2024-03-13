@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8761397865163765,
-        "y": 7.45
+        "x": 1.82,
+        "y": 7.47
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8761397865163765,
-        "y": 7.4
+        "x": 1.82,
+        "y": 7.42
       },
       "isLocked": false,
       "linkedName": "Amp"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.8715608929078047,
-        "y": 7.190453639109847
+        "y": 6.99
       },
       "prevControl": {
         "x": 1.8715608929078047,
-        "y": 7.190453639109847
+        "y": 6.99
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,7 +41,7 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 0.45,
       "constraints": {
-        "maxVelocity": 0.25,
+        "maxVelocity": 0.1,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 90.0,
         "maxAngularAcceleration": 360.0
@@ -91,7 +91,7 @@
     },
     {
       "name": "Intake",
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "parallel",
         "data": {

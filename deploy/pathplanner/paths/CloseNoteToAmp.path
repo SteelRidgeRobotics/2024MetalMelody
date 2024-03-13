@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 2.8715608929078047,
-        "y": 7.190453639109847
+        "y": 6.99
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.5119692565991683,
-        "y": 7.398063967130976
+        "y": 7.197610328021129
       },
       "isLocked": false,
       "linkedName": "CloseNote"
     },
     {
       "anchor": {
-        "x": 1.8761397865163765,
-        "y": 7.46
+        "x": 1.8,
+        "y": 7.45
       },
       "prevControl": {
-        "x": 1.8761397865163765,
-        "y": 6.96
+        "x": 1.8,
+        "y": 6.95
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
