@@ -1,7 +1,7 @@
 {
   "tabPane": [
     {
-      "title": "SmartDashboard",
+      "title": "Main",
       "autoPopulate": true,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 2,
         "tiles": {
-          "5,0": {
+          "1,2": {
             "size": [
               2,
               1
@@ -24,20 +24,7 @@
               "_showGlyph": false
             }
           },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Reset Gyro",
-              "_title": "Reset Gyro",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,0": {
+          "0,3": {
             "size": [
               2,
               1
@@ -50,16 +37,16 @@
               "_showGlyph": false
             }
           },
-          "0,0": {
+          "3,0": {
             "size": [
-              5,
+              4,
               4
             ],
             "content": {
               "_type": "Camera Stream",
               "_source0": "camera_server://USB Camera 0",
               "_title": "USB Camera 0",
-              "_glyph": 148,
+              "_glyph": 0,
               "_showGlyph": false,
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
@@ -71,20 +58,78 @@
               "imageHeight": 120
             }
           },
-          "5,1": {
+          "0,2": {
             "size": [
-              5,
-              3
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Reset Gyro",
+              "_title": "/SmartDashboard/Reset Gyro",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              2
             ],
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "Field",
+              "_title": "SmartDashboard/Field",
               "_glyph": 148,
               "_showGlyph": false,
               "Game/Game": "k2024Crescendo",
-              "Visuals/Robot Icon Size": 40.0,
+              "Visuals/Robot Icon Size": 25.0,
               "Visuals/Show Outside Circles": false
+            }
+          },
+          "7,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMSInfo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,1": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/Gyro",
+              "_title": "Gyro",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          },
+          "2,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/NavX Connection",
+              "_title": "NavX Connection",
+              "_glyph": 1,
+              "_showGlyph": false,
+              "Colors/Color when true": "#00FF00FF",
+              "Colors/Color when false": "#FF0000FF"
             }
           }
         }
@@ -92,9 +137,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 814.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }
