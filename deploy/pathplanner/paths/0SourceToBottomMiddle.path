@@ -3,48 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.82,
-        "y": 7.49
+        "x": 0.52,
+        "y": 2.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.897396980244448,
-        "y": 7.49
+        "x": 1.8058747672416873,
+        "y": 1.8268905011419148
       },
       "isLocked": false,
-      "linkedName": "Amp"
+      "linkedName": "SourceStart"
     },
     {
       "anchor": {
-        "x": 8.28012348332389,
-        "y": 7.429807936538951
+        "x": 8.258545703967298,
+        "y": 0.7846260485673593
       },
       "prevControl": {
-        "x": 5.408419318906277,
-        "y": 7.429807936538951
+        "x": 8.258545703967298,
+        "y": 0.2846260485673593
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "TopMiddle"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 90.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": 22.5,
       "rotateFast": false
     }
   ],
   "constraintZones": [
     {
       "name": "Lower Lift",
-      "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.35,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.4,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 0.75,
         "maxAngularVelocity": 360.0,
-        "maxAngularAcceleration": 360.0
+        "maxAngularAcceleration": 90.0
       }
     }
   ],
@@ -65,7 +70,7 @@
             {
               "type": "named",
               "data": {
-                "name": "pivotStow"
+                "name": "pivotScore"
               }
             }
           ]
@@ -73,22 +78,34 @@
       }
     },
     {
-      "name": "Note Ready",
-      "waypointRelativePos": 0.75,
+      "name": "Spit",
+      "waypointRelativePos": 0.3,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "pivotIntake"
+                "name": "intakeDisencumber"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.35
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "intakeConsume"
+                "name": "intakeStop"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotStow"
               }
             }
           ]
@@ -97,20 +114,20 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0,
+    "velocity": 0.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp",
+  "folder": "Source",
   "previewStartingState": {
-    "rotation": 90.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false

@@ -1,7 +1,7 @@
 {
   "tabPane": [
     {
-      "title": "Main",
+      "title": "SmartDashboard",
       "autoPopulate": true,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
@@ -11,19 +11,6 @@
         "vgap": 16.0,
         "titleType": 2,
         "tiles": {
-          "1,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Starting Position",
-              "_title": "Starting Position",
-              "_glyph": 4,
-              "_showGlyph": false
-            }
-          },
           "0,3": {
             "size": [
               2,
@@ -87,19 +74,6 @@
               "Visuals/Show Outside Circles": false
             }
           },
-          "7,0": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Basic FMS Info",
-              "_source0": "network_table:///FMSInfo",
-              "_title": "FMSInfo",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "7,1": {
             "size": [
               3,
@@ -131,15 +105,41 @@
               "Colors/Color when true": "#00FF00FF",
               "Colors/Color when false": "#FF0000FF"
             }
+          },
+          "1,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Starting Position",
+              "_title": "Starting Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "/FMSInfo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }

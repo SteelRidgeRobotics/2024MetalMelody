@@ -3,7 +3,7 @@ from constants import *
 from frc6343.controller.deadband import deadband
 from phoenix6.controls import TorqueCurrentFOC
 from subsystems.lift import Lift
-from wpilib import XboxController
+from wpilib import RobotBase, XboxController
 
 class ManualLift(Command):
 
@@ -26,7 +26,6 @@ class ManualLift(Command):
             self.lift.setControl(TorqueCurrentFOC(-325, max_abs_duty_cycle=self.getTriggerCombinedValue(), limit_forward_motion=True))
 
     def end(self, interrupted: bool):
-        self.lift.disableFollower()
         self.lift.stop()
 
     def getTriggerCombinedValue(self) -> float:

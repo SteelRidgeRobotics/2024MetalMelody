@@ -21,6 +21,9 @@ class MetalMelody(commands2.TimedCommandRobot):
         
         if RobotBase.isReal():
             CameraServer.launch()
+
+        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
+
             
     def robotPeriodic(self) -> None:
         pass
@@ -30,22 +33,21 @@ class MetalMelody(commands2.TimedCommandRobot):
         
     def disabledInit(self) -> None:
         SignalLogger.stop()
-        commands2.CommandScheduler.getInstance().cancelAll()
         
     def disabledPeriodic(self) -> None:
         pass
         
     def autonomousInit(self) -> None:
         self.container.swerve.navx.reset()
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
         self.container.runSelectedAutoCommand()
+        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
     
     def autonomousPeriodic(self) -> None:
         pass
 
     def teleopInit(self) -> None:
         commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
-    
+
     def teleopPeriodic(self) -> None:
         pass
 

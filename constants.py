@@ -33,7 +33,7 @@ class PivotConstants:
     MM_CRUISE_VEL = 4
     STOWPOS = 0
     INTAKEPOS = 0.363
-    SCOREPOS = 0.312
+    SCOREPOS = 0.3
     K_P = 10
     K_I = 0
     K_D = 0.2
@@ -43,7 +43,7 @@ class PivotConstants:
 
 class LiftConstants:
     CURRENTSUPPLYLIMIT = 25
-    TOPPOSITION = 76.635 # lol big number
+    TOPPOSITION = 78.635 # lol big number
     BOTTOMPOSITION = 0
     GEARRATIO = 12
     MM_ACCEL = 75
