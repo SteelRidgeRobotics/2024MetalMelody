@@ -30,13 +30,32 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.35
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "intakeStop"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "liftCompress"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pivotStow"
                 }
               }
             ]
