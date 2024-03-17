@@ -21,9 +21,6 @@ class MetalMelody(commands2.TimedCommandRobot):
         
         if RobotBase.isReal():
             CameraServer.launch()
-
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
-
             
     def robotPeriodic(self) -> None:
         pass
@@ -40,7 +37,6 @@ class MetalMelody(commands2.TimedCommandRobot):
     def autonomousInit(self) -> None:
         self.container.swerve.navx.reset()
         self.container.runSelectedAutoCommand()
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
     
     def autonomousPeriodic(self) -> None:
         pass
