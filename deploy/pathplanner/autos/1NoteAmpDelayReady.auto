@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4077063246851163,
-      "y": 7.286482498785255
+      "x": 1.41,
+      "y": 7.29
     },
     "rotation": 0
   },
@@ -42,7 +42,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.35
+                  "waitTime": 0.4
                 }
               },
               {
@@ -55,52 +55,28 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "AmpToCloseNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CloseNoteToAmp"
-          }
-        },
-        {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "pivotScore"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.6
+                  "name": "liftCompress"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "intakeDisencumber"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.35
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeStop"
+                  "name": "pivotStow"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 7.5
           }
         },
         {

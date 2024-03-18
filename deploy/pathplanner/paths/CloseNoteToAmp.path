@@ -20,8 +20,8 @@
         "y": 7.43
       },
       "prevControl": {
-        "x": 1.8,
-        "y": 6.93
+        "x": 2.122067353977788,
+        "y": 7.260718658384535
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,19 +29,7 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "GRAHH",
-      "minWaypointRelativePos": 0.35,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 180.0,
-        "maxAngularAcceleration": 180.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "litf",
@@ -68,10 +56,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 0.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,
@@ -84,5 +72,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -15,8 +15,8 @@
     "Speaker"
   ],
   "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 0.75,
+  "defaultMaxAccel": 1.0,
   "defaultMaxAngVel": 360.0,
-  "defaultMaxAngAccel": 135.0,
+  "defaultMaxAngAccel": 180.0,
   "maxModuleSpeed": 3.5
 }

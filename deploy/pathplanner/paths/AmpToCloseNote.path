@@ -20,8 +20,8 @@
         "y": 6.99
       },
       "prevControl": {
-        "x": 1.8715608929078047,
-        "y": 6.99
+        "x": 1.4562172359219174,
+        "y": 7.000011499322901
       },
       "nextControl": null,
       "isLocked": false,
@@ -37,14 +37,14 @@
   ],
   "constraintZones": [
     {
-      "name": "SLOWWW",
+      "name": "New Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.45,
+      "maxWaypointRelativePos": 0.6,
       "constraints": {
-        "maxVelocity": 0.1,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 90.0,
-        "maxAngularAcceleration": 360.0
+        "maxVelocity": 0.3,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 180.0
       }
     }
   ],
@@ -109,12 +109,12 @@
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 0.75,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 135.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.75,
     "rotation": 0,
     "rotateFast": false
   },
