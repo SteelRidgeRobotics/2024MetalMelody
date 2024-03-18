@@ -2,6 +2,7 @@ from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
+from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
@@ -62,6 +63,7 @@ class RobotContainer:
         self.auto_chooser.addOption("5 Disrupt Amp", PathPlannerAuto("5DisruptAmp"))
         #self.auto_chooser.addOption("1 Source", PathPlannerAuto("1NoteSource"))
         self.auto_chooser.addOption("1 Source Disrupt", PathPlannerAuto("1DisruptSource"))
+        self.auto_chooser.addOption("Do Nothing :(", InstantCommand())
         #self.auto_chooser.addOption("1 Source Disrupt to Ready", PathPlannerAuto("1DisruptSourceToReady"))
         #self.auto_chooser.addOption("1 Source Disrupt to Ready (Long)", PathPlannerAuto("1DisruptSourceToReadyLong"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
