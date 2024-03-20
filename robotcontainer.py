@@ -73,7 +73,9 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot).andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75)))
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
+                                                                                           .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
+                                                                                           .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(self.intake.disencumber)).onFalse(self.intake.runOnce(self.intake.stop))
         
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compress).alongWith(self.pivot.runOnce(self.pivot.stow)))
