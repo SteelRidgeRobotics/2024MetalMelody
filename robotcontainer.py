@@ -63,7 +63,7 @@ class RobotContainer:
         self.auto_chooser.addOption("5 Disrupt Amp", PathPlannerAuto("5DisruptAmp"))
         #self.auto_chooser.addOption("1 Source", PathPlannerAuto("1NoteSource"))
         #self.auto_chooser.addOption("1 Source Disrupt", PathPlannerAuto("1DisruptSource"))
-        self.auto_chooser.addOption("Do Nothing :(", InstantCommand())
+        self.auto_chooser.addOption("Do Nothing :(", self.pivot.runOnce(self.pivot.stow).alongWith(self.lift.runOnce(self.lift.compress)))
         #self.auto_chooser.addOption("1 Source Disrupt to Ready", PathPlannerAuto("1DisruptSourceToReady"))
         #self.auto_chooser.addOption("1 Source Disrupt to Ready (Long)", PathPlannerAuto("1DisruptSourceToReadyLong"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
