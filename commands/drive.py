@@ -1,6 +1,7 @@
 from commands2 import Command
 from constants import *
 from enum import Enum
+from frc6343.controller.deadband import deadband
 from math import fabs
 from subsystems.swerve import Swerve
 from wpilib import XboxController
@@ -29,16 +30,11 @@ class DriveByController(Command):
         slowdown_mult = 1
         if self.controller.getRightBumper():
             slowdown_mult += 1
-            
-        if self.controller.getLeftBumper():
-            center_of_rotation = Translation2d(3.56, 0)
-        else:
-            center_of_rotation = Translation2d()
         
         if self.mode == DriveModes.FIELD_RELATIVE:
-            self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), center_of_rotation=center_of_rotation)
+            self.swerve.field_relative_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
         else:
-            self.swerve.robot_centric_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult), center_of_rotation=center_of_rotation)
+            self.swerve.robot_centric_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
             
         # Toggle Modes
         if self.controller.getYButtonPressed():
@@ -52,9 +48,3 @@ class DriveByController(Command):
     
     def isFinished(self) -> bool:
         return False
-    
-def deadband(value: float, band: float):
-    if fabs(value) <= band:
-        return 0
-    else:
-        return value
