@@ -62,7 +62,7 @@ SWERVE
 class SwerveConstants:
     k_wheel_size = 0.1 # meters
     k_max_module_speed = 4.25 # m/s
-    k_max_rot_rate = 10 # rad/s
+    k_max_rot_rate = 10 / 2.5 # rad/s
     k_drive_base_radius = 0.43 # meters
     auto_kP_translation = 7
     auto_kP_rotation = 2.5
