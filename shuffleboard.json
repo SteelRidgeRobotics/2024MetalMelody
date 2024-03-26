@@ -126,8 +126,7 @@
             ],
             "content": {
               "_type": "Basic FMS Info",
-              "_source0": "network_table:///FMSInfo",
-              "_title": "/FMSInfo",
+              "_title": "Basic FMS Info",
               "_glyph": 148,
               "_showGlyph": false
             }
