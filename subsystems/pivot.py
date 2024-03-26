@@ -27,5 +27,8 @@ class Pivot(Subsystem):
     def stow(self) -> None:
         self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.STOWPOS))
 
-    def score(self) -> None:
-        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.SCOREPOS))
+    def scoreUpwards(self) -> None:
+        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.SCOREPOSUP))
+
+    def scoreDownwards(self) -> None:
+        self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.SCOREPOSDOWN))
