@@ -1,6 +1,6 @@
 from phoenix6.configs import TalonFXConfiguration
 from phoenix6.configs.config_groups import DifferentialSensorSourceValue, DifferentialSensorsConfigs, NeutralModeValue
-from phoenix6.controls import CoastOut, DifferentialFollower, DutyCycleOut, MotionMagicDutyCycle
+from phoenix6.controls import CoastOut, DifferentialFollower, DutyCycleOut, PositionDutyCycle
 from phoenix6.hardware import TalonFX
 from commands2 import Subsystem
 from constants import *
@@ -62,13 +62,13 @@ class Lift(Subsystem):
         self.state = LiftStates.STOPPED
          
     def raiseFull(self) -> None:
-        self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.TOPPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(LiftConstants.TOPPOSITION))
         self.state = LiftStates.RAISED
 
     def compressFull(self) -> None:
-        self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.BOTTOMPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(LiftConstants.BOTTOMPOSITION))
         self.state = LiftStates.LOWERED
 
     def scoreShoot(self) -> None:
-        self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.SCOREPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(LiftConstants.SCOREPOSITION))
         self.state = LiftStates.SCORE
