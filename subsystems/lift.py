@@ -11,6 +11,7 @@ class LiftStates(Enum):
     RAISED = 1
     CONTROLLED = 2
     STOPPED = 3
+    SCORE = 4
 
 class Lift(Subsystem):
     
@@ -60,10 +61,14 @@ class Lift(Subsystem):
         self.master_motor.set_control(DutyCycleOut(0))
         self.state = LiftStates.STOPPED
          
-    def extend(self) -> None:
+    def raiseFull(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.TOPPOSITION))
         self.state = LiftStates.RAISED
 
-    def compress(self) -> None:
+    def compressFull(self) -> None:
         self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.BOTTOMPOSITION))
         self.state = LiftStates.LOWERED
+
+    def scoreShoot(self) -> None:
+        self.master_motor.set_control(MotionMagicDutyCycle(LiftConstants.SCOREPOSITION))
+        self.state = LiftStates.SCORE

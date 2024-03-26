@@ -25,8 +25,8 @@ class RobotContainer:
         # PathPlanner Commands        
         ## Lift
         
-        NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.extend))
-        NamedCommands.registerCommand("liftCompress", self.lift.runOnce(self.lift.compress))
+        NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.raiseFull))
+        NamedCommands.registerCommand("liftCompress", self.lift.runOnce(self.lift.compressFull))
 
         ## Intake
         NamedCommands.registerCommand("intakeConsume", self.intake.runOnce(self.intake.consume))
@@ -63,7 +63,7 @@ class RobotContainer:
         self.auto_chooser.addOption("5 Disrupt Amp", PathPlannerAuto("5DisruptAmp"))
         #self.auto_chooser.addOption("1 Source", PathPlannerAuto("1NoteSource"))
         #self.auto_chooser.addOption("1 Source Disrupt", PathPlannerAuto("1DisruptSource"))
-        self.auto_chooser.addOption("Do Nothing :(", self.pivot.runOnce(self.pivot.stow).alongWith(self.lift.runOnce(self.lift.compress)))
+        self.auto_chooser.addOption("Do Nothing :(", self.pivot.runOnce(self.pivot.stow).alongWith(self.lift.runOnce(self.lift.compressFull)))
         #self.auto_chooser.addOption("1 Source Disrupt to Ready", PathPlannerAuto("1DisruptSourceToReady"))
         #self.auto_chooser.addOption("1 Source Disrupt to Ready (Long)", PathPlannerAuto("1DisruptSourceToReadyLong"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
@@ -78,11 +78,13 @@ class RobotContainer:
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(self.intake.disencumber)).onFalse(self.intake.runOnce(self.intake.stop))
         
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compress).alongWith(self.pivot.runOnce(self.pivot.stow)))
+        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
 
         JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.lift.runOnce(self.lift.extend).alongWith(self.pivot.runOnce(self.pivot.score)))
+        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.score)))
+
+        JoystickButton(self.functionsController, XboxController.Button.kRightStick).onTrue(self.lift.runOnce(self.lift.scoreShoot).alongWith(self.pivot.runOnce(self.pivot.score)))
         
         JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
         
