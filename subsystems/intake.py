@@ -20,7 +20,7 @@ class Intake(Subsystem):
         self.has_note = False
 
     def disencumber(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED / 1.5))
+        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED / 1.5, enable_foc=False))
 
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
