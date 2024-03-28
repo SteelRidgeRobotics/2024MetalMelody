@@ -21,7 +21,7 @@ class Lift(Subsystem):
         
         self.master_motor = TalonFX(MotorIDs.LIFTMOTOR_RIGHT) # Right Motor
         general_config = TalonFXConfiguration()
-        general_config.slot0.with_k_p(1)
+        general_config.slot0.with_k_p(LiftConstants.K_P).with_k_i(LiftConstants.K_I)
         general_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
         general_config.current_limits.with_supply_current_limit_enable(True).with_supply_current_limit(LiftConstants.CURRENTSUPPLYLIMIT)
         general_config.motion_magic.with_motion_magic_cruise_velocity(LiftConstants.MM_VEL).with_motion_magic_acceleration(LiftConstants.MM_ACCEL)

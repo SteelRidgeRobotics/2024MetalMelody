@@ -48,6 +48,8 @@ class LiftConstants:
     SCOREPOSITION = 22.254
     BOTTOMPOSITION = 0
     GEARRATIO = 12
+    K_P = 1
+    K_I = 0.25
     MM_ACCEL = 75
     MM_VEL = 100
 
