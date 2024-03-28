@@ -1,11 +1,8 @@
 from commands2 import Command
 from constants import *
 from enum import Enum
-from frc6343.controller.deadband import deadband
-from math import fabs
 from subsystems.swerve import Swerve
 from wpilib import XboxController
-from wpimath.geometry import Translation2d
 from wpimath.kinematics import ChassisSpeeds
 
 class DriveModes(Enum):

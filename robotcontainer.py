@@ -2,13 +2,13 @@ from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
-from commands2 import InstantCommand
 from commands2.button import JoystickButton
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
+from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
-from subsystems.pivot import Pivot
+from subsystems.pivot import Pivot, PivotStates
 from subsystems.swerve import Swerve
 from wpilib import SendableChooser, SmartDashboard, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
@@ -76,7 +76,10 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
-        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(self.intake.disencumber)).onFalse(self.intake.runOnce(self.intake.stop))
+        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.intake.runOnce(self.intake.disencumber)
+                                                                                            .alongWith(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.15))))
+                                                                                            .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
+                                                                                            ).onFalse(self.intake.runOnce(self.intake.stop).alongWith(self.pivot.runOnce(self.pivot.stow)))
         
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
 

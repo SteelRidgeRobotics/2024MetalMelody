@@ -1,9 +1,15 @@
 from commands2 import Subsystem
+from enum import Enum
 from phoenix6.configs import TalonFXConfiguration
 from phoenix6.controls import DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
 from constants import *
+
+class IntakeStates(Enum):
+    STOPPED = 0
+    DISENCUMBERING = 1
+    CONSUME = 2
 
 class Intake(Subsystem):
     
@@ -18,15 +24,19 @@ class Intake(Subsystem):
         self.intakeMotor.configurator.apply(intake_config)
         
         self.has_note = False
+        self.state = IntakeStates.STOPPED
 
     def disencumber(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED / 1.5, enable_foc=False))
+        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED, enable_foc=False))
+        self.state = IntakeStates.DISENCUMBERING
 
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
+        self.state = IntakeStates.CONSUME
 
     def stop(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
+        self.state = IntakeStates.STOPPED
         
     def periodic(self) -> None:
         if self.intakeMotor.get_forward_limit().value is ForwardLimitValue.CLOSED_TO_GROUND:
