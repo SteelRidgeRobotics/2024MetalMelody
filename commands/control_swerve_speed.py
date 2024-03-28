@@ -30,7 +30,7 @@ class ControlSwerveSpeed(Command):
             return
 
         if self.lift.getState() is LiftStates.RAISED or self.lift.getState() is LiftStates.CONTROLLED:
-            self.desired_speed = self.speed_controller.calculate(SwerveConstants.k_max_module_speed / 3.5)
+            self.desired_speed = self.speed_controller.calculate(SwerveConstants.k_max_module_speed / 2.5)
             self.swerve.set_max_module_speed(self.desired_speed)
             self.swerve.set_module_override_brake(False)
         elif self.lift.getState() is LiftStates.SCORE:
