@@ -20,8 +20,8 @@ class DriveByController(Command):
         self.mode = DriveModes.FIELD_RELATIVE
     
     def execute(self) -> None:
-        translation_x = (-self.controller.getLeftY() ** 3) * SwerveConstants.k_max_module_speed
-        translation_y = (-self.controller.getLeftX() ** 3) * SwerveConstants.k_max_module_speed
+        translation_x = (-self.controller.getLeftY()) * SwerveConstants.k_max_module_speed
+        translation_y = (-self.controller.getLeftX()) * SwerveConstants.k_max_module_speed
         rotation = (-self.controller.getRightX() ** 3) * SwerveConstants.k_max_rot_rate
         
         slowdown_mult = 1
