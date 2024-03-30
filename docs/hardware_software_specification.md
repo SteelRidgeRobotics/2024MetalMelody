@@ -177,14 +177,16 @@ The beam is blocked when a game piece is acquired by the intake.
 
 [Sensor Product Page & Datasheet](https://www.adafruit.com/product/2168)
 
-## Miscellaneous Device Power
+## Miscellaneous Devices
 The following PDP ports are allocated to miscellaneous power devices
 
-| Device          |     PDP Port     | Breaker/ Fuse | Notes                               |
-|-----------------|:----------------:|:-------------:|-------------------------------------|
-| Ethernet Switch |        5         |     20 A      | Not Used (Reserved for Future Use)  |
-| Limelight 3     |        6         |     20 A      | Not Used (Reserved for Future Use)  |
-| OpenMesh Radio  | Vbat VRM PCM PWR |     20 A      |                                     |
+| Device          |     PDP Port     | Breaker / Fuse | Notes                              |
+|-----------------|:----------------:|:--------------:|------------------------------------|
+| Ethernet Switch |        5         |      20 A      | Not Used (Reserved for Future Use) |
+| Limelight 3     |        6         |      20 A      | Not Used (Reserved for Future Use) |
+| navX2-MXP       |       ---        |      ---       | Powered by roboRIO USB port        |
+| Camera          |       ---        |      ---       | Powered by roboRIO USB port        |
+| OpenMesh Radio  | Vbat VRM PCM PWR |      20 A      |                                    |
 
 ### OpenMesh Radio
 The OpenMesh radio is connected directly to the Radio Power Module through an Ethernet cable.
