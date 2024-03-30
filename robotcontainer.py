@@ -26,6 +26,7 @@ class RobotContainer:
         ## Lift
         
         NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.raiseFull))
+        NamedCommands.registerCommand("liftShoot", self.lift.runOnce(self.lift.scoreShoot))
         NamedCommands.registerCommand("liftCompress", self.lift.runOnce(self.lift.compressFull))
 
         ## Intake
@@ -35,8 +36,12 @@ class RobotContainer:
         
         ## Pivot
         NamedCommands.registerCommand("pivotScore", self.pivot.runOnce(self.pivot.scoreUpwards))
+        NamedCommands.registerCommand("pivotDrop", self.pivot.runOnce(self.pivot.scoreDownwards))
         NamedCommands.registerCommand("pivotStow", self.pivot.runOnce(self.pivot.stow))
         NamedCommands.registerCommand("pivotIntake", self.pivot.runOnce(self.pivot.intake))
+        
+        ## Misc
+        NamedCommands.registerCommand("shootUpwards", self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.15))).alongWith(self.intake.runOnce(self.intake.disencumber)))
         
         """Sendables!!!"""
         self.start_chooser = SendableChooser()
