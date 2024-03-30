@@ -18,7 +18,7 @@ Robot Name: __Metal Melody__
   * [Motor Controllers](#motor-controllers)
   * [Discrete Sensors](#discrete-sensors)
     * [Beam Break Sensor](#beam-break-sensor)
-  * [Miscellaneous Device Power](#miscellaneous-device-power)
+  * [Miscellaneous Devices](#miscellaneous-devices)
     * [OpenMesh Radio](#openmesh-radio)
     * [Inertial Measurement Unit](#inertial-measurement-unit)
     * [Camera](#camera)
