@@ -18,3 +18,6 @@ The intake consists of 2 motors, one to intake rings that we control via DutyCyc
 
 ## Autonomous
 beep boop
+
+## More Information
+More information about the robot control system can be found in the [Hardware Software Specification](docs/hardware_software_specification.md).
