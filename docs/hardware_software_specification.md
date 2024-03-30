@@ -3,7 +3,7 @@
 Robot Name: __Metal Melody__
 
 <!-- TOC -->
-* [Hardware Software Interface Specification](#hardware-software-interface-specification)
+* [Hardware Software Specification](#hardware-software-specification)
   * [Software Repository](#software-repository)
   * [Description](#description)
     * [Swerve Drive Mechanism](#swerve-drive-mechanism)
@@ -18,9 +18,10 @@ Robot Name: __Metal Melody__
   * [Motor Controllers](#motor-controllers)
   * [Discrete Sensors](#discrete-sensors)
     * [Beam Break Sensor](#beam-break-sensor)
-  * [Ethernet](#ethernet)
+  * [Miscellaneous Device Power](#miscellaneous-device-power)
     * [OpenMesh Radio](#openmesh-radio)
-    * [Limelight 3](#limelight-3)
+    * [Inertial Measurement Unit](#inertial-measurement-unit)
+    * [Camera](#camera)
   * [Useful Links](#useful-links)
 <!-- TOC -->
 
