@@ -1,4 +1,4 @@
-# Hardware Software Interface Specification
+# Hardware Software Specification
 
 Robot Name: __Metal Melody__
 
