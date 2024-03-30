@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5119692565991683,
-        "y": 7.197610328021129
+        "x": 2.009385787577589,
+        "y": 7.016309964522141
       },
       "isLocked": false,
       "linkedName": "CloseNote"
     },
     {
       "anchor": {
-        "x": 1.8,
-        "y": 7.43
+        "x": 1.8175856037874687,
+        "y": 7.635465427849543
       },
       "prevControl": {
-        "x": 2.122067353977788,
-        "y": 7.260718658384535
+        "x": 1.8067278113847576,
+        "y": 7.4146377108321815
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Amp"
     }
   ],
   "rotationTargets": [],
@@ -41,13 +41,13 @@
             {
               "type": "named",
               "data": {
-                "name": "liftExtend"
+                "name": "liftScore"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "pivotStow"
+                "name": "pivotScore"
               }
             }
           ]

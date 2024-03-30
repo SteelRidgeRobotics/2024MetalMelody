@@ -24,31 +24,32 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "pivotScore"
+                  "name": "shootUpwards"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.6
+                  "waitTime": 0.5
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "intakeDisencumber"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.35
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeStop"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "intakeStop"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "pivotStow"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -73,31 +74,32 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "pivotScore"
+                  "name": "shootUpwards"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.6
+                  "waitTime": 0.5
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "intakeDisencumber"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.35
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeStop"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "intakeStop"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "pivotStow"
+                      }
+                    }
+                  ]
                 }
               }
             ]

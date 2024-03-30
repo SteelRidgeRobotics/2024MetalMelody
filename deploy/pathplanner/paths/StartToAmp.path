@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.82,
-        "y": 7.49
+        "x": 1.8175856037874687,
+        "y": 7.635465427849543
       },
       "prevControl": {
-        "x": 1.682391796220232,
-        "y": 7.416832420176303
+        "x": 1.6799774000077006,
+        "y": 7.562297848025846
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,7 +41,13 @@
             {
               "type": "named",
               "data": {
-                "name": "liftExtend"
+                "name": "liftScore"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "pivotScore"
               }
             }
           ]
