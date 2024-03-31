@@ -3,7 +3,9 @@ from constants import *
 from enum import Enum
 from subsystems.swerve import Swerve
 from wpilib import XboxController
+from wpilib import SmartDashboard
 from wpimath.kinematics import ChassisSpeeds
+from math import copysign
 
 class DriveModes(Enum):
     FIELD_RELATIVE = 0
@@ -20,9 +22,12 @@ class DriveByController(Command):
         self.mode = DriveModes.FIELD_RELATIVE
     
     def execute(self) -> None:
-        translation_x = (-self.controller.getLeftY()) * SwerveConstants.k_max_module_speed
-        translation_y = (-self.controller.getLeftX()) * SwerveConstants.k_max_module_speed
-        rotation = (-self.controller.getRightX() ** 3) * SwerveConstants.k_max_rot_rate
+        
+         
+        translation_y = (copysign(1, -self.controller.getLeftX()) * abs(self.controller.getLeftX()) ** (3/2)) * SwerveConstants.k_max_module_speed
+        translation_x = (copysign(1, -self.controller.getLeftY()) * abs(self.controller.getLeftY()) ** (3/2)) * SwerveConstants.k_max_module_speed
+        
+        rotation = (copysign(1, -self.controller.getRightX()) * abs(self.controller.getRightX()) ** (3/2)) * SwerveConstants.k_max_rot_rate
         
         slowdown_mult = 1
         if self.controller.getRightBumper():

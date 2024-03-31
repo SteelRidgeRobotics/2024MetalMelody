@@ -26,7 +26,7 @@ class RobotContainer:
         ## Lift
         
         NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.raiseFull))
-        NamedCommands.registerCommand("liftShoot", self.lift.runOnce(self.lift.scoreShoot))
+        NamedCommands.registerCommand("liftScore", self.lift.runOnce(self.lift.scoreShoot))
         NamedCommands.registerCommand("liftCompress", self.lift.runOnce(self.lift.compressFull))
 
         ## Intake
