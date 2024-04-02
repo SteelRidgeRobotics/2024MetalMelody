@@ -48,3 +48,10 @@ class Pivot(Subsystem):
     def scoreDownwards(self) -> None:
         self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.SCOREPOSDOWN))
         self.state = PivotStates.SCORE_DOWN
+    def togglePos(self) -> None:
+        if self.state == PivotStates.STOWED:
+            self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.INTAKEPOS))
+            self.state = PivotStates.INTAKE
+        else:
+            self.pivotMotor.set_control(MotionMagicDutyCycle(PivotConstants.STOWPOS))
+            self.state = PivotStates.STOWED
