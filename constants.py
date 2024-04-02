@@ -29,6 +29,7 @@ class IntakeConstants:
     INTAKESPEED = 1
 
 class PivotConstants:
+    CURRENTSUPPLYLIMIT = 20  # Must not over-torque the gearbox
     MM_ACCELERATION = 4
     MM_CRUISE_VEL = 4
     STOWPOS = 0
