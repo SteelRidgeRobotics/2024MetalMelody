@@ -27,7 +27,7 @@ class Intake(Subsystem):
         self.state = IntakeStates.STOPPED
 
     def disencumber(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(-IntakeConstants.INTAKESPEED, enable_foc=False))
+        self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
         self.state = IntakeStates.DISENCUMBERING
 
     def consume(self) -> None:
