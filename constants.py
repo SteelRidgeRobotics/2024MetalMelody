@@ -41,7 +41,7 @@ class PivotConstants:
     K_V = 0.12
     K_S = 0.2
     GEAR_RATIO = 50
-    SUPPLY_LIMIT = 35
+    SUPPLY_LIMIT = 5
 
 class LiftConstants:
     CURRENTSUPPLYLIMIT = 25
