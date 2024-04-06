@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "pivotScore"
+            "name": "pivotDrop"
           }
         },
         {
@@ -67,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "pivotScore"
+                  "name": "pivotDrop"
                 }
               },
               {

@@ -34,22 +34,9 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "intakeStop"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "pivotStow"
-                      }
-                    }
-                  ]
+                  "name": "intakeStop"
                 }
               }
             ]
@@ -74,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "shootUpwards"
+                  "name": "intakeDisencumber"
                 }
               },
               {
@@ -84,22 +71,9 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "intakeStop"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "pivotStow"
-                      }
-                    }
-                  ]
+                  "name": "intakeStop"
                 }
               }
             ]

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6527896214600428,
-        "y": 7.416795599223173
+        "x": 1.6578640796564161,
+        "y": 7.145041492081331
       },
       "isLocked": false,
       "linkedName": "AmpStart"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.8175856037874687,
-        "y": 7.635465427849543
+        "y": 7.55
       },
       "prevControl": {
-        "x": 1.6799774000077006,
-        "y": 7.562297848025846
+        "x": 1.850399285073377,
+        "y": 7.421810849868212
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
             {
               "type": "named",
               "data": {
-                "name": "pivotScore"
+                "name": "pivotDrop"
               }
             }
           ]

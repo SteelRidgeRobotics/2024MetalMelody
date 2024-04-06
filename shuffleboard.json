@@ -58,22 +58,6 @@
               "_showGlyph": false
             }
           },
-          "0,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Field",
-              "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "SmartDashboard/Field",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Game/Game": "k2024Crescendo",
-              "Visuals/Robot Icon Size": 25.0,
-              "Visuals/Show Outside Circles": false
-            }
-          },
           "7,1": {
             "size": [
               3,
@@ -126,9 +110,26 @@
             ],
             "content": {
               "_type": "Basic FMS Info",
-              "_title": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "/FMSInfo",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "/SmartDashboard/Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "k2024Crescendo",
+              "Visuals/Robot Icon Size": 25.0,
+              "Visuals/Show Outside Circles": false
             }
           }
         }
