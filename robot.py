@@ -23,7 +23,7 @@ class MetalMelody(commands2.TimedCommandRobot):
             CameraServer.launch()
             
     def robotPeriodic(self) -> None:
-        pass
+        self.container.updateMatchTime()
     
     def _simulationPeriodic(self) -> None:
         pass

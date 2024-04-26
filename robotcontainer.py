@@ -10,7 +10,7 @@ from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
 from subsystems.swerve import Swerve
-from wpilib import SendableChooser, SmartDashboard, XboxController
+from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
@@ -104,3 +104,6 @@ class RobotContainer:
     def runSelectedAutoCommand(self) -> None:
         self.swerve.reset_yaw().reset_odometry(self.start_chooser.getSelected())
         self.getAuto().schedule()
+        
+    def updateMatchTime(self) -> None:
+        SmartDashboard.putNumber("Time", Timer.getMatchTime())
