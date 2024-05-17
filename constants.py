@@ -17,6 +17,17 @@ class MotorIDs:
     
     LIFTMOTOR_RIGHT = 11
     LIFTMOTOR_LEFT = 12
+
+    SWIVELMOTOR_1 = -1
+    SWIVELMOTOR_2 = -1
+
+    TOP_INDEXER_MOTOR = -1
+    BOTTOM_INDEXER_MOTOR = -1
+
+    LEFT_UPPER_LAUNCHER = -1
+    LEFT_LOWER_LAUNCHER = -1
+    RIGHT_UPPER_LAUNCHER = -1
+    RIGHT_LOWER_LAUNCHER = -1
     
 class CANIDs:
     LEFT_FRONT = 5
@@ -27,6 +38,11 @@ class CANIDs:
 class IntakeConstants:
     GEAR_RATIO = 5
     INTAKESPEED = 1
+
+class IndexerConstants:
+    #GEAR_RATIO = 5
+    INDEXERSPEED = 1
+
 
 class PivotConstants:
     MM_ACCELERATION = 4
