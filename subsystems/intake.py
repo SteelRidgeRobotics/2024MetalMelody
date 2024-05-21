@@ -4,7 +4,9 @@ from phoenix6.configs import TalonFXConfiguration
 from phoenix6.controls import DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
+from commands.mode_toggle import ModeToggle as mode_toggle
 from constants import *
+import wpilib
 
 class IntakeStates(Enum):
     STOPPED = 0
@@ -25,10 +27,12 @@ class Intake(Subsystem):
         
         self.has_note = False
         self.state = IntakeStates.STOPPED
+        self.beam_breaker = wpilib.DigitalInput(1)
 
     def disencumber(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
-        self.state = IntakeStates.DISENCUMBERING
+        if mode_toggle.mode == Modes.INTAKE:
+            self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
+            self.state = IntakeStates.DISENCUMBERING
 
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
@@ -39,10 +43,11 @@ class Intake(Subsystem):
         self.state = IntakeStates.STOPPED
         
     def periodic(self) -> None:
-        if self.intakeMotor.get_forward_limit().value is ForwardLimitValue.CLOSED_TO_GROUND:
-            self.has_note = True
-        else:
-            self.has_note = False
+
+        self.has_note = self.beam_breaker.get()
+
+        if self.has_note and mode_toggle.get_mode() == Modes.INTAKE:
+            self.stop()
             
     def hasNote(self) -> bool:
         return self.has_note

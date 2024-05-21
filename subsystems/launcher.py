@@ -1,8 +1,10 @@
 from commands2 import Subsystem
 import phoenix6
+from wpilib import SmartDashboard
 from phoenix6.hardware import TalonFX
 from phoenix6.controls import DutyCycleOut
-from constants import MotorIDs
+from constants import *
+from commands.mode_toggle import ModeToggle as mode_toggle
 
 class Launcher(Subsystem):
 
@@ -14,7 +16,7 @@ class Launcher(Subsystem):
         self.upperRightLauncherMotor = TalonFX(MotorIDs.RIGHT_UPPER_LAUNCHER)
         self.lowerRightLauncherMotor = TalonFX(MotorIDs.RIGHT_LOWER_LAUNCHER)
 
-        self.followRequest = phoenix6.controls.Follower(MotorIDs.LEFT_UPPER_LAUNCHER)
+        self.followRequest = phoenix6.controls.Follower(MotorIDs.LEFT_UPPER_LAUNCHER, False)
         self.upperRightLauncherMotor.set_control(self.followRequest)
         self.lowerRightLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.LEFT_LOWER_LAUNCHER))
 
@@ -32,8 +34,14 @@ class Launcher(Subsystem):
         self.upperLeftLauncherMotor.set_control(DutyCycleOut(1))
         self.lowerLeftLauncherMotor.set_control(DutyCycleOut(1))
 
-    def prime(self) -> None:
-        self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.2))
-        self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.2))
+    def periodic(self) -> None:
+
+        if mode_toggle.get_mode() == Modes.LAUNCHER:
+            self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.2))
+            self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.2))
+        else:
+            self.upperLeftLauncherMotor.set_control(DutyCycleOut(0))
+            self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0))
+
+        SmartDashboard.putNumber("Mode ", mode_toggle.get_mode())
         
-    

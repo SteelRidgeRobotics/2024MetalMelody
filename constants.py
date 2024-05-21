@@ -75,6 +75,10 @@ class ExternalConstants:
     FUNCTIONSCONTROLLER = 1
     TRIGGER_DEADBAND = 0.1
     
+class Modes:
+    INTAKE = 0
+    LAUNCHER = 1
+
 """
 SWERVE
     """

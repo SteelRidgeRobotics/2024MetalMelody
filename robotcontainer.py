@@ -2,7 +2,10 @@ from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
+from commands.mode_toggle import ModeToggle
+from commands.fire import Fire
 from commands2.button import JoystickButton
+from commands2 import InstantCommand
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6.controls import DutyCycleOut
@@ -10,6 +13,8 @@ from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
 from subsystems.swerve import Swerve
+from subsystems.launcher import Launcher
+from subsystems.indexer import Indexer
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
 
@@ -20,6 +25,8 @@ class RobotContainer:
         self.lift: Lift = Lift()
         self.intake: Intake = Intake()
         self.pivot: Pivot = Pivot()
+        self.launcher: Launcher = Launcher()
+        self.indexer: Indexer = Indexer()
         self.swerve.initialize()
                 
         # PathPlanner Commands        
@@ -89,8 +96,11 @@ class RobotContainer:
         
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
 
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
+       # JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
+       # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(lambda: InstantCommand(ModeToggle()))
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(Fire())
+
         JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.scoreDownwards)))
 
         JoystickButton(self.functionsController, XboxController.Button.kRightStick).onTrue(self.lift.runOnce(self.lift.scoreShoot).alongWith(self.pivot.runOnce(self.pivot.scoreUpwards)))
