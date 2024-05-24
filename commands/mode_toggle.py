@@ -15,6 +15,9 @@ class ModeToggle(Command):
 
         ModeToggle.mode = (ModeToggle.mode + 1) % 2
 
+    def isFinished(self):
+        return True
+
     @staticmethod
     def get_mode():
         return ModeToggle.mode

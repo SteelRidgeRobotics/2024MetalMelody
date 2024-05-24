@@ -7,6 +7,8 @@ from phoenix6.signals import ForwardLimitValue
 from commands.mode_toggle import ModeToggle as mode_toggle
 from constants import *
 import wpilib
+from wpilib import SmartDashboard
+
 
 class IntakeStates(Enum):
     STOPPED = 0

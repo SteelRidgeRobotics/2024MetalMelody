@@ -10,7 +10,7 @@ class Swivel(Subsystem):
         self.motor1 = TalonFX(MotorIDs.SWIVELMOTOR_1)
         self.motor2 = TalonFX(MotorIDs.SWIVELMOTOR_2)
 
-
+        
 
     def sendToShooter(self) -> None:
         pass
