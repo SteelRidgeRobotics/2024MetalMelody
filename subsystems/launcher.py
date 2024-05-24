@@ -16,15 +16,16 @@ class Launcher(Subsystem):
         self.upperRightLauncherMotor = TalonFX(MotorIDs.RIGHT_UPPER_LAUNCHER)
         self.lowerRightLauncherMotor = TalonFX(MotorIDs.RIGHT_LOWER_LAUNCHER)
 
-        self.followRequest = phoenix6.controls.Follower(MotorIDs.LEFT_UPPER_LAUNCHER, False)
-        self.lowerRightLauncherMotor.set_control(self.followRequest)
-        self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
-
         self.invertConfig = phoenix6.configs.MotorOutputConfigs()
 
         self.invertConfig.inverted = phoenix6.configs.talon_fx_configs.InvertedValue.CLOCKWISE_POSITIVE
 
         self.upperLeftLauncherMotor.configurator.apply(self.invertConfig)
+
+        self.followRequest = phoenix6.controls.Follower(MotorIDs.LEFT_UPPER_LAUNCHER, False)
+        self.lowerRightLauncherMotor.set_control(self.followRequest)
+        self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
+        
 
         #self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.1))
         #self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.1))
@@ -32,19 +33,25 @@ class Launcher(Subsystem):
 
     def launch(self) -> None:
         self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.3))
-        self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.3))
+        self.upperRightLauncherMotor.set_control(DutyCycleOut(0.3))
+        self.lowerRightLauncherMotor.set_control(self.followRequest)
+        self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
 
     def stop(self) -> None:
 
         self.upperLeftLauncherMotor.set_control(DutyCycleOut(0))
-        self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0))
+        self.upperRightLauncherMotor.set_control(DutyCycleOut(0))
+        self.lowerRightLauncherMotor.set_control(self.followRequest)
+        self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
 
 
     def periodic(self) -> None:
 
         if mode_toggle.get_mode() == Modes.LAUNCHER:
             self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.1))
-            self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.1))
+            self.upperRightLauncherMotor.set_control(DutyCycleOut(0.1))
+            self.lowerRightLauncherMotor.set_control(self.followRequest)
+            self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
         else:
             self.stop()
 
