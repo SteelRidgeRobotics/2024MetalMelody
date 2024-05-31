@@ -1,52 +1,37 @@
-from commands2 import Subsystem
-import phoenix6
-from wpilib import SmartDashboard
+from commands2 import Command, Subsystem
 from phoenix6.hardware import TalonFX
-from phoenix6.controls import DutyCycleOut
-from constants import *
-from commands.mode_toggle import ModeToggle as mode_toggle
+from phoenix6.controls import DutyCycleOut, Follower
+from constants import MotorIDs
 
 class Launcher(Subsystem):
 
-    def __init__(self) -> None:
-        super().__init__()
+    top_left = TalonFX(MotorIDs.k_top_left_launcher)
+    bottom_left = TalonFX(MotorIDs.k_bottom_left_launcher)
+    top_right = TalonFX(MotorIDs.k_top_right_launcher)
+    bottom_right = TalonFX(MotorIDs.k_bottom_right_launcher)
 
-        self.upperLeftLauncherMotor = TalonFX(MotorIDs.LEFT_UPPER_LAUNCHER)
-        self.lowerLeftLauncherMotor = TalonFX(MotorIDs.LEFT_LOWER_LAUNCHER)
-        self.upperRightLauncherMotor = TalonFX(MotorIDs.RIGHT_UPPER_LAUNCHER)
-        self.lowerRightLauncherMotor = TalonFX(MotorIDs.RIGHT_LOWER_LAUNCHER)
+    bottom_left.set_control(
+        Follower(MotorIDs.k_top_left_launcher, True)
+    )
 
-        self.followRequest = phoenix6.controls.Follower(MotorIDs.LEFT_UPPER_LAUNCHER, False)
-        self.lowerRightLauncherMotor.set_control(self.followRequest)
-        self.lowerLeftLauncherMotor.set_control(self.followRequest.with_master_id(MotorIDs.RIGHT_UPPER_LAUNCHER))
-
-        self.invertConfig = phoenix6.configs.MotorOutputConfigs()
-
-        self.invertConfig.inverted = phoenix6.configs.talon_fx_configs.InvertedValue.CLOCKWISE_POSITIVE
-
-        self.upperLeftLauncherMotor.configurator.apply(self.invertConfig)
-
-        #self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.1))
-        #self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.1))
+    top_right.set_control(
+        Follower(MotorIDs.k_top_left_launcher, True)
+    )
         
+    bottom_right.set_control(
+        Follower(MotorIDs.k_bottom_right_launcher, False)
+    )    
 
-    def launch(self) -> None:
-        self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.3))
-        self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.3))
+    def launch(self) -> Command:
+        return self.runOnce(
+            lambda: self.top_left.set_control(
+                DutyCycleOut(0.3)
+            )
+        )
 
-    def stop(self) -> None:
-
-        self.upperLeftLauncherMotor.set_control(DutyCycleOut(0))
-        self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0))
-
-
-    def periodic(self) -> None:
-
-        if mode_toggle.get_mode() == Modes.LAUNCHER:
-            self.upperLeftLauncherMotor.set_control(DutyCycleOut(0.1))
-            self.lowerLeftLauncherMotor.set_control(DutyCycleOut(0.1))
-        else:
-            self.stop()
-
-        SmartDashboard.putNumber("Mode ", mode_toggle.get_mode())
-        
+    def stop(self) -> Command:
+        return self.runOnce(
+            lambda: self.top_left.set_control(
+                DutyCycleOut(0)
+            )
+        )

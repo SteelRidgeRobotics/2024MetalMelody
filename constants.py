@@ -24,10 +24,10 @@ class MotorIDs:
     TOP_INDEXER_MOTOR = -1
     BOTTOM_INDEXER_MOTOR = -1
 
-    LEFT_UPPER_LAUNCHER = 16
-    LEFT_LOWER_LAUNCHER = 17
-    RIGHT_UPPER_LAUNCHER = 18
-    RIGHT_LOWER_LAUNCHER = 19
+    k_top_left_launcher = 16
+    k_bottom_left_launcher = 17
+    k_top_right_launcher = 18
+    k_bottom_right_launcher = 19
     
 class CANIDs:
     LEFT_FRONT = 5

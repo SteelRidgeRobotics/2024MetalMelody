@@ -1,22 +1,20 @@
-from commands2 import Subsystem
+from commands2 import Command, Subsystem
 from enum import Enum
 from phoenix6.configs import TalonFXConfiguration
 from phoenix6.controls import DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
-from commands.mode_toggle import ModeToggle as mode_toggle
 from constants import *
 import wpilib
-from wpilib import SmartDashboard
 
-
-class IntakeStates(Enum):
-    STOPPED = 0
-    DISENCUMBERING = 1
-    CONSUME = 2
+class ScoreStates(Enum):
+    HOLD = 0
+    MOVE_TO_INDEXER = 1
 
 class Intake(Subsystem):
-    
+
+    state = ScoreStates.MOVE_TO_INDEXER
+
     def __init__(self):
         super().__init__()
         self.setName("Intake")
@@ -28,28 +26,26 @@ class Intake(Subsystem):
         self.intakeMotor.configurator.apply(intake_config)
         
         self.has_note = False
-        self.state = IntakeStates.STOPPED
         self.beam_breaker = wpilib.DigitalInput(1)
 
     def disencumber(self) -> None:
-        if mode_toggle.mode == Modes.INTAKE:
-            self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
-            self.state = IntakeStates.DISENCUMBERING
+        self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
 
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
-        self.state = IntakeStates.CONSUME
 
     def stop(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
-        self.state = IntakeStates.STOPPED
         
     def periodic(self) -> None:
 
         self.has_note = self.beam_breaker.get()
 
-        if self.has_note and mode_toggle.get_mode() == Modes.INTAKE:
+        if self.has_note and self.state == ScoreStates.HOLD:
             self.stop()
+
+    def toggle_hold_note(self) -> None:
+        self.state = not self.state
             
     def hasNote(self) -> bool:
         return self.has_note

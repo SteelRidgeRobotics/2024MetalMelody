@@ -4,7 +4,6 @@ from phoenix6.configs import TalonFXConfiguration
 from phoenix6.controls import DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
-from commands.mode_toggle import ModeToggle as mode_toggle
 import phoenix6
 import wpilib
 
@@ -51,9 +50,9 @@ class Indexer(Subsystem):
         self.is_shooting = False
 
     def periodic(self) -> None:
-        self.has_note = self.beam_breaker.get()
+        #self.has_note = self.beam_breaker.get()
 
-        if self.has_note and not self.is_shooting and mode_toggle.get_mode() == Modes.LAUNCHER:
+        if self.has_note and not self.is_shooting:
             self.stop()
 
         return super().periodic()
