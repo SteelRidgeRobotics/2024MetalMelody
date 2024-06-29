@@ -18,8 +18,8 @@ class MotorIDs:
     LIFTMOTOR_RIGHT = 11
     LIFTMOTOR_LEFT = 12
 
-    SWIVELMOTOR_1 = -1
-    SWIVELMOTOR_2 = -1
+    SWIVELMOTOR_RIGHT = -1
+    SWIVELMOTOR_LEFT = -1
 
     TOP_INDEXER_MOTOR = -1
     BOTTOM_INDEXER_MOTOR = -1
@@ -70,6 +70,18 @@ class LiftConstants:
     MM_ACCEL = 75
     MM_VEL = 100
 
+class SwivelConstants:
+    MM_ACCELERATION = 0
+    MM_CRUISE_VEL = 0
+    TRANSFERPOS = 0 #rename later
+    K_P = 0
+    K_I = 0
+    K_D = 0
+    K_V = 0
+    K_S = 0
+    GEAR_RATIO = 1
+    SUPPLY_LIMIT = 0
+
 class ExternalConstants:
     DRIVERCONTROLLER = 0
     FUNCTIONSCONTROLLER = 1
@@ -81,7 +93,7 @@ class Modes:
 
 """
 SWERVE
-    """
+"""
     
 class SwerveConstants:
     k_wheel_size = 0.1 # meters
