@@ -39,7 +39,7 @@ class DriveByController(Command):
             self.swerve.robot_centric_drive(ChassisSpeeds(translation_x / slowdown_mult, translation_y / slowdown_mult, rotation / slowdown_mult))
             
         # Toggle Modes
-        if self.controller.getYButtonPressed():
+        if self.controller.getYButtonPressed() and False:
             if self.mode == DriveModes.FIELD_RELATIVE:
                 self.mode = DriveModes.ROBOT_CENTRIC
             else:
