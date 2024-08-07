@@ -19,8 +19,8 @@ class MetalMelody(commands2.TimedCommandRobot):
         
         self.container = RobotContainer()
         
-        if RobotBase.isReal():
-            CameraServer.launch()
+        #if RobotBase.isReal():
+            #CameraServer.launch()
             
     def robotPeriodic(self) -> None:
         self.container.updateMatchTime()
@@ -29,7 +29,7 @@ class MetalMelody(commands2.TimedCommandRobot):
         pass
         
     def disabledInit(self) -> None:
-        SignalLogger.stop()
+        pass
         
     def disabledPeriodic(self) -> None:
         pass
