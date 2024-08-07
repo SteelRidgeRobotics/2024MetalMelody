@@ -174,7 +174,7 @@ class Swerve(Subsystem):
         self.left_rear.set_desired_state(desatStates[1], override_brake_dur_neutral=self.obdn)
         self.right_front.set_desired_state(desatStates[2], override_brake_dur_neutral=self.obdn)
         self.right_rear.set_desired_state(desatStates[3], override_brake_dur_neutral=self.obdn)
-        
+        # this is ryans battlebot
     def set_max_module_speed(self, max_module_speed: float=SwerveConstants.k_max_module_speed) -> None:
         self.max_module_speed = max_module_speed
         

@@ -43,23 +43,15 @@ class Lift(Subsystem):
         self.follower_motor.set_control(CoastOut())
         
         self.state = LiftStates.RAISED
-        self.prev_state = self.state
 
-        self.stall_duration = 0
+        self.timer = 0
 
     def periodic(self) -> None:
-        if self.prev_state == self.state:
-            self.stall_duration = 0
 
-        if self.master_motor.get_rotor_velocity().value == 0:
-            self.stall_duration += 0.02
-        else:
-            self.stall_duration = 0
+        if self.master_motor.get_velocity().value == 0 and self.master_motor._get_pid_position_closed_loop_error().value < 15 and self.timer > 0.1 and self.state is LiftStates.LOWERED:
+            self.stop() # If we're not moving, don't move! :exploding_head:
 
-        if self.stall_duration >= 1:
-            self.master_motor.set_control(DutyCycleOut(0)) # If we're not moving, don't move! :exploding_head:
-
-        self.prev_state = self.state
+        self.timer += 0.02
         
     def getState(self) -> LiftStates:
         return self.state
@@ -84,6 +76,7 @@ class Lift(Subsystem):
 
     def compressFull(self) -> None:
         self.master_motor.set_control(PositionDutyCycle(LiftConstants.BOTTOMPOSITION))
+        self.timer = 0
         self.state = LiftStates.LOWERED
 
     def scoreShoot(self) -> None:
