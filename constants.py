@@ -33,9 +33,10 @@ class PivotConstants:
     MM_CRUISE_VEL = 0.5
     MM_JERK = 20
     STOWPOS = 0
-    INTAKEPOS = 0.32
-    SCOREPOSDOWN = 0.257
-    SCOREPOSUP = 0.075 #For scoring up into the amp (yell at Kaylee not me ;-;)
+    INTAKEPOS = 0.333
+    SCOREPOSDOWN = 0.265
+    SCOREPOSUP = 0.107 #For scoring up into the amp (yell at Kaylee not me ;-;) 
+
     K_P = 10
     K_I = 0
     K_D = 0.2
@@ -51,7 +52,7 @@ class LiftConstants:
     BOTTOMPOSITION = 0
     GEARRATIO = 12
     K_P = 1
-    K_I = 0.25
+    K_I = 0.1
     MM_ACCEL = 75
     MM_VEL = 100
 
