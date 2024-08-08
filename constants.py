@@ -33,8 +33,8 @@ class PivotConstants:
     MM_CRUISE_VEL = 0.5
     MM_JERK = 20
     STOWPOS = 0
-    INTAKEPOS = 0.333
-    SCOREPOSDOWN = 0.265
+    INTAKEPOS = 0.361
+    SCOREPOSDOWN = 0.268
     SCOREPOSUP = 0.107 #For scoring up into the amp (yell at Kaylee not me ;-;) 
 
     K_P = 10
