@@ -85,6 +85,11 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
+        
+        JoystickButton(self.functionsController, XboxController.Button.kBack).onTrue(IntakeAndStow(self.intake, self.pivot, True)
+                                                                                           .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
+                                                                                           .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
+
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
                                                                                             .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
                                                                                             .alongWith(self.intake.runOnce(self.intake.disencumber))

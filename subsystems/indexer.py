@@ -19,33 +19,26 @@ class Indexer(Subsystem):
     def __init__(self):
         super().__init__()
         
-        self.top_motor = TalonFX(MotorIDs.TOP_INDEXER_MOTOR)
-        self.bottom_motor = TalonFX(MotorIDs.BOTTOM_INDEXER_MOTOR)
+        self.motor = TalonFX(MotorIDs.INDEXER_MOTOR)
 
-        self.invertConfig = phoenix6.configs.MotorOutputConfigs()
-        self.invertConfig.inverted = phoenix6.configs.talon_fx_configs.InvertedValue.CLOCKWISE_POSITIVE
-        self.bottom_motor.configurator.apply(self.invertConfig)
+        self.intake_beam_breaker = wpilib.DigitalInput(1)
+        self.launcher_beam_breaker = wpilib.DigitalInput(2)
 
-        self.beam_breaker = wpilib.DigitalInput(0)
-        
         self.has_note = False
         self.is_shooting = False
         self.state = IndexerStates.STOPPED
 
     def intakeWise(self) -> None:
-        self.top_motor.set_control(DutyCycleOut(-IndexerConstants.INDEXERSPEED, enable_foc=False))
-        self.bottom_motor.set_control(DutyCycleOut(-IndexerConstants.INDEXERSPEED, enable_foc=False))
+        self.motor.set_control(DutyCycleOut(-IndexerConstants.INDEXERSPEED, enable_foc=False))
         self.state = IndexerStates.INTAKEWISE
 
     def launcherWise(self) -> None:
-        self.top_motor.set_control(DutyCycleOut(IndexerConstants.INDEXERSPEED))
-        self.bottom_motor.set_control(DutyCycleOut(IndexerConstants.INDEXERSPEED, enable_foc=False))
+        self.motor.set_control(DutyCycleOut(IndexerConstants.INDEXERSPEED))
         self.state = IndexerStates.LAUNCHERWISE
         self.is_shooting = True
 
     def stop(self) -> None:
-        self.top_motor.set_control(DutyCycleOut(0))
-        self.bottom_motor.set_control(DutyCycleOut(0))
+        self.motor.set_control(DutyCycleOut(0))
         self.state = IndexerStates.STOPPED
         self.is_shooting = False
 

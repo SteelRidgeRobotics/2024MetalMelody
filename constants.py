@@ -21,8 +21,7 @@ class MotorIDs:
     SWIVELMOTOR_RIGHT = -1
     SWIVELMOTOR_LEFT = -1
 
-    TOP_INDEXER_MOTOR = -1
-    BOTTOM_INDEXER_MOTOR = -1
+    INDEXER_MOTOR = -1
 
     k_top_left_launcher = 16
     k_bottom_left_launcher = 17
