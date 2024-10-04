@@ -1,5 +1,6 @@
 from commands.drive import DriveByController
 from commands.intake_and_stow import IntakeAndStow
+from commands.rev_launcher import RevLauncher
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
 from commands2.button import JoystickButton, Trigger
@@ -9,6 +10,7 @@ from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
+from subsystems.swivel import Swivel
 from subsystems.swerve import Swerve
 from subsystems.launcher import Launcher
 from subsystems.indexer import Indexer
@@ -19,6 +21,7 @@ class RobotContainer:
     
     def __init__(self):
         self.swerve: Swerve = Swerve()
+        self.swivel: Swivel = Swivel()
         self.lift: Lift = Lift()
         self.intake: Intake = Intake()
         self.pivot: Pivot = Pivot()
@@ -82,13 +85,21 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         
-        JoystickButton(self.functionsController, XboxController.Button.kBack).onTrue(IntakeAndStow(self.intake, self.pivot, True)
+        JoystickButton(self.functionsController, XboxController.Button.kBack).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer, True)
+                                                                                            .alongWith(self.indexer.runOnce(self.indexer.swallow))
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
+
+        JoystickButton(self.functionsController, XboxController.Button.kStart).onTrue(RevLauncher(self.swivel, self.indexer, self.launcher, 0)
+                                                                                      .andThen(self.indexer.runOnce(self.indexer.swallow).withTimeout(.75))
+                                                                                      .andThen(self.lift.runOnce(self.lift.compressFull))
+                                                                                      .alongWith(self.indexer.runOnce(self.indexer.stop))
+                                                                                      .alongWith(self.launcher.runOnce(self.launcher.stop))
+                                                                                      )
 
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
                                                                                             .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)

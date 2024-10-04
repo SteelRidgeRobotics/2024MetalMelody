@@ -38,9 +38,12 @@ class IntakeConstants:
     GEAR_RATIO = 5
     INTAKESPEED = 1
 
-class IndexerConstants:
+class LauncherConstants:
     #GEAR_RATIO = 5
     INDEXERSPEED = 1
+    SHOOTSPEED = 160
+    SHOOTPERCENT = 0.3
+    CONSTANTPERCENT = 0
 
 
 class PivotConstants:

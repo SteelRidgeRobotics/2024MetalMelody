@@ -1,37 +1,45 @@
 from commands2 import Command, Subsystem
 from phoenix6.hardware import TalonFX
 from phoenix6.controls import DutyCycleOut, Follower
-from constants import MotorIDs
+from constants import MotorIDs, LauncherConstants
+import phoenix6
 
 class Launcher(Subsystem):
 
-    top_left = TalonFX(MotorIDs.k_top_left_launcher)
-    bottom_left = TalonFX(MotorIDs.k_bottom_left_launcher)
-    top_right = TalonFX(MotorIDs.k_top_right_launcher)
-    bottom_right = TalonFX(MotorIDs.k_bottom_right_launcher)
+    def __init__(self):
+        super().__init__()
+        self.top_left = TalonFX(MotorIDs.k_top_left_launcher)
+        self.bottom_left = TalonFX(MotorIDs.k_bottom_left_launcher)
+        self.top_right = TalonFX(MotorIDs.k_top_right_launcher)
+        self.bottom_right = TalonFX(MotorIDs.k_bottom_right_launcher)
 
-    bottom_left.set_control(
-        Follower(MotorIDs.k_top_left_launcher, True)
-    )
+        self.motor_configuration = phoenix6.configs.TalonFXConfiguration()
+        self.motor_configuration.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.COAST
 
-    top_right.set_control(
-        Follower(MotorIDs.k_top_left_launcher, True)
-    )
+        self.top_left.configurator.apply(self.motor_configuration)
+        self.bottom_left.configurator.apply(self.motor_configuration)
+        self.top_right.configurator.apply(self.motor_configuration)
+        self.bottom_right.configurator.apply(self.motor_configuration)
         
-    bottom_right.set_control(
-        Follower(MotorIDs.k_bottom_right_launcher, False)
-    )    
-
-    def launch(self) -> Command:
-        return self.runOnce(
-            lambda: self.top_left.set_control(
-                DutyCycleOut(0.3)
-            )
+        self.bottom_left.set_control(
+            Follower(MotorIDs.k_top_left_launcher, True)
         )
 
-    def stop(self) -> Command:
-        return self.runOnce(
-            lambda: self.top_left.set_control(
-                DutyCycleOut(0)
-            )
+        self.top_right.set_control(
+            Follower(MotorIDs.k_top_left_launcher, True)
         )
+            
+        self.bottom_right.set_control(
+            Follower(MotorIDs.k_bottom_right_launcher, False)
+        )
+
+    def get_velocity(self):
+        return self.top_left.get_rotor_velocity
+
+    def rev(self):
+        self.top_left.set_control(DutyCycleOut(LauncherConstants.SHOOTPERCENT))
+        
+    def stop(self):
+        self.top_left.set_control(DutyCycleOut(LauncherConstants.CONSTANTPERCENT))
+
+    
