@@ -16,6 +16,7 @@ from subsystems.launcher import Launcher
 from subsystems.indexer import Indexer
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
+from frc6343.controller.deadband import deadband
 
 class RobotContainer:
     
@@ -85,43 +86,49 @@ class RobotContainer:
         
         self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
 
+        #intake and stow
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         
+        #send to shooter
         JoystickButton(self.functionsController, XboxController.Button.kBack).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer, True)
-                                                                                            .alongWith(self.indexer.runOnce(self.indexer.swallow))
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
 
-        JoystickButton(self.functionsController, XboxController.Button.kStart).onTrue(RevLauncher(self.swivel, self.indexer, self.launcher, 0)
+        #fire
+        JoystickButton(self.functionsController, XboxController.Button.kStart).onTrue(RevLauncher(self.launcher, 0)
                                                                                       .andThen(self.indexer.runOnce(self.indexer.swallow).withTimeout(.75))
-                                                                                      .andThen(self.lift.runOnce(self.lift.compressFull))
-                                                                                      .alongWith(self.indexer.runOnce(self.indexer.stop))
-                                                                                      .alongWith(self.launcher.runOnce(self.launcher.stop))
+                                                                                      .andThen(self.indexer.runOnce(self.indexer.stop)
+                                                                                        .alongWith(self.launcher.runOnce(self.launcher.stop)))
                                                                                       )
 
+        #disencumber
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
                                                                                             .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
                                                                                             .alongWith(self.intake.runOnce(self.intake.disencumber))
                                                                                             ).onFalse(self.intake.runOnce(self.intake.stop).alongWith(self.pivot.runOnce(self.pivot.stow)))
         
-        
+        #down and stow
         JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
 
-        # JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
-        # JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(self.launcher.launch()).onFalse(self.launcher.stop())
+        #climb
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift)
+                                        .onlyIf(deadband(self.functionsController.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0))
 
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue( # Toggle
-            self.intake.runOnce(lambda: self.intake.toggle_hold_note())
-        )
+        #stow
+        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
 
+        #amp scoring position
         JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.scoreDownwards)))
 
+        #up slightly and upwards scoring position
         JoystickButton(self.functionsController, XboxController.Button.kRightStick).onTrue(self.lift.runOnce(self.lift.scoreShoot).alongWith(self.pivot.runOnce(self.pivot.scoreUpwards)))
+
+        #up and stow
         JoystickButton(self.functionsController, XboxController.Button.kLeftStick).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
         
+        #stow (driver)
         JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
 
     def getAuto(self) -> PathPlannerAuto:

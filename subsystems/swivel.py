@@ -9,7 +9,7 @@ class Swivel(Subsystem):
 
     def __init__(self):
         super().__init__()
-        self.setName("Lift")
+        self.setName("Swivel")
         
         self.master_motor = TalonFX(MotorIDs.SWIVELMOTOR_RIGHT) # Right Motor
         general_config = TalonFXConfiguration()
@@ -31,7 +31,7 @@ class Swivel(Subsystem):
         # )
         self.follower_motor.configurator.apply(follower_config)
         
-        self.follower_motor.set_control(Follower(MotorIDs.SWIVELMOTOR_RIGHT))
+        self.follower_motor.set_control(Follower(MotorIDs.SWIVELMOTOR_RIGHT, False))
 
     def reposition(self, position=SwivelConstants.TRANSFERPOS):
         

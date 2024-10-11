@@ -33,7 +33,4 @@ class Intake(Subsystem):
 
     def stop(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
-
-    def toggle_hold_note(self) -> None:
-        self.state = not self.state
             

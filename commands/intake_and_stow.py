@@ -12,11 +12,13 @@ class IntakeAndStow(Command):
         self.pivot = pivot
         self.ignore = ignore
         self.indexer = indexer
-        self.addRequirements(self.intake, self.pivot)
+        self.addRequirements(self.intake, self.pivot, self.indexer)
         
     def initialize(self):
         self.pivot.intake()
         self.intake.consume()
+        if self.ignore:
+            self.indexer.swallow()
         
     def isFinished(self) -> bool:
         if not self.ignore:
