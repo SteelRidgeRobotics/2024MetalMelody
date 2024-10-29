@@ -14,7 +14,7 @@ class IntakeAndStow(Command):
         self.indexer = indexer
         self.addRequirements(self.intake, self.pivot, self.indexer)
         
-    def initialize(self):
+    def execute(self):
         self.pivot.intake()
         self.intake.consume()
         if self.ignore:

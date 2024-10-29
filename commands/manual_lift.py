@@ -29,4 +29,4 @@ class ManualLift(Command):
         self.lift.stop()
 
     def getTriggerCombinedValue(self) -> float:
-        return deadband(self.controller.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND)
+        return deadband(self.controller.getRightTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND)

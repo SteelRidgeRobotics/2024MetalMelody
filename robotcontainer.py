@@ -91,21 +91,24 @@ class RobotContainer:
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         
-        #send to shooter
-        JoystickButton(self.functionsController, XboxController.Button.kBack).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer, True)
+        #send to indexer
+        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot, self.indexer, True)
+                                                                                           .onlyIf(deadband(self.functionsController.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
-                                                                                           .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
+                                                                                           .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25))
+                                                                                           )
 
         #fire
-        JoystickButton(self.functionsController, XboxController.Button.kStart).onTrue(RevLauncher(self.launcher, 0)
+        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(RevLauncher(self.launcher)
+                                                                                      .onlyIf(deadband(self.functionsController.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0)     
                                                                                       .andThen(self.indexer.runOnce(self.indexer.swallow).withTimeout(.75))
                                                                                       .andThen(self.indexer.runOnce(self.indexer.stop)
-                                                                                        .alongWith(self.launcher.runOnce(self.launcher.stop)))
-                                                                                      )
+                                                                                      .alongWith(self.launcher.runOnce(self.launcher.stop))))
+                                                                                      
 
         #disencumber
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
-                                                                                            .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
+                                                                                            .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP and deadband(self.functionsController.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0)
                                                                                             .alongWith(self.intake.runOnce(self.intake.disencumber))
                                                                                             ).onFalse(self.intake.runOnce(self.intake.stop).alongWith(self.pivot.runOnce(self.pivot.stow)))
         
@@ -114,7 +117,11 @@ class RobotContainer:
 
         #climb
         JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift)
-                                        .onlyIf(deadband(self.functionsController.getLeftTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0))
+                                        .onlyIf(deadband(self.functionsController.getRightTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) != 0))
+        
+        #rev
+        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(self.launcher.runOnce(self.launcher.rev)
+                                        .onlyIf(deadband(self.functionsController.getRightTriggerAxis(), ExternalConstants.TRIGGER_DEADBAND) == 0))
 
         #stow
         JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))

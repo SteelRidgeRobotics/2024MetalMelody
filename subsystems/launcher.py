@@ -3,6 +3,7 @@ from phoenix6.hardware import TalonFX
 from phoenix6.controls import DutyCycleOut, Follower
 from constants import MotorIDs, LauncherConstants
 import phoenix6
+import wpilib
 
 class Launcher(Subsystem):
 
@@ -33,13 +34,17 @@ class Launcher(Subsystem):
             Follower(MotorIDs.k_bottom_right_launcher, False)
         )
 
+        wpilib.SmartDashboard.putNumber("Rev", 0)
+
     def get_velocity(self):
         return self.top_left.get_rotor_velocity
 
     def rev(self):
         self.top_left.set_control(DutyCycleOut(LauncherConstants.SHOOTPERCENT))
+        wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle())
         
     def stop(self):
         self.top_left.set_control(DutyCycleOut(LauncherConstants.CONSTANTPERCENT))
+        wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle())
 
     

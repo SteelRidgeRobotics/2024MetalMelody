@@ -5,17 +5,14 @@ from constants import *
 
 class RevLauncher(Command):
     
-    def __init__(self, launcher: Launcher, angle):
+    def __init__(self, launcher: Launcher):
         super().__init__()
         
         self.launcher = launcher
         self.addRequirements(self.launcher)
 
-    def initialize(self):
-        self.launcher.rev()
-
     def execute(self):
-        
+        self.launcher.rev()
 
         return super().execute()
 

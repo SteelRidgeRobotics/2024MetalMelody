@@ -24,10 +24,12 @@ class Indexer(Subsystem):
     def swallow(self) -> None:
         self.motor.set_control(DutyCycleOut(LauncherConstants.INDEXERSPEED))
         self.is_shooting = True
+        wpilib.SmartDashboard.putBoolean("Swallowing", True)
 
     def stop(self) -> None:
         self.motor.set_control(DutyCycleOut(0))
         self.is_shooting = False
+        wpilib.SmartDashboard.putBoolean("Swallowing", False)
 
     def periodic(self) -> None:
         self.has_note = self.beam_breaker.get()

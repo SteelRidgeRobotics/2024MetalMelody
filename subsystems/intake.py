@@ -27,10 +27,14 @@ class Intake(Subsystem):
 
     def disencumber(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(-0.5, enable_foc=False))
+        wpilib.SmartDashboard.putBoolean("Intaking", True)
 
     def consume(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
+        wpilib.SmartDashboard.putBoolean("Not Intaking", True)
 
     def stop(self) -> None:
         self.intakeMotor.set_control(DutyCycleOut(0))
+        wpilib.SmartDashboard.putBoolean("Intaking", False)
+        wpilib.SmartDashboard.putBoolean("Not Intaking", False)
             
