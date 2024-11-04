@@ -21,6 +21,8 @@ class Indexer(Subsystem):
         self.has_note = False
         self.is_shooting = False
 
+
+
     def swallow(self) -> None:
         self.motor.set_control(DutyCycleOut(LauncherConstants.INDEXERSPEED))
         self.is_shooting = True
