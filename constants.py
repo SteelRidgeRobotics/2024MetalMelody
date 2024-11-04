@@ -1,28 +1,90 @@
 from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, TalonFXConfiguration
 from phoenix6.hardware.talon_fx import TalonFX
+from pathplannerlib.controller import PIDConstants
+from phoenix6.configs import Slot0Configs
+from phoenix6.configs.talon_fx_configs import *
+from wpilib import RobotBase
+from wpimath.geometry import Translation2d
 
-class MotorIDs:
-    LEFT_FRONT_DRIVE = 1
-    LEFT_REAR_DRIVE = 2
-    RIGHT_FRONT_DRIVE = 3
-    RIGHT_REAR_DRIVE = 4
+class DrivetrainConstants:
 
-    LEFT_FRONT_DIRECTION = 5
-    LEFT_REAR_DIRECTION = 6
-    RIGHT_FRONT_DIRECTION = 7
-    RIGHT_REAR_DIRECTION = 8
+    k_canbus_name = "rio" # The name of the CAN bus with all the swerve devices. Use "rio" if not using a CANivore
+
+    k_steer_gains = Slot0Configs() \
+    .with_k_p(100).with_k_i(0).with_k_d(0.2) \
+    .with_k_s(0).with_k_v(1.5).with_k_a(0)
+
+    k_drive_gains = Slot0Configs() \
+    .with_k_p(0.35).with_k_i(0).with_k_d(0) \
+    .with_k_s(0).with_k_v(1.2).with_k_a(0)
+
+    # Stator current at which the wheels start to slip.
+    k_slip_current = 80
+
+    k_max_rot_rate = 5.607 # Max chassis rotation rate (rad/s)
+    k_max_drive_speed = 4.712389 # Max speed of the robot (m/s)
+
+    k_wheel_diameter = 0.1 # meters
+
+    k_drive_gear_ratio = 27 / 4
+    k_steer_gear_ratio = 150 / 7
+
+    k_module_locations = (
+        Translation2d(0.587, 0.587), # Left front
+        Translation2d(-0.587, 0.587), # Left rear
+        Translation2d(0.587, -0.587), # Right front
+        Translation2d(-0.587, -0.587) # Right rear
+    )
+
+    # Encoder Offsets
+    k_left_front_offset = 0.474853515625
+    k_left_rear_offset = -0.0009765625
+    k_right_front_offset = 0.398681640625
+    k_right_rear_offset = -0.41845703125
+
+    k_is_pigeon_gyro = True or not RobotBase.isReal() # If False, uses NavX. Simultaion uses the Pigeon sim_state for control.
+
+class Auto:
+    k_drive_base_radius = 0.83 # Radius from center of robot to swerve modules in meters
+    k_translation_pid = PIDConstants(5, 0, 0, 0)
+    k_rotation_pid = PIDConstants(5, 0, 0, 0)
+        
+class Limelight:
+        
+    k_enable_vision_odometry = RobotBase.isReal() # False if there's no Limelight on the robot.
+        
+    k_limelight_name = "limelight" # "limelight" by default. Name of the limelight to use for vision.
+
+    k_use_mega_tag_2 = True # If False, uses MegaTag 1.
+        
+    k_standard_deviations = [0.3, 0.3, 99999] # (x, y, radians) Basically how confident we are with our vision, lower = more confident. Angle is set really high because we have a gyro.
+
+class CanIDs:
+
+    k_left_front_drive = 1
+    k_left_rear_drive = 2
+    k_right_front_drive = 3
+    k_right_rear_drive = 4
+        
+    k_left_front_direction = 5
+    k_left_rear_direction = 6
+    k_right_front_direction = 7
+    k_right_rear_direction = 8
+        
+    # CANcoders
+    k_left_front_encoder = 5
+    k_left_rear_encoder = 6
+    k_right_front_encoder = 7
+    k_right_rear_encoder = 8
+
+    # Pigeon
+    k_pigeon_gyro = 9
     
     PIVOTMOTOR = 9
     INTAKEMOTOR = 10
     
     LIFTMOTOR_RIGHT = 11
     LIFTMOTOR_LEFT = 12
-    
-class CANIDs:
-    LEFT_FRONT = 5
-    LEFT_REAR = 6
-    RIGHT_FRONT = 7
-    RIGHT_REAR = 8
 
 class IntakeConstants:
     GEAR_RATIO = 5
@@ -60,79 +122,3 @@ class ExternalConstants:
     DRIVERCONTROLLER = 0
     FUNCTIONSCONTROLLER = 1
     TRIGGER_DEADBAND = 0.1
-    
-"""
-SWERVE
-    """
-    
-class SwerveConstants:
-    k_wheel_size = 0.1 # meters
-    k_max_module_speed = 4.25 # m/s
-    k_max_rot_rate = 5 # rad/s
-    k_drive_base_radius = 0.43 # meters
-    auto_kP_translation = 7
-    auto_kP_rotation = 2.5
-    auto_kD_rotation = 0
-
-class DriveMotorConstants:
-
-    def __init__(self, motor_id: int, 
-                 k_s: float=0.021, k_v: float=0, k_a: float=0, k_p: float=0.14, k_i: float=0, k_d: float=0, inverted: InvertedValue=InvertedValue.COUNTER_CLOCKWISE_POSITIVE) -> None:
-        
-        self.motor_id = motor_id
-        
-        self.k_s = k_s
-        self.k_v = k_v
-        self.k_a = k_a
-        self.k_p = k_p
-        self.k_i = k_i
-        self.k_d = k_d
-        
-        self.inverted = inverted
-        
-        self.neutral_mode = NeutralModeValue.COAST
-        
-    def apply_configuration(self, motor: TalonFX) -> TalonFX:
-        config = TalonFXConfiguration()
-        config.slot0.with_k_s(self.k_s).with_k_v(self.k_v).with_k_a(self.k_a).with_k_p(self.k_p).with_k_i(self.k_i).with_k_d(self.k_d)
-        config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.inverted)
-        config.feedback.sensor_to_mechanism_ratio = k_drive_gear_ratio
-        motor.configurator.apply(config)
-        
-        return motor
-        
-class DirectionMotorConstants:
-    
-    def __init__(self, motor_id: int, 
-                 k_s: float=0.26, cruise_velocity: int=240, cruise_acceleration: int=600, cruise_jerk: int=6500, 
-                 k_v: float=0.1186, k_a: float=0, k_p: float=6, k_i: float=0.2, k_d: float=0) -> None:
-        
-        self.motor_id = motor_id
-        
-        self.k_s = k_s
-        self.k_v = k_v
-        self.k_a = k_a
-        self.k_p = k_p
-        self.k_i = k_i
-        self.k_d = k_d
-        
-        self.cruise_velocity = cruise_velocity
-        self.cruise_acceleration = cruise_acceleration
-        self.cruise_jerk = cruise_jerk
-        
-        self.peak_volt = 10
-        
-        self.neutral_mode = NeutralModeValue.BRAKE
-        self.invert = InvertedValue.CLOCKWISE_POSITIVE
-        
-    def apply_configuration(self, motor: TalonFX) -> TalonFX:
-        config = TalonFXConfiguration()
-        config.slot0.with_k_s(self.k_s).with_k_v(self.k_v).with_k_a(self.k_a).with_k_p(self.k_p).with_k_i(self.k_i).with_k_d(self.k_d)
-        config.motor_output.with_neutral_mode(self.neutral_mode).with_inverted(self.invert)
-        config.voltage.with_peak_forward_voltage(self.peak_volt).with_peak_reverse_voltage(-self.peak_volt)
-        config.motion_magic.with_motion_magic_cruise_velocity(self.cruise_velocity).with_motion_magic_acceleration(self.cruise_acceleration).with_motion_magic_jerk(self.cruise_jerk)
-        motor.configurator.apply(config)
-        return motor
-    
-k_direction_gear_ratio = 150 / 7
-k_drive_gear_ratio = 27 / 4

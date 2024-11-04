@@ -1,4 +1,4 @@
-from commands.drive import DriveByController
+from commands.drive_maintain_heading import DriveMaintainHeadingCommand
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
@@ -9,18 +9,17 @@ from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
-from subsystems.swerve import Swerve
+from subsystems.drive.drivetrain import Drivetrain
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
 
 class RobotContainer:
     
     def __init__(self):
-        self.swerve: Swerve = Swerve()
+        self.drivetrain: Drivetrain = Drivetrain()
         self.lift: Lift = Lift()
         self.intake: Intake = Intake()
         self.pivot: Pivot = Pivot()
-        self.swerve.initialize()
                 
         # PathPlanner Commands        
         ## Lift
@@ -53,10 +52,10 @@ class RobotContainer:
         self.start_chooser.addOption("Red Speaker", Pose2d(15.202, 5.48, Rotation2d.fromDegrees(180)))
         self.start_chooser.addOption("Red Source", Pose2d(16.022, 2.1, Rotation2d.fromDegrees(180)))
         
-        self.start_chooser.onChange(lambda pose: self.swerve.reset_odometry(pose=pose))
+        self.start_chooser.onChange(lambda pose: self.drivetrain.reset_odometry(pose=pose))
         SmartDashboard.putData("Starting Position", self.start_chooser)
         
-        self.auto_chooser = SendableChooser()
+        self.auto_chooser: PathPlannerAuto = SendableChooser()
         #self.auto_chooser.setDefaultOption("2.5 Amp to Ready", PathPlannerAuto("2.5NoteToReady"))
         #self.auto_chooser.setDefaultOption("2.5 Amp", PathPlannerAuto("2.5NoteAmp"))
         self.auto_chooser.setDefaultOption("2 Amp", PathPlannerAuto("2NoteAmp"))
@@ -76,7 +75,13 @@ class RobotContainer:
         self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)
         self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
         
-        self.swerve.setDefaultCommand(DriveByController(self.swerve, self.driverController))
+        self.drivetrain.setDefaultCommand(
+            DriveMaintainHeadingCommand(self.drivetrain,
+            lambda: -self.driverController.getLeftY(),
+            lambda: -self.driverController.getLeftX(),
+            lambda: -self.driverController.getRightX(),
+            )
+        )
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
@@ -102,7 +107,7 @@ class RobotContainer:
         return self.auto_chooser.getSelected()
         
     def runSelectedAutoCommand(self) -> None:
-        self.swerve.reset_yaw().reset_odometry(self.start_chooser.getSelected())
+        self.drivetrain.reset_pose(PathPlannerAuto.getStartingPoseFromAutoFile(self.auto_chooser.getSelected().getName()))
         self.getAuto().schedule()
         
     def updateMatchTime(self) -> None:

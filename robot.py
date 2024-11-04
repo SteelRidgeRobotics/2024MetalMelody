@@ -1,4 +1,3 @@
-from commands.control_swerve_speed import ControlSwerveSpeed
 import commands2
 from commands2.timedcommandrobot import seconds
 from phoenix6.signal_logger import SignalLogger
@@ -35,14 +34,14 @@ class MetalMelody(commands2.TimedCommandRobot):
         pass
         
     def autonomousInit(self) -> None:
-        self.container.swerve.navx.reset()
+        self.container.drivetrain.reset_yaw()
         self.container.runSelectedAutoCommand()
     
     def autonomousPeriodic(self) -> None:
         pass
 
     def teleopInit(self) -> None:
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
+        pass
 
     def teleopPeriodic(self) -> None:
         pass
