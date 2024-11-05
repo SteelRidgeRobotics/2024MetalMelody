@@ -7,13 +7,13 @@ from phoenix6.hardware import CANcoder, ParentDevice, TalonFX
 from phoenix6.sim import ChassisReference
 from phoenix6.status_signal import BaseStatusSignal
 from phoenix6 import unmanaged
-from wpilib import DriverStation, RobotBase, RobotController, SmartDashboard
+from wpilib import DriverStation, RobotBase, RobotController
 from wpilib.simulation import DCMotorSim
 from wpimath.geometry import Rotation2d
 from wpimath.kinematics import SwerveModulePosition, SwerveModuleState
 from wpimath.system.plant import DCMotor
 
-from constants import *
+from constants import Constants
 from util import *
 
 class SwerveModule(Subsystem):
@@ -25,22 +25,22 @@ class SwerveModule(Subsystem):
     drive_config = TalonFXConfiguration()
     
     # Tuning
-    drive_config.slot0 = DrivetrainConstants.k_drive_gains
+    drive_config.slot0 = Constants.DrivetrainConstants.k_drive_gains
     
     # Slip Current
     drive_config.current_limits.stator_current_limit_enable = True
-    drive_config.current_limits.stator_current_limit = DrivetrainConstants.k_slip_current
+    drive_config.current_limits.stator_current_limit = Constants.DrivetrainConstants.k_slip_current
     
     drive_config.motor_output.neutral_mode = NeutralModeValue.COAST
     
     # Feedback
-    drive_config.feedback.sensor_to_mechanism_ratio = DrivetrainConstants.k_drive_gear_ratio
+    drive_config.feedback.sensor_to_mechanism_ratio = Constants.DrivetrainConstants.k_drive_gear_ratio
     
     ### Steer motor ###
     steer_config = TalonFXConfiguration()
     
     # Tuning
-    steer_config.slot0 = DrivetrainConstants.k_steer_gains
+    steer_config.slot0 = Constants.DrivetrainConstants.k_steer_gains
     
     # Sensors and Feedback
     steer_config.feedback.feedback_sensor_source = FeedbackSensorSourceValue.FUSED_CANCODER
@@ -50,7 +50,7 @@ class SwerveModule(Subsystem):
     
     steer_config.closed_loop_general.continuous_wrap = True # This does our angle optimizations for us (yay)
     
-    steer_config.feedback.rotor_to_sensor_ratio = DrivetrainConstants.k_steer_gear_ratio
+    steer_config.feedback.rotor_to_sensor_ratio = Constants.DrivetrainConstants.k_steer_gear_ratio
     
     
     ### Encoder ###
@@ -75,13 +75,13 @@ class SwerveModule(Subsystem):
         
         # Create CAN devices and apply the new configs
         
-        self.drive_talon = TalonFX(drive_id, DrivetrainConstants.k_canbus_name)
+        self.drive_talon = TalonFX(drive_id, Constants.DrivetrainConstants.k_canbus_name)
         self.drive_talon.configurator.apply(self.drive_config)
         
-        self.steer_talon = TalonFX(steer_id, DrivetrainConstants.k_canbus_name)
+        self.steer_talon = TalonFX(steer_id, Constants.DrivetrainConstants.k_canbus_name)
         self.steer_talon.configurator.apply(module_steer_config)
         
-        self.encoder = CANcoder(encoder_id, DrivetrainConstants.k_canbus_name)
+        self.encoder = CANcoder(encoder_id, Constants.DrivetrainConstants.k_canbus_name)
         self.encoder.configurator.apply(module_encoder_config)
         self.encoder.sim_state.orientation = ChassisReference.Clockwise_Positive
         
@@ -95,13 +95,13 @@ class SwerveModule(Subsystem):
         # Simulation Models
         self.steer_sim_model = DCMotorSim(
             DCMotor.krakenX60FOC(1),
-            DrivetrainConstants.k_steer_gear_ratio,
+            Constants.DrivetrainConstants.k_steer_gear_ratio,
             0.001
         )
 
         self.drive_sim_model = DCMotorSim(
             DCMotor.krakenX60FOC(1),
-            DrivetrainConstants.k_drive_gear_ratio,
+            Constants.DrivetrainConstants.k_drive_gear_ratio,
             0.0001
         )
         
@@ -145,8 +145,8 @@ class SwerveModule(Subsystem):
         self.steer_sim_model.setInputVoltage(steer_sim.motor_voltage)
         self.steer_sim_model.update(0.02)
 
-        steer_sim.set_raw_rotor_position(rads_to_rots(self.steer_sim_model.getAngularPosition()) * DrivetrainConstants.k_steer_gear_ratio)
-        steer_sim.set_rotor_velocity(rads_to_rots(self.steer_sim_model.getAngularVelocity()) * DrivetrainConstants.k_steer_gear_ratio)
+        steer_sim.set_raw_rotor_position(rads_to_rots(self.steer_sim_model.getAngularPosition()) * Constants.DrivetrainConstants.k_steer_gear_ratio)
+        steer_sim.set_rotor_velocity(rads_to_rots(self.steer_sim_model.getAngularVelocity()) * Constants.DrivetrainConstants.k_steer_gear_ratio)
         encoder_sim.set_raw_position(rads_to_rots(self.steer_sim_model.getAngularPosition()))
         encoder_sim.set_velocity(rads_to_rots(self.steer_sim_model.getAngularVelocity()))
 
@@ -156,8 +156,8 @@ class SwerveModule(Subsystem):
         self.drive_sim_model.setInputVoltage(drive_sim.motor_voltage)
         self.drive_sim_model.update(0.02)
 
-        drive_sim.set_raw_rotor_position(rads_to_rots(self.drive_sim_model.getAngularPosition()) * DrivetrainConstants.k_drive_gear_ratio)
-        drive_sim.set_rotor_velocity(rads_to_rots(self.drive_sim_model.getAngularVelocity()) * DrivetrainConstants.k_drive_gear_ratio)
+        drive_sim.set_raw_rotor_position(rads_to_rots(self.drive_sim_model.getAngularPosition()) * Constants.DrivetrainConstants.k_drive_gear_ratio)
+        drive_sim.set_rotor_velocity(rads_to_rots(self.drive_sim_model.getAngularVelocity()) * Constants.DrivetrainConstants.k_drive_gear_ratio)
         
     def get_angle(self) -> Rotation2d:
         """Returns the current angle of the wheel by converting the steer motor position into degrees."""

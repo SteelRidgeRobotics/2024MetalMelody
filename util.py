@@ -2,19 +2,19 @@ from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.configs.cancoder_configs import CANcoderConfiguration
 from phoenix6.configs.talon_fx_configs import TalonFXConfiguration
 from phoenix6.base_status_signal import StatusCode
-from constants import *
+from constants import Constants
 import math
 
 def rot_to_meters(rotations: float) -> float:
     """Converts rotations into meters."""
     
-    wheel_circumference = math.pi * DrivetrainConstants.k_wheel_diameter
+    wheel_circumference = math.pi * Constants.DrivetrainConstants.k_wheel_diameter
     return rotations * wheel_circumference
 
 def meters_to_rots(meters: float) -> float:
     """Converts meters into rotations."""
     
-    wheel_circumference = math.pi * DrivetrainConstants.k_wheel_diameter
+    wheel_circumference = math.pi * Constants.DrivetrainConstants.k_wheel_diameter
     return meters / wheel_circumference
 
 def rots_to_degs(rotation: float) -> float:

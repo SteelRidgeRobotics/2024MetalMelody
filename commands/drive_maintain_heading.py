@@ -6,7 +6,7 @@ from wpilib.shuffleboard import BuiltInWidgets, Shuffleboard
 from wpimath.controller import ProfiledPIDController
 from wpimath.trajectory import TrapezoidProfile
 
-from constants import *
+from constants import Constants
 from util import *
 from subsystems.drive.drivetrain import Drivetrain
 
@@ -27,7 +27,7 @@ class DriveMaintainHeadingCommand(Command):
 
     heading_setpoint = None
 
-    def __init__(self, drivetrain: DrivetrainConstants, throttle: Callable[[], float], strafe: Callable[[], float], turn: Callable[[], float]) -> None:
+    def __init__(self, drivetrain: Drivetrain, throttle: Callable[[], float], strafe: Callable[[], float], turn: Callable[[], float]) -> None:
         """Drives the robot with field-centric steering.
         Uses a PID controller to maintain a steady heading in case of collisions or drift.
 
@@ -56,15 +56,15 @@ class DriveMaintainHeadingCommand(Command):
         self.heading_controller.reset(self.drivetrain.get_yaw().radians())
 
     def execute(self):
-        throttle = clamp(self.throttle(), -1, 1) * DrivetrainConstants.k_max_drive_speed
-        strafe = clamp(self.strafe(), -1, 1) * DrivetrainConstants.k_max_drive_speed
+        throttle = clamp(self.throttle(), -1, 1) * Constants.DrivetrainConstants.k_max_drive_speed
+        strafe = clamp(self.strafe(), -1, 1) * Constants.DrivetrainConstants.k_max_drive_speed
         turn = clamp(self.turn(), -1, 1)
 
         if turn != 0:
             self.joystick_last_touched = Timer.getFPGATimestamp()
             
         if turn != 0 or Timer.getFPGATimestamp() - self.joystick_last_touched <= 0.25 and math.fabs(degs_to_rads(self.drivetrain.get_yaw_rate())) >= degs_to_rads(10):
-            turn *= DrivetrainConstants.k_max_rot_rate
+            turn *= Constants.DrivetrainConstants.k_max_rot_rate
             self.heading_setpoint = None
             self.heading_controller.reset(self.drivetrain.get_yaw().radians())
         else: # If we haven't tried rotating in a bit, begin to maintain heading

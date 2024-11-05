@@ -1,5 +1,3 @@
-import commands2
-from commands2.timedcommandrobot import seconds
 from phoenix6.signal_logger import SignalLogger
 from wpilib import TimedRobot
 from robotcontainer import RobotContainer
@@ -48,5 +46,6 @@ class MetalMelody(commands2.TimedCommandRobot):
 
     def testInit(self) -> None:
         pass    
+
     def testExit(self) -> None:
         SignalLogger.stop()

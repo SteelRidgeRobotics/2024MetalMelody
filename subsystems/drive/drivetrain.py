@@ -13,7 +13,7 @@ from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Rotation2d, Transform2d, Translation2d
 from wpimath.kinematics import ChassisSpeeds, SwerveDrive4Kinematics, SwerveModulePosition, SwerveModuleState
 
-from constants import *
+from constants import Constants
 from util import *
 from subsystems.drive.swerve_module import SwerveModule
 
@@ -24,54 +24,54 @@ class Drivetrain(Subsystem):
     # Creating all modules (in a tuple for organization)
     modules = (
         SwerveModule(
-            CanIDs.k_left_front_drive,
-            CanIDs.k_left_front_direction,
-            CanIDs.k_left_front_encoder,
-            DrivetrainConstants.k_left_front_offset
+            Constants.CanIDs.k_left_front_drive,
+            Constants.CanIDs.k_left_front_direction,
+            Constants.CanIDs.k_left_front_encoder,
+            Constants.DrivetrainConstants.k_left_front_offset
         ),
         SwerveModule(
-            CanIDs.k_left_rear_drive,
-            CanIDs.k_left_rear_direction,
-            CanIDs.k_left_rear_encoder,
-            DrivetrainConstants.k_left_rear_offset
+            Constants.CanIDs.k_left_rear_drive,
+            Constants.CanIDs.k_left_rear_direction,
+            Constants.CanIDs.k_left_rear_encoder,
+            Constants.DrivetrainConstants.k_left_rear_offset
         ),
         SwerveModule(
-            CanIDs.k_right_front_drive,
-            CanIDs.k_right_front_direction,
-            CanIDs.k_right_front_encoder,
-            DrivetrainConstants.k_right_front_offset
+            Constants.CanIDs.k_right_front_drive,
+            Constants.CanIDs.k_right_front_direction,
+            Constants.CanIDs.k_right_front_encoder,
+            Constants.DrivetrainConstants.k_right_front_offset
         ),
         SwerveModule(
-            CanIDs.k_right_rear_drive,
-            CanIDs.k_right_rear_direction,
-            CanIDs.k_right_rear_encoder,
-            DrivetrainConstants.k_right_rear_offset
+            Constants.CanIDs.k_right_rear_drive,
+            Constants.CanIDs.k_right_rear_direction,
+            Constants.CanIDs.k_right_rear_encoder,
+            Constants.DrivetrainConstants.k_right_rear_offset
         )
     )
 
     # Kinematics
     kinematics = SwerveDrive4Kinematics(
-        DrivetrainConstants.k_module_locations[0], 
-        DrivetrainConstants.k_module_locations[1],
-        DrivetrainConstants.k_module_locations[2], 
-        DrivetrainConstants.k_module_locations[3]
+        Constants.DrivetrainConstants.k_module_locations[0], 
+        Constants.DrivetrainConstants.k_module_locations[1],
+        Constants.DrivetrainConstants.k_module_locations[2], 
+        Constants.DrivetrainConstants.k_module_locations[3]
     )
 
     # PathPlanner Config
     path_follower_config = HolonomicPathFollowerConfig(
-        Auto.k_translation_pid, 
-        Auto.k_rotation_pid, 
-        DrivetrainConstants.k_max_drive_speed,
-        Auto.k_drive_base_radius,
+        Constants.AutoConstants.k_translation_pid, 
+        Constants.AutoConstants.k_rotation_pid, 
+        Constants.DrivetrainConstants.k_max_drive_speed,
+        Constants.AutoConstants.k_drive_base_radius,
         ReplanningConfig()
     )
 
     def __init__(self, starting_pose: Pose2d = Pose2d()) -> None:
         
         self.gyro: Pigeon2 | AHRS = None
-        if DrivetrainConstants.k_is_pigeon_gyro:
+        if Constants.DrivetrainConstants.k_is_pigeon_gyro:
             # Pigeon 2 setup
-            self.gyro = Pigeon2(CanIDs.k_pigeon_gyro, DrivetrainConstants.k_canbus_name)
+            self.gyro = Pigeon2(Constants.CanIDs.k_pigeon, Constants.DrivetrainConstants.k_canbus_name)
             BaseStatusSignal.set_update_frequency_for_all(
                 100,
                 self.gyro.get_yaw(),
@@ -202,7 +202,7 @@ class Drivetrain(Subsystem):
             module_poses = []
             for i in range(len(self.modules)):
 
-                translation = DrivetrainConstants.k_module_locations[i]
+                translation = Constants.DrivetrainConstants.k_module_locations[i]
 
                 sim_offset = Translation2d(
                     math.copysign(0.25, translation.X()), 
@@ -250,10 +250,10 @@ class Drivetrain(Subsystem):
     def update_vision_estimates(self) -> None:
         """Uses Limelight MegaTag to help prevent pose drift."""
 
-        add_vision_estimate = Limelight.k_enable_vision_odometry
-        if not Limelight.k_use_mega_tag_2: # Mega Tag 1
+        add_vision_estimate = Constants.LimelightConstants.k_enable_vision_odometry
+        if not Constants.LimelightConstants.k_use_mega_tag_2: # Mega Tag 1
             
-            mega_tag1 = LimelightHelpers.get_botpose_estimate_wpiblue(Limelight.k_limelight_name)
+            mega_tag1 = LimelightHelpers.get_botpose_estimate_wpiblue(Constants.LimelightConstants.k_limelight_name)
 
             # Check if we're confident on where we are on the field
             if mega_tag1.tag_count == 1 and len(mega_tag1.raw_fiducials) == 1:
@@ -268,7 +268,7 @@ class Drivetrain(Subsystem):
 
             # Add Vision Measurement
             if add_vision_estimate:
-                self.odometry.setVisionMeasurementStdDevs(Limelight.k_standard_deviations)
+                self.odometry.setVisionMeasurementStdDevs(Constants.LimelightConstants.k_standard_deviations)
                 self.odometry.addVisionMeasurement(
                     mega_tag1.pose,
                     mega_tag1.timestamp_seconds
@@ -280,13 +280,13 @@ class Drivetrain(Subsystem):
 
             # Set Robot Orientation
             LimelightHelpers.set_robot_orientation(
-                Limelight.k_limelight_name,
+                Constants.LimelightConstants.k_limelight_name,
                 self.get_yaw().degrees(),
                 self.get_yaw_rate(),
                 0, 0, 0, 0
             )
 
-            mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2(Limelight.k_limelight_name)
+            mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2(Constants.LimelightConstants.k_limelight_name)
 
             # If we're spinning or we don't see an apriltag, don't add vision measurements
             if abs(self.get_yaw_rate()) > 720 or mega_tag2.tag_count == 0:
@@ -294,7 +294,7 @@ class Drivetrain(Subsystem):
 
             # Add Vision Measurement
             if add_vision_estimate:
-                self.odometry.setVisionMeasurementStdDevs(Limelight.k_standard_deviations)
+                self.odometry.setVisionMeasurementStdDevs(Constants.LimelightConstants.k_standard_deviations)
                 self.odometry.addVisionMeasurement(
                     mega_tag2.pose,
                     mega_tag2.timestamp_seconds
@@ -304,7 +304,7 @@ class Drivetrain(Subsystem):
 
     def simulationPeriodic(self):
 
-        if DrivetrainConstants.k_is_pigeon_gyro:
+        if Constants.DrivetrainConstants.k_is_pigeon_gyro:
             gyro_sim = self.gyro.sim_state
             gyro_sim.set_supply_voltage(RobotController.getBatteryVoltage())
             gyro_sim.add_yaw(self.get_robot_speed().omega_dps * 0.02)
@@ -348,13 +348,13 @@ class Drivetrain(Subsystem):
 
     def get_yaw(self) -> Rotation2d:
         """Gets the rotation of the robot."""
-        return Rotation2d.fromDegrees(self.gyro.get_yaw().value) if DrivetrainConstants.k_is_pigeon_gyro else Rotation2d.fromDegrees(-self.gyro.getYaw())
+        return Rotation2d.fromDegrees(self.gyro.get_yaw().value) if Constants.DrivetrainConstants.k_is_pigeon_gyro else Rotation2d.fromDegrees(-self.gyro.getYaw())
     
     def get_yaw_rate(self) -> float:
-        return self.gyro.get_angular_velocity_y_world().value if DrivetrainConstants.k_is_pigeon_gyro else -self.gyro.getRate()
+        return self.gyro.get_angular_velocity_y_world().value if Constants.DrivetrainConstants.k_is_pigeon_gyro else -self.gyro.getRate()
     
     def reset_yaw(self) -> None:
-        self.gyro.set_yaw(0) if DrivetrainConstants.k_is_pigeon_gyro else self.gyro.reset()
+        self.gyro.set_yaw(0) if Constants.DrivetrainConstants.k_is_pigeon_gyro else self.gyro.reset()
 
     @staticmethod
     def get_module_angles() -> tuple[Rotation2d]:
@@ -404,7 +404,7 @@ class Drivetrain(Subsystem):
         
         # Make sure we aren't traveling at unrealistic speeds
         states = Drivetrain.kinematics.desaturateWheelSpeeds(
-            states, DrivetrainConstants.k_max_drive_speed
+            states, Constants.DrivetrainConstants.k_max_drive_speed
         )
         
         # Set each state to the correct module

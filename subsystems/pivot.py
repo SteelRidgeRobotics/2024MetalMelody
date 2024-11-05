@@ -18,7 +18,7 @@ class Pivot(Subsystem):
         super().__init__()
         self.setName("Pivot")
         
-        self.pivotMotor = TalonFX(CanIDs.PIVOTMOTOR)
+        self.pivotMotor = TalonFX(CanIDs.k_pivot_motor)
         pivot_config = TalonFXConfiguration()
         pivot_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE).with_inverted(InvertedValue.CLOCKWISE_POSITIVE)
         pivot_config.slot0.with_k_p(PivotConstants.K_P).with_k_i(PivotConstants.K_I).with_k_d(PivotConstants.K_D).with_k_v(PivotConstants.K_V).with_k_s(PivotConstants.K_S)

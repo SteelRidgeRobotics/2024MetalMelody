@@ -19,7 +19,7 @@ class Lift(Subsystem):
         super().__init__()
         self.setName("Lift")
         
-        self.master_motor = TalonFX(CanIDs.LIFTMOTOR_RIGHT) # Right Motor
+        self.master_motor = TalonFX(CanIDs.k_lift_right) # Right Motor
         general_config = TalonFXConfiguration()
         general_config.slot0.with_k_p(LiftConstants.K_P).with_k_i(LiftConstants.K_I)
         general_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
@@ -30,7 +30,7 @@ class Lift(Subsystem):
         self.master_motor.set_position(LiftConstants.TOPPOSITION)
         
         
-        self.follower_motor = TalonFX(CanIDs.LIFTMOTOR_LEFT) # Left Motor
+        self.follower_motor = TalonFX(CanIDs.k_lift_left) # Left Motor
         follower_config = general_config
         follower_config.with_differential_sensors(
             DifferentialSensorsConfigs()
