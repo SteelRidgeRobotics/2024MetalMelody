@@ -3,7 +3,7 @@ from phoenix6.configs.config_groups import DifferentialSensorSourceValue, Differ
 from phoenix6.controls import CoastOut, DifferentialFollower, DutyCycleOut, PositionDutyCycle
 from phoenix6.hardware import TalonFX
 from commands2 import Subsystem
-from constants import *
+from constants import Constants
 from enum import Enum
 
 class LiftStates(Enum):
@@ -19,18 +19,18 @@ class Lift(Subsystem):
         super().__init__()
         self.setName("Lift")
         
-        self.master_motor = TalonFX(CanIDs.k_lift_right) # Right Motor
+        self.master_motor = TalonFX(Constants.CanIDs.k_lift_right) # Right Motor
         general_config = TalonFXConfiguration()
-        general_config.slot0.with_k_p(LiftConstants.K_P).with_k_i(LiftConstants.K_I)
+        general_config.slot0 = Constants.LiftConstants.k_gains
         general_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
-        general_config.current_limits.with_supply_current_limit_enable(True).with_supply_current_limit(LiftConstants.CURRENTSUPPLYLIMIT)
-        general_config.motion_magic.with_motion_magic_cruise_velocity(LiftConstants.MM_VEL).with_motion_magic_acceleration(LiftConstants.MM_ACCEL)
+        general_config.current_limits.with_supply_current_limit_enable(True).with_supply_current_limit(Constants.LiftConstants.k_supply_current)
+        general_config.motion_magic.with_motion_magic_cruise_velocity(Constants.LiftConstants.k_cruise_velocity).with_motion_magic_acceleration(Constants.LiftConstants.k_acceleration)
         self.master_motor.configurator.apply(general_config)
         
-        self.master_motor.set_position(LiftConstants.TOPPOSITION)
+        self.master_motor.set_position(Constants.LiftConstants.k_top_pos)
         
         
-        self.follower_motor = TalonFX(CanIDs.k_lift_left) # Left Motor
+        self.follower_motor = TalonFX(Constants.CanIDs.k_lift_left) # Left Motor
         follower_config = general_config
         follower_config.with_differential_sensors(
             DifferentialSensorsConfigs()
@@ -71,14 +71,14 @@ class Lift(Subsystem):
         self.state = LiftStates.STOPPED
          
     def raiseFull(self) -> None:
-        self.master_motor.set_control(PositionDutyCycle(LiftConstants.TOPPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(Constants.LiftConstants.k_top_pos))
         self.state = LiftStates.RAISED
 
     def compressFull(self) -> None:
-        self.master_motor.set_control(PositionDutyCycle(LiftConstants.BOTTOMPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(Constants.LiftConstants.k_bottom_pos))
         self.timer = 0
         self.state = LiftStates.LOWERED
 
     def scoreShoot(self) -> None:
-        self.master_motor.set_control(PositionDutyCycle(LiftConstants.SCOREPOSITION))
+        self.master_motor.set_control(PositionDutyCycle(Constants.LiftConstants.k_score_pos))
         self.state = LiftStates.SCORE

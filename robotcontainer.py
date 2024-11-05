@@ -74,8 +74,8 @@ class RobotContainer:
         #self.auto_chooser.addOption("1 Source Disrupt to Ready (Long)", PathPlannerAuto("1DisruptSourceToReadyLong"))
         SmartDashboard.putData("Autonomous Select", self.auto_chooser)
 
-        self.driverController = XboxController(ExternalConstants.DRIVERCONTROLLER)
-        self.functionsController = XboxController(ExternalConstants.FUNCTIONSCONTROLLER) 
+        self.driverController = XboxController(Constants.ControllerConstants.k_driver_controller_port)
+        self.functionsController = XboxController(Constants.ControllerConstants.k_functions_controller_port) 
         
         self.drivetrain.setDefaultCommand(
             DriveMaintainHeadingCommand(self.drivetrain,
@@ -86,8 +86,8 @@ class RobotContainer:
         )
 
         JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
-                                                                                           .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
-                                                                                           .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
+                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
+                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
         JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
                                                                                             .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
                                                                                             .alongWith(self.intake.runOnce(self.intake.disencumber))
