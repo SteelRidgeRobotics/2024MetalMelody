@@ -9,6 +9,7 @@ from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
+from subsystems.leds.leds import LED
 from subsystems.drive.drivetrain import Drivetrain
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
@@ -20,6 +21,7 @@ class RobotContainer:
         self.lift: Lift = Lift()
         self.intake: Intake = Intake()
         self.pivot: Pivot = Pivot()
+        self.led: LED = LED()
                 
         # PathPlanner Commands        
         ## Lift
@@ -102,6 +104,10 @@ class RobotContainer:
         JoystickButton(self.functionsController, XboxController.Button.kLeftStick).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
         
         JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
+
+        #test
+        JoystickButton(self.driverController, XboxController.Button.kY).onTrue(self.led.runOnce(self.led.setRGB(255, 0, 0)))
+
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()
