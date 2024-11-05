@@ -106,7 +106,8 @@ class RobotContainer:
         JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
 
         #test
-        JoystickButton(self.driverController, XboxController.Button.kY).onTrue(self.led.runOnce(self.led.setRGB(255, 0, 0)))
+        JoystickButton(self.driverController, XboxController.Button.kY).onTrue(self.led.runOnce(lambda: self.led.setRGB(0, 0, 255)))
+        JoystickButton(self.driverController, XboxController.Button.kA).onTrue
 
         
     def getAuto(self) -> PathPlannerAuto:
