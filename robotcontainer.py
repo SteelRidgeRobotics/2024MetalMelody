@@ -9,7 +9,7 @@ from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
-from subsystems.leds.leds import LED
+from subsystems.leds import LedSubsystem
 from subsystems.drive.drivetrain import Drivetrain
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
@@ -21,7 +21,7 @@ class RobotContainer:
         self.lift: Lift = Lift()
         self.intake: Intake = Intake()
         self.pivot: Pivot = Pivot()
-        self.led: LED = LED()
+        self.led: LedSubsystem = LedSubsystem()
                 
         # PathPlanner Commands        
         ## Lift
