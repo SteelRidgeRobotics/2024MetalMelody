@@ -135,7 +135,7 @@ class Constants:
 
         k_gear_ratio = 12
 
-    class LEDConstants:
+    class LedConstants:
 
         k_led_pwm_port = 9
         k_led_length = 144
