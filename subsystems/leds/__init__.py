@@ -19,7 +19,8 @@ class LedTriager:
 
     patterns: list[LedPattern] = []
 
-    k_default_pattern = LedPatternRainbow(1)
+    k_default_pattern = LedPatternPulse(90, 1)
+    #k_default_pattern = LedPatternSeisurizer()
     is_new = True
 
     def get_pattern(self) -> LedPattern:

@@ -3,6 +3,7 @@ from wpilib import Color
 from abc import ABC, abstractmethod
 import colorsys
 from typing import Callable
+from random import randint
 
 import subsystems.leds.zone_buffer as zone_buffer
 
@@ -51,3 +52,32 @@ class LedPatternRainbow(LedPattern):
 
             self.initial_hue += self.speed / buffer.get_length()
             self.initial_hue %= 180
+
+class LedPatternSeisurizer(LedPattern):
+
+    def __init__(self) -> None:
+        super().__init__(True)
+
+    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer):
+        for i in range(buffer.get_length()):
+             
+             buffer.set_HSV(i, randint(0, 180), 255, 255)
+
+
+class LedPatternPulse(LedPattern):
+
+    def __init__(self, hue: int, speed: int) -> None:
+        super().__init__(True)
+        self.hue = hue
+        self.speed = speed*10
+
+        self.initial_value = 0
+
+    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer):
+        for i in range(buffer.get_length()):
+
+            value = (self.initial_value + (i * 255 / buffer.get_length())) % 255
+             
+            buffer.set_HSV(i, self.hue, int(value), int(value))
+            self.initial_value += self.speed / buffer.get_length()
+            self.initial_value %= 255
