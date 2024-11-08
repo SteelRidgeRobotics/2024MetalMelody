@@ -2,14 +2,15 @@ from commands.drive_maintain_heading import DriveMaintainHeadingCommand
 from commands.intake_and_stow import IntakeAndStow
 from commands.manual_lift import ManualLift
 from commands.vibrate import VibrateController
-from commands2.button import JoystickButton
+from commands2.button import JoystickButton, Trigger
 from constants import *
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6.controls import DutyCycleOut
 from subsystems.lift import Lift
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot, PivotStates
-from subsystems.leds import LedSubsystem
+from subsystems.leds import *
+from subsystems.leds.patterns import *
 from subsystems.drive.drivetrain import Drivetrain
 from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
 from wpimath.geometry import Pose2d, Rotation2d
@@ -105,10 +106,9 @@ class RobotContainer:
         
         JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
 
-        #test
-        JoystickButton(self.driverController, XboxController.Button.kY).onTrue(self.led.runOnce(lambda: self.led.setRGB(0, 0, 255)))
-        JoystickButton(self.driverController, XboxController.Button.kA).onTrue
+        JoystickButton(self.driverController, XboxController.Button.kY).whileTrue(self.led.show_pattern_command(SimpleLedPattern.solid(Color(255, 3, 120)), PatternLevel.DEFAULT))
 
+        Trigger(self.intake.hasNote).debounce(0.05).whileTrue(self.led.show_pattern_command(SimpleLedPattern.solid(Color(255, 3, 120)), PatternLevel.INTAKE_STATE))
         
     def getAuto(self) -> PathPlannerAuto:
         return self.auto_chooser.getSelected()

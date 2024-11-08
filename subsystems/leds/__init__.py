@@ -17,35 +17,34 @@ class Zone(Enum):
 
 class LedTriager:
 
-    patterns: list[LedPattern] = []
-
-    k_default_pattern = LedPatternPulse(90, 1)
-    #k_default_pattern = LedPatternSeisurizer()
-    is_new = True
+    def __init__(self) -> None:
+        self.patterns: list[LedPattern] = [None for _ in range(len(PatternLevel))]
+        self.default_pattern = LedPatternRainbow(1)
+        self.is_new = True
 
     def get_pattern(self) -> LedPattern:
-        patterns = LedTriager.patterns
+        patterns = self.patterns
         for i in range(len(PatternLevel)):
             try:
                 if patterns[len(patterns) - 1 - i] is not None:
                     return patterns[len(patterns) - 1 - i]
             except IndexError:
                 pass
-        return LedTriager.k_default_pattern
+        return self.default_pattern
     
     def should_refresh(self) -> bool:
         val = self.is_new or self.get_pattern().is_dynamic
         self.is_new = False
         return val
     
-    def clear_pattern(criticality: PatternLevel) -> None:
-        LedTriager.patterns[criticality.value] = None
-        LedTriager.is_new = True
+    def clear_pattern(self, criticality: PatternLevel) -> None:
+        self.patterns[criticality.value] = None
+        self.is_new = True
 
-    def add_pattern(pattern: LedPattern, criticality: PatternLevel) -> bool:
-        LedTriager.patterns[criticality.value] = pattern
-        LedTriager.is_new = True
-        return LedTriager.get_pattern() == pattern
+    def add_pattern(self, pattern: LedPattern, criticality: PatternLevel) -> bool:
+        self.patterns[criticality.value] = pattern
+        self.is_new = True
+        return self.get_pattern() == pattern
 
 
 class LedSubsystem(Subsystem):
@@ -77,14 +76,11 @@ class LedSubsystem(Subsystem):
         self.patterns[zone.value].add_pattern(pattern, priority)
         pattern.set_length(self.buffers[zone.value].get_length())
 
-    def set_pattern(self, zone: Zone, pattern: LedPattern) -> None:
-        self.set_pattern(zone, pattern, PatternLevel.DEFAULT)
-
     def clear_pattern(self, zone: Zone, priority: PatternLevel) -> None:
         self.patterns[zone.value].clear_pattern(priority)
 
     def show_pattern_command(self, pattern: LedPattern, priority: PatternLevel) -> StartEndCommand:
         return StartEndCommand(
-            lambda: self.set_pattern(LedSubsystem.Zone.MAIN, pattern, priority),
-            lambda: self.clear_pattern(LedSubsystem.Zone.MAIN, priority)
+            lambda: self.set_pattern(Zone.MAIN, pattern, priority),
+            lambda: self.clear_pattern(Zone.MAIN, priority)
         ).ignoringDisable(True)

@@ -1,9 +1,12 @@
 from commands2 import TimedCommandRobot
 from phoenix6.signal_logger import SignalLogger
-from wpilib import TimedRobot
+from wpilib import Color, TimedRobot
 from robotcontainer import RobotContainer
 from wpilib import DriverStation, RobotBase
 from wpilib.cameraserver import CameraServer
+from subsystems.leds import *
+from subsystems.leds.patterns import *
+
 
 class MetalMelody(TimedCommandRobot):
 
@@ -33,6 +36,8 @@ class MetalMelody(TimedCommandRobot):
         pass
         
     def autonomousInit(self) -> None:
+        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.solid(Color(0,0,255)), PatternLevel.DEFAULT)
+
         self.container.drivetrain.reset_yaw()
         self.container.runSelectedAutoCommand()
     
@@ -40,13 +45,13 @@ class MetalMelody(TimedCommandRobot):
         pass
 
     def teleopInit(self) -> None:
-        pass
+        self.container.led.set_pattern(Zone.MAIN, LedPatternRainbow(2), PatternLevel.DEFAULT)
 
     def teleopPeriodic(self) -> None:
         pass
 
     def testInit(self) -> None:
-        pass    
+        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.simple_alternating(Color.kRed, Color.kBlue), PatternLevel.DEFAULT)
 
     def testExit(self) -> None:
         SignalLogger.stop()

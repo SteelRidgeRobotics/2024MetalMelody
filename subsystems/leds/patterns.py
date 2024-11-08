@@ -2,10 +2,10 @@ from wpilib import Color
 
 from abc import ABC, abstractmethod
 import colorsys
-from typing import Callable
+from typing import Callable, overload
 from random import randint
 
-import subsystems.leds.zone_buffer as zone_buffer
+from subsystems.leds.zone_buffer import ZonedAddressableLEDBuffer
 
 class LedPattern(ABC):
 
@@ -13,7 +13,7 @@ class LedPattern(ABC):
         self.is_dynamic = is_dynamic
 
     @abstractmethod
-    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer) -> None:
+    def apply(self, buffer: ZonedAddressableLEDBuffer) -> None:
         pass
 
     def set_length(self, length: int) -> None:
@@ -30,13 +30,22 @@ class SimpleLedPattern(LedPattern):
         super().__init__(False)
         self.applier = applier
 
-    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer) -> None:
+    def apply(self, buffer: ZonedAddressableLEDBuffer) -> None:
         for i in range(buffer.get_length()):
             self.applier(buffer, i)
+
+    @staticmethod
+    @overload
+    def solid(color: str) -> LedPattern:
+        return SimpleLedPattern.solid(Color(color))
     
     @staticmethod
     def solid(color: Color) -> LedPattern:
-        return SimpleLedPattern(lambda buffer, i: buffer.set_LED(i, color)) # TODO: Fix SimpleLedPattern returning black
+        return SimpleLedPattern(lambda buffer, i: buffer.set_LED(i, color))
+    
+    @staticmethod
+    def blank() -> LedPattern:
+        return SimpleLedPattern(lambda buffer, i: buffer.set_LED(i, Color.kBlack))
     
 class LedPatternRainbow(LedPattern):
 
@@ -45,7 +54,7 @@ class LedPatternRainbow(LedPattern):
         self.speed = speed
         self.initial_hue = 0
 
-    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer):
+    def apply(self, buffer: ZonedAddressableLEDBuffer):
         for i in range(buffer.get_length()):
             hue = (self.initial_hue + (i * 180 / buffer.get_length())) % 180
             buffer.set_HSV(i, int(hue),255,255)
@@ -58,10 +67,9 @@ class LedPatternSeisurizer(LedPattern):
     def __init__(self) -> None:
         super().__init__(True)
 
-    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer):
+    def apply(self, buffer: ZonedAddressableLEDBuffer):
         for i in range(buffer.get_length()):
-             
-             buffer.set_HSV(i, randint(0, 180), 255, 255)
+            buffer.set_HSV(i, randint(0, 180), 255, 255)
 
 
 class LedPatternPulse(LedPattern):
@@ -69,15 +77,14 @@ class LedPatternPulse(LedPattern):
     def __init__(self, hue: int, speed: int) -> None:
         super().__init__(True)
         self.hue = hue
-        self.speed = speed*10
+        self.speed = speed
 
         self.initial_value = 0
 
-    def apply(self, buffer: zone_buffer.ZonedAddressableLEDBuffer):
+    def apply(self, buffer: ZonedAddressableLEDBuffer):
         for i in range(buffer.get_length()):
 
             value = (self.initial_value + (i * 255 / buffer.get_length())) % 255
-             
             buffer.set_HSV(i, self.hue, int(value), int(value))
             self.initial_value += self.speed / buffer.get_length()
             self.initial_value %= 255
