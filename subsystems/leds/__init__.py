@@ -48,16 +48,16 @@ class LedTriager:
 
 
 class LedSubsystem(Subsystem):
-    led_buffer = [AddressableLED.LEDData() for _ in range(Constants.LedConstants.k_led_length)]
-    strip = AddressableLED(Constants.LedConstants.k_led_pwm_port)
-
-    buffers = [
-        ZonedAddressableLEDBuffer(led_buffer, 0, Constants.LedConstants.k_led_length, False)
-    ]
 
     patterns = [LedTriager() for _ in range(len(Zone))]
 
     def __init__(self):
+        self.led_buffer = [AddressableLED.LEDData() for _ in range(Constants.LedConstants.k_led_length)]
+        self.strip = AddressableLED(Constants.LedConstants.k_led_pwm_port)
+        self.buffers = [
+        ZonedAddressableLEDBuffer(self.led_buffer, 0, Constants.LedConstants.k_led_length, False)
+    ]
+
         self.strip.setLength(len(self.led_buffer))
         self.strip.setData(self.led_buffer)
         self.strip.start()
