@@ -1,5 +1,7 @@
 from wpilib import AddressableLED, Color, Color8Bit
 
+from typing import overload
+
 class ZonedAddressableLEDBuffer:
 
     def __init__(self, buffer: list[AddressableLED.LEDData], start: int, end: int, is_inverted: bool) -> None:
@@ -18,6 +20,7 @@ class ZonedAddressableLEDBuffer:
     def set_HSV(self, index: int, h: int, s: int, v: int) -> None:
         self.buffer[self._get_absolute_index(index)].setHSV(h, s, v)
 
+    @overload
     def set_LED(self, index: int, color: Color) -> None:
         self.buffer[self._get_absolute_index(index)].setLED(color)
 
