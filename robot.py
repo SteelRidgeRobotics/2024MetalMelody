@@ -51,7 +51,7 @@ class MetalMelody(TimedCommandRobot):
         pass
 
     def testInit(self) -> None:
-        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.simple_alternating(Color.kRed, Color.kBlue), PatternLevel.DEFAULT)
+        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.solid(Color.kRed), PatternLevel.DEFAULT)
 
     def testExit(self) -> None:
         SignalLogger.stop()
