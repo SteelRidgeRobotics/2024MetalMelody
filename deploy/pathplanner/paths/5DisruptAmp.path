@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.293523390931985,
-        "y": 7.286482498785255
+        "x": 3.382898222186534,
+        "y": 6.337281467420308
       },
       "isLocked": false,
       "linkedName": "AmpStart"
@@ -20,40 +20,40 @@
         "y": 7.286482498785255
       },
       "prevControl": {
-        "x": 5.776646097936682,
-        "y": 7.286482498785255
+        "x": 7.556722928633838,
+        "y": 8.26598760438755
       },
       "nextControl": {
-        "x": 9.15,
-        "y": 7.286482498785255
+        "x": 8.792730458494201,
+        "y": 6.83030800728937
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.95,
-        "y": 6.312140898176232
+        "x": 8.284942222836145,
+        "y": 5.771473152964195
       },
       "prevControl": {
-        "x": 8.177503052246378,
-        "y": 6.415786260921423
+        "x": 8.51971131464803,
+        "y": 6.17277252652553
       },
       "nextControl": {
-        "x": 7.722496947753623,
-        "y": 6.208495535431042
+        "x": 7.869278351551594,
+        "y": 5.060963733384262
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.95,
-        "y": 0.7846260485673593
+        "x": 8.284942222836145,
+        "y": 0.7489697984762701
       },
       "prevControl": {
-        "x": 7.906513493151502,
-        "y": 3.5258378833636543
+        "x": 7.9140337184742595,
+        "y": 4.089801338596799
       },
       "nextControl": null,
       "isLocked": false,
@@ -104,14 +104,14 @@
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 45.0
   },
   "reversed": false,
-  "folder": "Amp",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
