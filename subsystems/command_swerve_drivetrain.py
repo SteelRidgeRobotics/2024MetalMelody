@@ -4,6 +4,7 @@ import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
 from phoenix6 import SignalLogger, swerve, units, utils
+from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController
 from wpilib.sysid import SysIdRoutineLog
@@ -117,6 +118,9 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
 
         self._has_applied_operator_perspective = False
         """Keep track if we've ever applied the operator perspective before or not"""
+
+        # Swerve request to apply during path following
+        self._apply_robot_speeds = swerve.requests.ApplyRobotSpeeds()
 
         # Swerve requests to apply during SysId characterization
         self._translation_characterization = swerve.requests.SysIdSwerveTranslation()

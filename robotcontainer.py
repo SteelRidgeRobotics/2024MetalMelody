@@ -12,7 +12,9 @@ from commands2.sysid import SysIdRoutine
 from generated.tuner_constants import TunerConstants
 from telemetry import Telemetry
 
+from pathplannerlib.auto import AutoBuilder
 from phoenix6 import swerve
+from wpilib import SmartDashboard
 from wpimath.geometry import Rotation2d
 from wpimath.units import rotationsToRadians
 
@@ -52,6 +54,10 @@ class RobotContainer:
         )
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
+
+        # Path follower
+        self._auto_chooser = AutoBuilder.buildAutoChooser("Auto Chooser")
+        SmartDashboard.putData("Auto Mode", self._auto_chooser)
 
         # Configure the button bindings
         self.configureButtonBindings()
@@ -120,4 +126,4 @@ class RobotContainer:
 
         :returns: the command to run in autonomous
         """
-        return commands2.cmd.print_("No autonomous command configured")
+        return self._auto_chooser.getSelected()
