@@ -1,5 +1,6 @@
 from commands2 import Command, Subsystem
 from commands2.sysid import SysIdRoutine
+from limelight import LimelightHelpers
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
@@ -120,7 +121,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         """Keep track if we've ever applied the operator perspective before or not"""
 
         # Swerve request to apply during path following
-        self._apply_robot_speeds = swerve.requests.ApplyRobotSpeeds()
+        self._apply_robot_speeds = ApplyRobotSpeeds()
 
         # Swerve requests to apply during SysId characterization
         self._translation_characterization = swerve.requests.SysIdSwerveTranslation()
@@ -282,6 +283,15 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                     else self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION
                 )
                 self._has_applied_operator_perspective = True
+
+        self._apply_vision_estimates()
+
+    def _apply_vision_estimates(self):
+        LimelightHelpers.set_robot_orientation("", self.get_rotation3d().toRotation2d().degrees(), 0, 0, 0, 0, 0)
+        mt2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
+        if mt2.tag_count > 0:
+            self.set_vision_measurement_std_devs([0.7, 0.7, 999999])
+            self.add_vision_measurement(mt2.pose, mt2.timestamp_seconds)
 
     def _start_sim_thread(self):
         def _sim_periodic():
