@@ -10,6 +10,10 @@ import commands2.cmd
 from commands2.sysid import SysIdRoutine
 
 from generated.tuner_constants import TunerConstants
+from subsystems.intake import Intake
+from subsystems.leds import LedSubsystem
+from subsystems.lift import Lift
+from subsystems.pivot import Pivot
 from telemetry import Telemetry
 
 from pathplannerlib.auto import AutoBuilder
@@ -55,6 +59,11 @@ class RobotContainer:
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
 
+        self.intake = Intake()
+        self.leds = LedSubsystem()
+        self.lift = Lift()
+        self.pivot = Pivot()
+
         # Path follower
         self._auto_chooser = AutoBuilder.buildAutoChooser("Auto Chooser")
         SmartDashboard.putData("Auto Mode", self._auto_chooser)
@@ -96,6 +105,8 @@ class RobotContainer:
                 )
             )
         )
+
+        
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
