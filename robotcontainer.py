@@ -1,121 +1,123 @@
-from commands.drive_maintain_heading import DriveMaintainHeadingCommand
-from commands.intake_and_stow import IntakeAndStow
-from commands.manual_lift import ManualLift
-from commands.vibrate import VibrateController
-from commands2.button import JoystickButton, Trigger
-from constants import *
-from pathplannerlib.auto import NamedCommands, PathPlannerAuto
-from phoenix6.controls import DutyCycleOut
-from subsystems.lift import Lift
-from subsystems.intake import Intake
-from subsystems.pivot import Pivot, PivotStates
-from subsystems.leds import *
-from subsystems.leds.patterns import *
-from subsystems.drive.drivetrain import Drivetrain
-from wpilib import SendableChooser, SmartDashboard, Timer, XboxController
-from wpimath.geometry import Pose2d, Rotation2d
+#
+# Copyright (c) FIRST and other WPILib contributors.
+# Open Source Software; you can modify and/or share it under the terms of
+# the WPILib BSD license file in the root directory of this project.
+#
+
+import commands2
+import commands2.button
+import commands2.cmd
+from commands2.sysid import SysIdRoutine
+
+from generated.tuner_constants import TunerConstants
+from telemetry import Telemetry
+
+from phoenix6 import swerve
+from wpimath.geometry import Rotation2d
+from wpimath.units import rotationsToRadians
+
 
 class RobotContainer:
-    
-    def __init__(self):
-        self.drivetrain: Drivetrain = Drivetrain()
-        self.lift: Lift = Lift()
-        self.intake: Intake = Intake()
-        self.pivot: Pivot = Pivot()
-        self.led: LedSubsystem = LedSubsystem()
-                
-        # PathPlanner Commands        
-        ## Lift
-        
-        NamedCommands.registerCommand("liftExtend", self.lift.runOnce(self.lift.raiseFull))
-        NamedCommands.registerCommand("liftScore", self.lift.runOnce(self.lift.scoreShoot))
-        NamedCommands.registerCommand("liftCompress", self.lift.runOnce(self.lift.compressFull))
+    """
+    This class is where the bulk of the robot should be declared. Since Command-based is a
+    "declarative" paradigm, very little robot logic should actually be handled in the :class:`.Robot`
+    periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+    subsystems, commands, and button mappings) should be declared here.
+    """
 
-        ## Intake
-        NamedCommands.registerCommand("intakeConsume", self.intake.runOnce(self.intake.consume))
-        NamedCommands.registerCommand("intakeDisencumber", self.intake.runOnce(self.intake.disencumber))
-        NamedCommands.registerCommand("intakeStop", self.intake.runOnce(self.intake.stop))
-        
-        ## Pivot
-        NamedCommands.registerCommand("pivotScore", self.pivot.runOnce(self.pivot.scoreUpwards))
-        NamedCommands.registerCommand("pivotDrop", self.pivot.runOnce(self.pivot.scoreDownwards))
-        NamedCommands.registerCommand("pivotStow", self.pivot.runOnce(self.pivot.stow))
-        NamedCommands.registerCommand("pivotIntake", self.pivot.runOnce(self.pivot.intake))
-        
-        ## Misc
-        NamedCommands.registerCommand("shootUpwards", self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.15))).alongWith(self.intake.runOnce(self.intake.disencumber)))
-        
-        """Sendables!!!"""
-        self.start_chooser = SendableChooser()
-        self.start_chooser.setDefaultOption("(0, 0)", Pose2d())
-        self.start_chooser.addOption("Blue Amp", Pose2d(1.41, 7.29, Rotation2d()))
-        self.start_chooser.addOption("Blue Speaker", Pose2d(1.34, 5.48, Rotation2d()))
-        self.start_chooser.addOption("Blue Source", Pose2d(0.52, 2.1, Rotation2d()))
-        self.start_chooser.addOption("Red Amp", Pose2d(15.132, 7.29, Rotation2d.fromDegrees(180)))
-        self.start_chooser.addOption("Red Speaker", Pose2d(15.202, 5.48, Rotation2d.fromDegrees(180)))
-        self.start_chooser.addOption("Red Source", Pose2d(16.022, 2.1, Rotation2d.fromDegrees(180)))
-        
-        self.start_chooser.onChange(lambda pose: self.drivetrain.reset_odometry(pose=pose))
-        SmartDashboard.putData("Starting Position", self.start_chooser)
-        
-        self.auto_chooser: PathPlannerAuto = SendableChooser()
-        #self.auto_chooser.setDefaultOption("2.5 Amp to Ready", PathPlannerAuto("2.5NoteToReady"))
-        #self.auto_chooser.setDefaultOption("2.5 Amp", PathPlannerAuto("2.5NoteAmp"))
-        self.auto_chooser.setDefaultOption("2 Amp", PathPlannerAuto("2NoteAmp"))
-        self.auto_chooser.addOption("1 Amp", PathPlannerAuto("1NoteAmp"))
-        self.auto_chooser.addOption("0 Amp", PathPlannerAuto("0NoteAmp"))
-        self.auto_chooser.addOption("0 Speaker", PathPlannerAuto("0NoteSpeaker"))
-        self.auto_chooser.addOption("0 Source", PathPlannerAuto("0NoteSource"))
-        self.auto_chooser.addOption("5 Disrupt Source", PathPlannerAuto("5DisruptSource"))
-        self.auto_chooser.addOption("5 Disrupt Amp", PathPlannerAuto("5DisruptAmp"))
-        #self.auto_chooser.addOption("1 Source", PathPlannerAuto("1NoteSource"))
-        #self.auto_chooser.addOption("1 Source Disrupt", PathPlannerAuto("1DisruptSource"))
-        self.auto_chooser.addOption("Do Nothing :(", self.pivot.runOnce(self.pivot.stow).alongWith(self.lift.runOnce(self.lift.compressFull)))
-        #self.auto_chooser.addOption("1 Source Disrupt to Ready", PathPlannerAuto("1DisruptSourceToReady"))
-        #self.auto_chooser.addOption("1 Source Disrupt to Ready (Long)", PathPlannerAuto("1DisruptSourceToReadyLong"))
-        SmartDashboard.putData("Autonomous Select", self.auto_chooser)
+    def __init__(self) -> None:
+        self._max_speed = (
+            TunerConstants.speed_at_12_volts
+        )  # speed_at_12_volts desired top speed
+        self._max_angular_rate = rotationsToRadians(
+            0.75
+        )  # 3/4 of a rotation per second max angular velocity
 
-        self.driverController = XboxController(Constants.ControllerConstants.k_driver_controller_port)
-        self.functionsController = XboxController(Constants.ControllerConstants.k_functions_controller_port) 
-        
+        self._joystick = commands2.button.CommandXboxController(0)
+
+        self._logger = Telemetry(self._max_speed)
+
+        self.drivetrain = TunerConstants.create_drivetrain()
+
+        # Setting up bindings for necessary control of the swerve drive platform
+        self._drive = (
+            swerve.requests.FieldCentric()
+            .with_deadband(self._max_speed * 0.1)
+            .with_rotational_deadband(
+                self._max_angular_rate * 0.1
+            )  # Add a 10% deadband
+            .with_drive_request_type(
+                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
+            )  # Use open-loop control for drive motors
+        )
+        self._brake = swerve.requests.SwerveDriveBrake()
+        self._point = swerve.requests.PointWheelsAt()
+
+        # Configure the button bindings
+        self.configureButtonBindings()
+
+    def configureButtonBindings(self) -> None:
+        """
+        Use this method to define your button->command mappings. Buttons can be created by
+        instantiating a :GenericHID or one of its subclasses (Joystick or XboxController),
+        and then passing it to a JoystickButton.
+        """
+
+        # Note that X is defined as forward according to WPILib convention,
+        # and Y is defined as to the left according to WPILib convention.
         self.drivetrain.setDefaultCommand(
-            DriveMaintainHeadingCommand(self.drivetrain,
-            lambda: -self.driverController.getLeftY(),
-            lambda: -self.driverController.getLeftX(),
-            lambda: -self.driverController.getRightX(),
+            # Drivetrain will execute this command periodically
+            self.drivetrain.apply_request(
+                lambda: (
+                    self._drive.with_velocity_x(
+                        -self._joystick.getLeftY() * self._max_speed
+                    )  # Drive forward with negative Y (forward)
+                    .with_velocity_y(
+                        -self._joystick.getLeftX() * self._max_speed
+                    )  # Drive left with negative X (left)
+                    .with_rotational_rate(
+                        -self._joystick.getRightX() * self._max_angular_rate
+                    )  # Drive counterclockwise with negative X (left)
+                )
             )
         )
 
-        JoystickButton(self.functionsController, XboxController.Button.kLeftBumper).onTrue(IntakeAndStow(self.intake, self.pivot)
-                                                                                            .andThen(VibrateController(self.driverController, XboxController.RumbleType.kBothRumble, 0.75))
-                                                                                            .alongWith(VibrateController(self.functionsController, XboxController.RumbleType.kBothRumble, 0.25)))
-        JoystickButton(self.functionsController, XboxController.Button.kRightBumper).onTrue(self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
-                                                                                            .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
-                                                                                            .alongWith(self.intake.runOnce(self.intake.disencumber))
-                                                                                            ).onFalse(self.intake.runOnce(self.intake.stop).alongWith(self.pivot.runOnce(self.pivot.stow)))
-        
-        
-        JoystickButton(self.functionsController, XboxController.Button.kA).onTrue(self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
+        self._joystick.a().whileTrue(self.drivetrain.apply_request(lambda: self._brake))
+        self._joystick.b().whileTrue(
+            self.drivetrain.apply_request(
+                lambda: self._point.with_module_direction(
+                    Rotation2d(-self._joystick.getLeftY(), -self._joystick.getLeftX())
+                )
+            )
+        )
 
-        JoystickButton(self.functionsController, XboxController.Button.kB).whileTrue(ManualLift(self.functionsController, self.lift))
-        JoystickButton(self.functionsController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
-        JoystickButton(self.functionsController, XboxController.Button.kY).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.scoreDownwards)))
+        # Run SysId routines when holding back/start and X/Y.
+        # Note that each routine should be run exactly once in a single log.
+        (self._joystick.back() & self._joystick.y()).whileTrue(
+            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
+        )
+        (self._joystick.back() & self._joystick.x()).whileTrue(
+            self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
+        )
+        (self._joystick.start() & self._joystick.y()).whileTrue(
+            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
+        )
+        (self._joystick.start() & self._joystick.x()).whileTrue(
+            self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
+        )
 
-        JoystickButton(self.functionsController, XboxController.Button.kRightStick).onTrue(self.lift.runOnce(self.lift.scoreShoot).alongWith(self.pivot.runOnce(self.pivot.scoreUpwards)))
-        JoystickButton(self.functionsController, XboxController.Button.kLeftStick).onTrue(self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.stow)))
-        
-        JoystickButton(self.driverController, XboxController.Button.kX).onTrue(self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop)))
+        # reset the field-centric heading on left bumper press
+        self._joystick.leftBumper().onTrue(
+            self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric())
+        )
 
-        JoystickButton(self.driverController, XboxController.Button.kY).whileTrue(self.led.show_pattern_command(SimpleLedPattern.solid(Color(255, 3, 120)), PatternLevel.DEFAULT))
+        self.drivetrain.register_telemetry(
+            lambda state: self._logger.telemeterize(state)
+        )
 
-        Trigger(self.intake.hasNote).debounce(0.05).whileTrue(self.led.show_pattern_command(SimpleLedPattern.solid(Color(255, 3, 120)), PatternLevel.INTAKE_STATE))
-        
-    def getAuto(self) -> PathPlannerAuto:
-        return self.auto_chooser.getSelected()
-        
-    def runSelectedAutoCommand(self) -> None:
-        self.drivetrain.reset_pose(PathPlannerAuto.getStartingPoseFromAutoFile(self.auto_chooser.getSelected().getName()))
-        self.getAuto().schedule()
-        
-    def updateMatchTime(self) -> None:
-        SmartDashboard.putNumber("Time", Timer.getMatchTime())
+    def getAutonomousCommand(self) -> commands2.Command:
+        """Use this to pass the autonomous command to the main {@link Robot} class.
+
+        :returns: the command to run in autonomous
+        """
+        return commands2.cmd.print_("No autonomous command configured")

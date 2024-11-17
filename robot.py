@@ -1,57 +1,79 @@
-from commands2 import TimedCommandRobot
-from phoenix6.signal_logger import SignalLogger
-from wpilib import Color, TimedRobot
+#!/usr/bin/env python3
+#
+# Copyright (c) FIRST and other WPILib contributors.
+# Open Source Software; you can modify and/or share it under the terms of
+# the WPILib BSD license file in the root directory of this project.
+#
+
+import wpilib
+import commands2
+import typing
+
 from robotcontainer import RobotContainer
-from wpilib import DriverStation, RobotBase
-from wpilib.cameraserver import CameraServer
-from subsystems.leds import *
-from subsystems.leds.patterns import *
 
 
-class MetalMelody(TimedCommandRobot):
+class MyRobot(commands2.TimedCommandRobot):
+    """
+    Command v2 robots are encouraged to inherit from TimedCommandRobot, which
+    has an implementation of robotPeriodic which runs the scheduler for you
+    """
 
-    def __init__(self, period: float = TimedRobot.kDefaultPeriod / 1000) -> None:
-        super().__init__(period)
+    autonomousCommand: typing.Optional[commands2.Command] = None
 
-    def robotInit(self):
-        DriverStation.silenceJoystickConnectionWarning(True)
-        
-        SignalLogger.enable_auto_logging(False)
-        
+    def robotInit(self) -> None:
+        """
+        This function is run when the robot is first started up and should be used for any
+        initialization code.
+        """
+
+        # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+        # autonomous chooser on the dashboard.
         self.container = RobotContainer()
-        
-        if RobotBase.isReal():
-            CameraServer.launch()
-            
-    def robotPeriodic(self) -> None:
-        self.container.updateMatchTime()
-    
-    def _simulationPeriodic(self) -> None:
-        pass
-        
-    def disabledInit(self) -> None:
-        pass
-        
-    def disabledPeriodic(self) -> None:
-        pass
-        
-    def autonomousInit(self) -> None:
-        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.solid(Color(0,0,255)), PatternLevel.DEFAULT)
 
-        self.container.drivetrain.reset_yaw()
-        self.container.runSelectedAutoCommand()
-    
+    def robotPeriodic(self) -> None:
+        """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+        that you want ran during disabled, autonomous, teleoperated and test.
+
+        This runs after the mode specific periodic functions, but before LiveWindow and
+        SmartDashboard integrated updating."""
+
+        # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        # commands, running already-scheduled commands, removing finished or interrupted commands,
+        # and running subsystem periodic() methods.  This must be called from the robot's periodic
+        # block in order for anything in the Command-based framework to work.
+        commands2.CommandScheduler.getInstance().run()
+
+    def disabledInit(self) -> None:
+        """This function is called once each time the robot enters Disabled mode."""
+        pass
+
+    def disabledPeriodic(self) -> None:
+        """This function is called periodically when disabled"""
+        pass
+
+    def autonomousInit(self) -> None:
+        """This autonomous runs the autonomous command selected by your RobotContainer class."""
+        self.autonomousCommand = self.container.getAutonomousCommand()
+
+        if self.autonomousCommand:
+            self.autonomousCommand.schedule()
+
     def autonomousPeriodic(self) -> None:
+        """This function is called periodically during autonomous"""
         pass
 
     def teleopInit(self) -> None:
-        self.container.led.set_pattern(Zone.MAIN, LedPatternRainbow(2), PatternLevel.DEFAULT)
+        # This makes sure that the autonomous stops running when
+        # teleop starts running. If you want the autonomous to
+        # continue until interrupted by another command, remove
+        # this line or comment it out.
+        if self.autonomousCommand:
+            self.autonomousCommand.cancel()
 
     def teleopPeriodic(self) -> None:
+        """This function is called periodically during operator control"""
         pass
 
     def testInit(self) -> None:
-        self.container.led.set_pattern(Zone.MAIN, SimpleLedPattern.solid(Color.kRed), PatternLevel.DEFAULT)
-
-    def testExit(self) -> None:
-        SignalLogger.stop()
+        # Cancels all running commands at the start of test mode
+        commands2.CommandScheduler.getInstance().cancelAll()

@@ -48,7 +48,7 @@ class Lift(Subsystem):
 
     def periodic(self) -> None:
 
-        if self.master_motor.get_velocity().value == 0 and self.master_motor._get_pid_position_closed_loop_error().value < 15 and self.timer > 0.1 and self.state is LiftStates.LOWERED:
+        if self.master_motor.get_velocity().value == 0 and self.master_motor.get_closed_loop_error().value < 15 and self.timer > 0.1 and self.state is LiftStates.LOWERED:
             self.stop() # If we're not moving, don't move! :exploding_head:
 
         self.timer += 0.02
