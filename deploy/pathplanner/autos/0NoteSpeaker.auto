@@ -14,6 +14,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Speaker",
+  "folder": null,
   "choreoAuto": false
 }

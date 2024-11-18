@@ -19,6 +19,7 @@ from telemetry import Telemetry
 
 import math
 from pathplannerlib.auto import AutoBuilder
+from pathplannerlib.path import PathConstraints, PathPlannerPath
 from phoenix6 import swerve
 from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
 from wpilib import DriverStation, SmartDashboard
@@ -134,6 +135,9 @@ class RobotContainer:
                     (Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
                 )
             )
+        )
+        self._joystick.y().whileTrue(
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
         )
 
         # Run SysId routines when holding back/start and X/Y.

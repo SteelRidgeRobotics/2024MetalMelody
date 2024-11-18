@@ -119,6 +119,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Amp",
+  "folder": null,
   "choreoAuto": false
 }
