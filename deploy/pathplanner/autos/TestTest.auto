@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LoopLeStage"
+            "pathName": "SimplePath"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "JumpIntoSpeaker"
+            "pathName": "CoolerSimplePath"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Even Cooler Path"
           }
         }
       ]

@@ -27,6 +27,8 @@ class MetalMelody(commands2.TimedCommandRobot):
         # autonomous chooser on the dashboard.
         self.container = RobotContainer()
 
+        wpilib.DriverStation.silenceJoystickConnectionWarning(not wpilib.DriverStation.isFMSAttached())
+
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
         that you want ran during disabled, autonomous, teleoperated and test.
