@@ -9,6 +9,7 @@ import commands2.button
 import commands2.cmd
 from commands2.sysid import SysIdRoutine
 
+from constants import Constants
 from generated.tuner_constants import TunerConstants
 from subsystems.intake import Intake
 from subsystems.leds import LedSubsystem
@@ -16,9 +17,12 @@ from subsystems.lift import Lift
 from subsystems.pivot import Pivot
 from telemetry import Telemetry
 
+import math
 from pathplannerlib.auto import AutoBuilder
 from phoenix6 import swerve
-from wpilib import SmartDashboard
+from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
+from wpilib import DriverStation, SmartDashboard
+from wpimath.controller import SimpleMotorFeedforwardRadians
 from wpimath.geometry import Rotation2d
 from wpimath.units import rotationsToRadians
 
@@ -36,7 +40,7 @@ class RobotContainer:
             TunerConstants.speed_at_12_volts
         )  # speed_at_12_volts desired top speed
         self._max_angular_rate = rotationsToRadians(
-            0.75
+            1
         )  # 3/4 of a rotation per second max angular velocity
 
         self._joystick = commands2.button.CommandXboxController(0)
@@ -58,6 +62,18 @@ class RobotContainer:
         )
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
+        self._face = (
+            swerve.requests.FieldCentricFacingAngle()
+            .with_deadband(self._max_speed * 0.1)
+            .with_rotational_deadband(
+                self._max_angular_rate * 0.1
+            )
+            .with_drive_request_type(
+                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
+            )
+        )
+        self._face.heading_controller = PhoenixPIDController(10, 0, 0)
+        self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
 
         self.intake = Intake()
         self.leds = LedSubsystem()
@@ -105,8 +121,20 @@ class RobotContainer:
                 )
             )
         )
-
-        
+        self._joystick.x().whileTrue(
+            self.drivetrain.apply_request(
+                lambda: self._face.with_velocity_x(
+                    -self._joystick.getLeftY() * self._max_speed
+                )
+                .with_velocity_y(
+                    -self._joystick.getLeftX() * self._max_speed
+                )
+                .with_target_direction(
+                    # Gets the angle to our alliance's speaker
+                    (Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
+                )
+            )
+        )
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.

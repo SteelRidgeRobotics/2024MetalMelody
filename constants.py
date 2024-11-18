@@ -1,10 +1,6 @@
-from phoenix6.configs.talon_fx_configs import InvertedValue, NeutralModeValue, TalonFXConfiguration
-from phoenix6.hardware.talon_fx import TalonFX
-from pathplannerlib.controller import PIDConstants
 from phoenix6.configs import Slot0Configs
 from phoenix6.configs.talon_fx_configs import *
-from wpilib import RobotBase
-from wpimath.geometry import Translation2d
+from robotpy_apriltag import AprilTagField, AprilTagFieldLayout
 
 class Constants:
 
@@ -77,3 +73,5 @@ class Constants:
 
         k_led_pwm_port = 9
         k_led_length = 144
+
+    k_apriltag_layout = AprilTagFieldLayout.loadField(AprilTagField.k2024Crescendo)
