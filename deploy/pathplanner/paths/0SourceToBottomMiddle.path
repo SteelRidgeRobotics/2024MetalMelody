@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8014162287393964,
-        "y": 1.827837459000503
+        "x": 2.4264315895431885,
+        "y": 2.3286652945511825
       },
       "isLocked": false,
       "linkedName": "SourceStart"
@@ -20,12 +20,12 @@
         "y": 1.042264452574553
       },
       "prevControl": {
-        "x": 7.8,
-        "y": 0.48226445257455297
+        "x": 6.799719172705565,
+        "y": 0.15468321150428344
       },
       "nextControl": {
-        "x": 7.8,
-        "y": 1.542264452574554
+        "x": 8.543578367672355,
+        "y": 1.7020653728788724
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 7.42
       },
       "prevControl": {
-        "x": 7.790194207153597,
-        "y": 4.174282567840395
+        "x": 7.567298209670228,
+        "y": 3.0940925785598905
       },
       "nextControl": null,
       "isLocked": false,
@@ -54,21 +54,7 @@
       "rotationDegrees": 45.0
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Lower Lift",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.4,
-      "constraints": {
-        "maxVelocity": 3.0,
-        "maxAcceleration": 0.75,
-        "maxAngularVelocity": 360.0,
-        "maxAngularAcceleration": 90.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
@@ -138,14 +124,14 @@
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0.0,
     "rotation": 45.0
   },
   "reversed": false,
-  "folder": "Source",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

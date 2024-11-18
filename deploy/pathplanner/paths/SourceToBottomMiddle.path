@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.427570359812942,
-        "y": 2.416262430979339
+        "x": 1.3641046709432834,
+        "y": 2.549984209953256
       },
       "isLocked": false,
       "linkedName": "SourceStart"
@@ -20,8 +20,8 @@
         "y": 0.7846260485673593
       },
       "prevControl": {
-        "x": 3.4828099065729763,
-        "y": 1.9718923136735669
+        "x": 3.955515445760353,
+        "y": 1.505013023929377
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,6 @@
     {
       "waypointRelativePos": 0.3,
       "rotationDegrees": 90.0
-    },
-    {
-      "waypointRelativePos": 0.7,
-      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -132,11 +128,11 @@
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": null,
