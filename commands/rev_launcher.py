@@ -14,7 +14,5 @@ class RevLauncher(Command):
     def execute(self):
         self.launcher.rev()
 
-        return super().execute()
-
     def isFinished(self) -> bool:
         return self.launcher.get_velocity() > LauncherConstants.SHOOTPERCENT

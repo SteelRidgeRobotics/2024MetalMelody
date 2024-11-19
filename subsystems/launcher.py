@@ -37,14 +37,14 @@ class Launcher(Subsystem):
         wpilib.SmartDashboard.putNumber("Rev", 0)
 
     def get_velocity(self):
-        return self.top_left.get_rotor_velocity
+        return self.top_left.get_rotor_velocity().value
 
     def rev(self):
         self.top_left.set_control(DutyCycleOut(LauncherConstants.SHOOTPERCENT))
-        #wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle())
+        wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle().value)
         
     def stop(self):
         self.top_left.set_control(DutyCycleOut(LauncherConstants.CONSTANTPERCENT))
-        #wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle())
+        wpilib.SmartDashboard.putNumber("Rev", self.top_left.get_duty_cycle().value)
 
     
