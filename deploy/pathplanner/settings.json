@@ -1,23 +1,27 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.93,
+  "robotLength": 0.93,
   "holonomicMode": true,
   "pathFolders": [
+    "Amp",
     "Tests"
   ],
-  "autoFolders": [],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 3.0,
-  "defaultMaxAngVel": 540.0,
+  "autoFolders": [
+    "Amp",
+    "Tests"
+  ],
+  "defaultMaxVel": 4.5,
+  "defaultMaxAccel": 6.5,
+  "defaultMaxAngVel": 450.0,
   "defaultMaxAngAccel": 720.0,
-  "robotMass": 75.0,
-  "robotMOI": 6.883,
-  "robotWheelbase": 0.5588,
-  "robotTrackwidth": 0.5588,
-  "driveWheelRadius": 0.05504,
-  "driveGearing": 7.363636,
+  "robotMass": 50.0,
+  "robotMOI": 15.0,
+  "robotWheelbase": 0.61,
+  "robotTrackwidth": 0.61,
+  "driveWheelRadius": 0.05,
+  "driveGearing": 6.746,
   "maxDriveSpeed": 4.7,
-  "driveMotorType": "falcon500FOC",
-  "driveCurrentLimit": 120.0,
-  "wheelCOF": 1.7
+  "driveMotorType": "krakenX60FOC",
+  "driveCurrentLimit": 33.0,
+  "wheelCOF": 0.7
 }

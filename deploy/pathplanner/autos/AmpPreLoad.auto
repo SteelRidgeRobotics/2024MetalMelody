@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "0NoteSource"
+            "pathName": "AmpPreLoad"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
-  "choreoAuto": false
+  "folder": "Amp",
+  "choreoAuto": true
 }

@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5DisruptAmp"
+            "pathName": "TranslationCircle"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Tests",
   "choreoAuto": false
 }

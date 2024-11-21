@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Even Cooler Path"
+            "pathName": "TranslationCircle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RotationCircle"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Tests",
   "choreoAuto": false
 }

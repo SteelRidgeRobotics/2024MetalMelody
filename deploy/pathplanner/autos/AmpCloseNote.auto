@@ -7,31 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceToBottomMiddle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pivotStow"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeStop"
+            "pathName": "AmpPreLoad"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BottomMiddleBack"
+            "pathName": "AmpToCloseNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CloseNoteToAmp"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
-  "choreoAuto": false
+  "folder": "Amp",
+  "choreoAuto": true
 }
