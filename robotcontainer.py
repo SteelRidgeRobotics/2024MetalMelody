@@ -136,9 +136,9 @@ class RobotContainer:
                 )
             )
         )
-        #self._joystick.y().whileTrue(
-            #AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
-        #)
+        self._joystick.y().whileTrue(
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
+        )
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
