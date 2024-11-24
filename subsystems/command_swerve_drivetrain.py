@@ -4,10 +4,10 @@ from limelight import LimelightHelpers
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
-from phoenix6 import SignalLogger, swerve, units, utils
+from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
-from wpilib import DriverStation, Notifier, RobotController
+from wpilib import DriverStation, Notifier, RobotController, SmartDashboard
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Rotation2d
 
@@ -129,20 +129,15 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
 
         self._sys_id_routine_translation = SysIdRoutine(
-            SysIdRoutine.Config(
-                # Use default ramp rate (1 V/s) and timeout (10 s)
-                # Reduce dynamic voltage to 4 V to prevent brownout
-                stepVoltage=4.0,
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdTranslation_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
-            ),
+            SysIdRoutine.Config(),
             SysIdRoutine.Mechanism(
                 lambda output: self.set_control(
                     self._translation_characterization.with_volts(output)
                 ),
-                lambda log: None,
+                lambda log: log.motor("drive")
+                .voltage(self.modules[0].drive_motor.get_motor_voltage().value)
+                .velocity(self.modules[0].drive_motor.get_velocity().value)
+                .position(self.modules[0].drive_motor.get_position().value),
                 self,
             ),
         )
@@ -152,17 +147,16 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
             SysIdRoutine.Config(
                 # Use default ramp rate (1 V/s) and timeout (10 s)
                 # Use dynamic voltage of 7 V
-                stepVoltage=7.0,
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
+                stepVoltage=7.0
             ),
             SysIdRoutine.Mechanism(
                 lambda output: self.set_control(
                     self._steer_characterization.with_volts(output)
                 ),
-                lambda log: None,
+                lambda log: log.motor("steer")
+                .voltage(self.modules[0].steer_motor.get_motor_voltage().value)
+                .velocity(self.modules[0].steer_motor.get_velocity().value)
+                .position(self.modules[0].steer_motor.get_position().value),
                 self,
             ),
         )
@@ -176,9 +170,9 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                 stepVoltage=7.0,
                 # Use default timeout (10 s)
                 # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
+                #recordState=lambda state: SignalLogger.write_string(
+                    #"SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
+                #),
             ),
             SysIdRoutine.Mechanism(
                 lambda output: (
@@ -187,9 +181,11 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                         self._rotation_characterization.with_rotational_rate(output)
                     ),
                     # also log the requested output for SysId
-                    SignalLogger.write_double("Rotational_Rate", output),
+                    SmartDashboard.putNumber("drivetrainRotationRate", output),
                 ),
-                lambda log: None,
+                lambda log: log.motor("drivetrainRotation")
+                .position(self.pigeon2.get_yaw().value)
+                .velocity(self.pigeon2.get_angular_velocity_z_world().value), # voltage is logged in smart dashboard, see line 184
                 self,
             ),
         )

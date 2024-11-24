@@ -13,7 +13,6 @@ class Telemetry:
         :type max_speed: units.meters_per_second
         """
         self._max_speed = max_speed
-        SignalLogger.start()
         DriverStation.startDataLog(DataLogManager.getLog())
 
         self._field = Field2d()

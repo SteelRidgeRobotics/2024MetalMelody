@@ -122,6 +122,8 @@ class RobotContainer:
                 )
             )
         )
+        """
+        # We can't test these until we get a Limelight onto MM and until PathPlanner Beta 5 releases :(
         self._joystick.x().whileTrue(
             self.drivetrain.apply_request(
                 lambda: self._face.with_velocity_x(
@@ -136,9 +138,11 @@ class RobotContainer:
                 )
             )
         )
+        
         self._joystick.y().whileTrue(
             AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
         )
+        """
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
