@@ -7,8 +7,7 @@ from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
 from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
-from wpilib import DriverStation, Notifier, RobotController, SmartDashboard
-from wpilib.sysid import SysIdRoutineLog
+from wpilib import DriverStation, Notifier, RobotController
 from wpimath.geometry import Rotation2d
 
 
@@ -179,15 +178,14 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                     # output is actually radians per second, but SysId only supports "volts"
                     self.set_control(
                         self._rotation_characterization.with_rotational_rate(output)
-                    ),
-                    # also log the requested output for SysId
-                    SmartDashboard.putNumber("drivetrainRotationRate", output),
+                    )
                 ),
                 lambda log: log.motor("drivetrainRotation")
+                .voltage(self._sys_id_routine_rotation.outputVolts)
                 .position(self.pigeon2.get_yaw().value)
-                .velocity(self.pigeon2.get_angular_velocity_z_world().value), # voltage is logged in smart dashboard, see line 184
-                self,
-            ),
+                .velocity(self.pigeon2.get_angular_velocity_z_world().value),
+                self
+            )
         )
         """
         SysId routine for characterizing rotation.
@@ -195,7 +193,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
         See the documentation of swerve.requests.SysIdSwerveRotation for info on importing the log to SysId.
         """
 
-        self._sys_id_routine_to_apply = self._sys_id_routine_translation
+        self._sys_id_routine_to_apply = self._sys_id_routine_rotation
         """The SysId routine to test"""
 
         if utils.is_simulation():

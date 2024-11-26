@@ -24,7 +24,6 @@ from phoenix6 import swerve
 from phoenix6.controls import DutyCycleOut
 from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
 from wpilib import DriverStation, SmartDashboard, XboxController
-from wpimath.controller import SimpleMotorFeedforwardRadians
 from wpimath.geometry import Rotation2d
 from wpimath.units import rotationsToRadians
 
@@ -79,7 +78,7 @@ class RobotContainer:
                 swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
             )
         )
-        self._face.heading_controller = PhoenixPIDController(10, 0, 0)
+        self._face.heading_controller = PhoenixPIDController(18.749, 0.45773, 0)
         self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
 
         self.intake = Intake()
