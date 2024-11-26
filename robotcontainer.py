@@ -128,15 +128,15 @@ class RobotContainer:
                 )
             )
         )
-        """
+        
         # We can't test these until we get a Limelight onto MM and until PathPlanner Beta 5 releases :(
-        self._joystick.x().whileTrue(
+        self._driver_controller.x().whileTrue(
             self.drivetrain.apply_request(
                 lambda: self._face.with_velocity_x(
-                    -self._joystick.getLeftY() * self._max_speed
+                    -self._driver_controller.getLeftY() * self._max_speed
                 )
                 .with_velocity_y(
-                    -self._joystick.getLeftX() * self._max_speed
+                    -self._driver_controller.getLeftX() * self._max_speed
                 )
                 .with_target_direction(
                     # Gets the angle to our alliance's speaker
@@ -145,10 +145,9 @@ class RobotContainer:
             )
         )
         
-        self._joystick.y().whileTrue(
+        self._driver_controller.y().whileTrue(
             AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
         )
-        """
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
