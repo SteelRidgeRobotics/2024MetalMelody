@@ -1,10 +1,12 @@
 from commands2 import Subsystem
 from enum import Enum
 from phoenix6.configs import TalonFXConfiguration
+from phoenix6.configs.config_groups import NeutralModeValue, ForwardLimitValue
 from phoenix6.controls import DutyCycleOut
 from phoenix6.hardware import TalonFX
 from phoenix6.signals import ForwardLimitValue
-from constants import *
+
+from constants import Constants
 
 class IntakeStates(Enum):
     STOPPED = 0
@@ -17,10 +19,10 @@ class Intake(Subsystem):
         super().__init__()
         self.setName("Intake")
         
-        self.intakeMotor = TalonFX(MotorIDs.INTAKEMOTOR)
+        self.intakeMotor = TalonFX(Constants.CanIDs.k_intake_motor)
         intake_config = TalonFXConfiguration()
         intake_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
-        intake_config.feedback.sensor_to_mechanism_ratio = IntakeConstants.GEAR_RATIO
+        intake_config.feedback.sensor_to_mechanism_ratio = Constants.IntakeConstants.k_gear_ratio
         self.intakeMotor.configurator.apply(intake_config)
         
         self.has_note = False
@@ -31,7 +33,7 @@ class Intake(Subsystem):
         self.state = IntakeStates.DISENCUMBERING
 
     def consume(self) -> None:
-        self.intakeMotor.set_control(DutyCycleOut(IntakeConstants.INTAKESPEED))
+        self.intakeMotor.set_control(DutyCycleOut(Constants.IntakeConstants.k_intake_speed))
         self.state = IntakeStates.CONSUME
 
     def stop(self) -> None:

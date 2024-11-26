@@ -1,53 +1,78 @@
-from commands.control_swerve_speed import ControlSwerveSpeed
+#!/usr/bin/env python3
+#
+# Copyright (c) FIRST and other WPILib contributors.
+# Open Source Software; you can modify and/or share it under the terms of
+# the WPILib BSD license file in the root directory of this project.
+#
+
+import wpilib
 import commands2
-from commands2.timedcommandrobot import seconds
-from phoenix6.signal_logger import SignalLogger
-from wpilib import TimedRobot
+import typing
+
 from robotcontainer import RobotContainer
-from wpilib import DriverStation, RobotBase
-from wpilib.cameraserver import CameraServer
+
 
 class MetalMelody(commands2.TimedCommandRobot):
+    """
+    Command v2 robots are encouraged to inherit from TimedCommandRobot, which
+    has an implementation of robotPeriodic which runs the scheduler for you
+    """
 
-    def __init__(self, period: float = TimedRobot.kDefaultPeriod / 1000) -> None:
+    autonomousCommand: typing.Optional[commands2.Command] = None
+
+    def __init__(self, period = wpilib.TimedRobot.kDefaultPeriod / 1000):
         super().__init__(period)
 
-    def robotInit(self):
-        DriverStation.silenceJoystickConnectionWarning(True)
-        
-        SignalLogger.enable_auto_logging(False)
-        
+        # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+        # autonomous chooser on the dashboard.
         self.container = RobotContainer()
-        
-        if RobotBase.isReal():
-            CameraServer.launch()
-            
+
+        wpilib.DriverStation.silenceJoystickConnectionWarning(not wpilib.DriverStation.isFMSAttached())
+
     def robotPeriodic(self) -> None:
-        self.container.updateMatchTime()
-    
-    def _simulationPeriodic(self) -> None:
-        pass
-        
+        """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+        that you want ran during disabled, autonomous, teleoperated and test.
+
+        This runs after the mode specific periodic functions, but before LiveWindow and
+        SmartDashboard integrated updating."""
+
+        # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        # commands, running already-scheduled commands, removing finished or interrupted commands,
+        # and running subsystem periodic() methods.  This must be called from the robot's periodic
+        # block in order for anything in the Command-based framework to work.
+        commands2.CommandScheduler.getInstance().run()
+
     def disabledInit(self) -> None:
+        """This function is called once each time the robot enters Disabled mode."""
         pass
-        
+
     def disabledPeriodic(self) -> None:
+        """This function is called periodically when disabled"""
         pass
-        
+
     def autonomousInit(self) -> None:
-        self.container.swerve.navx.reset()
-        self.container.runSelectedAutoCommand()
-    
+        """This autonomous runs the autonomous command selected by your RobotContainer class."""
+        self.autonomousCommand = self.container.getAutonomousCommand()
+
+        if self.autonomousCommand:
+            self.autonomousCommand.schedule()
+
     def autonomousPeriodic(self) -> None:
+        """This function is called periodically during autonomous"""
         pass
 
     def teleopInit(self) -> None:
-        commands2.CommandScheduler.getInstance().schedule(ControlSwerveSpeed(self.container.lift, self.container.swerve, self.container.driverController.getLeftBumper))
+        # This makes sure that the autonomous stops running when
+        # teleop starts running. If you want the autonomous to
+        # continue until interrupted by another command, remove
+        # this line or comment it out.
+        if self.autonomousCommand:
+            self.autonomousCommand.cancel()
 
     def teleopPeriodic(self) -> None:
+        """This function is called periodically during operator control"""
         pass
 
     def testInit(self) -> None:
-        pass    
-    def testExit(self) -> None:
-        SignalLogger.stop()
+        # Cancels all running commands at the start of test mode
+        commands2.CommandScheduler.getInstance().cancelAll()
