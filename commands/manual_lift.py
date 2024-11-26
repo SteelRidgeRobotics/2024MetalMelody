@@ -1,13 +1,13 @@
 from commands2 import Command
+from commands2.button import CommandXboxController
 from constants import Constants
 from frc6343.controller.deadband import deadband
 from phoenix6.controls import TorqueCurrentFOC
 from subsystems.lift import Lift
-from wpilib import XboxController
 
 class ManualLift(Command):
 
-    def __init__(self, controller: XboxController, lift: Lift):
+    def __init__(self, controller: CommandXboxController, lift: Lift):
         super().__init__()
 
         self.controller = controller

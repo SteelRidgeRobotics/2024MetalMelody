@@ -21,12 +21,17 @@ import math
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.path import PathConstraints, PathPlannerPath
 from phoenix6 import swerve
+from phoenix6.controls import DutyCycleOut
 from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
-from wpilib import DriverStation, SmartDashboard
+from wpilib import DriverStation, SmartDashboard, XboxController
 from wpimath.controller import SimpleMotorFeedforwardRadians
 from wpimath.geometry import Rotation2d
 from wpimath.units import rotationsToRadians
 
+from commands.manual_lift import ManualLift
+from commands.intake_and_stow import IntakeAndStow
+from commands.vibrate import VibrateController
+from subsystems.pivot import PivotStates
 
 class RobotContainer:
     """
@@ -44,7 +49,8 @@ class RobotContainer:
             1
         )  # 3/4 of a rotation per second max angular velocity
 
-        self._joystick = commands2.button.CommandXboxController(0)
+        self._driver_controller = commands2.button.CommandXboxController(0)
+        self._function_controller = commands2.button.CommandXboxController(1)
 
         self._logger = Telemetry(self._max_speed)
 
@@ -102,23 +108,23 @@ class RobotContainer:
             self.drivetrain.apply_request(
                 lambda: (
                     self._drive.with_velocity_x(
-                        -self._joystick.getLeftY() * self._max_speed
+                        -self._driver_controller.getLeftY() * self._max_speed
                     )  # Drive forward with negative Y (forward)
                     .with_velocity_y(
-                        -self._joystick.getLeftX() * self._max_speed
+                        -self._driver_controller.getLeftX() * self._max_speed
                     )  # Drive left with negative X (left)
                     .with_rotational_rate(
-                        -self._joystick.getRightX() * self._max_angular_rate
+                        -self._driver_controller.getRightX() * self._max_angular_rate
                     )  # Drive counterclockwise with negative X (left)
                 )
             )
         )
 
-        self._joystick.a().whileTrue(self.drivetrain.apply_request(lambda: self._brake))
-        self._joystick.b().whileTrue(
+        self._driver_controller.a().whileTrue(self.drivetrain.apply_request(lambda: self._brake))
+        self._driver_controller.b().whileTrue(
             self.drivetrain.apply_request(
                 lambda: self._point.with_module_direction(
-                    Rotation2d(-self._joystick.getLeftY(), -self._joystick.getLeftX())
+                    Rotation2d(-self._driver_controller.getLeftY(), -self._driver_controller.getLeftX())
                 )
             )
         )
@@ -146,22 +152,60 @@ class RobotContainer:
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
-        (self._joystick.back() & self._joystick.y()).whileTrue(
+        (self._driver_controller.back() & self._driver_controller.y()).whileTrue(
             self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward)
         )
-        (self._joystick.back() & self._joystick.x()).whileTrue(
+        (self._driver_controller.back() & self._driver_controller.x()).whileTrue(
             self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse)
         )
-        (self._joystick.start() & self._joystick.y()).whileTrue(
+        (self._driver_controller.start() & self._driver_controller.y()).whileTrue(
             self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward)
         )
-        (self._joystick.start() & self._joystick.x()).whileTrue(
+        (self._driver_controller.start() & self._driver_controller.x()).whileTrue(
             self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
         )
 
         # reset the field-centric heading on left bumper press
-        self._joystick.leftBumper().onTrue(
+        self._driver_controller.leftBumper().onTrue(
             self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric())
+        )
+
+        self._function_controller.y().onTrue(
+            self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.scoreDownwards))
+        )
+
+        self._function_controller.x().onTrue(
+            self.pivot.runOnce(self.pivot.stow).alongWith(self.intake.runOnce(self.intake.stop))
+        )
+
+        self._function_controller.b().whileTrue(
+            ManualLift(self._function_controller, self.lift)
+        )
+
+        self._function_controller.a().onTrue(
+            self.lift.runOnce(self.lift.compressFull).alongWith(self.pivot.runOnce(self.pivot.stow))
+        )
+
+        self._function_controller.leftBumper().onTrue(
+            IntakeAndStow(self.intake, self.pivot)
+                .andThen(VibrateController(self._driver_controller, XboxController.RumbleType.kBothRumble, 0.75))
+                .alongWith(VibrateController(self._function_controller, XboxController.RumbleType.kBothRumble, 0.25))
+        )
+
+        self._function_controller.rightBumper().onTrue(
+            self.pivot.runOnce(lambda: self.pivot.pivotMotor.set_control(DutyCycleOut(0.1)))
+                .onlyIf(lambda: self.pivot.getState() is PivotStates.SCORE_UP)
+                .alongWith(self.intake.runOnce(self.intake.disencumber))
+        ).onFalse(
+            self.intake.runOnce(self.intake.stop).alongWith(self.pivot.runOnce(self.pivot.stow))
+        )
+
+        self._function_controller.leftStick().onTrue(
+            self.lift.runOnce(self.lift.scoreShoot).alongWith(self.pivot.runOnce(self.pivot.scoreUpwards))
+        )
+
+        self._function_controller.rightStick().onTrue(
+            self.lift.runOnce(self.lift.raiseFull).alongWith(self.pivot.runOnce(self.pivot.stow))
         )
 
         self.drivetrain.register_telemetry(
