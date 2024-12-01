@@ -122,6 +122,7 @@ class TunerConstants:
     _front_left_steer_motor_id = 5
     _front_left_encoder_id = 5
     _front_left_encoder_offset: units.rotation = -0.229248046875
+    _front_left_encoder_inverted = False
     _front_left_steer_motor_inverted = True
 
     _front_left_x_pos: units.meter = inchesToMeters(12)
@@ -132,6 +133,7 @@ class TunerConstants:
     _front_right_steer_motor_id = 7
     _front_right_encoder_id = 7
     _front_right_encoder_offset: units.rotation = -0.080078125
+    _front_right_encoder_inverted = False
     _front_right_steer_motor_inverted = True
 
     _front_right_x_pos: units.meter = inchesToMeters(12)
@@ -142,6 +144,7 @@ class TunerConstants:
     _back_left_steer_motor_id = 6
     _back_left_encoder_id = 6
     _back_left_encoder_offset: units.rotation = -0.492919921875
+    _back_left_encoder_inverted = False
     _back_left_steer_motor_inverted = True
 
     _back_left_x_pos: units.meter = inchesToMeters(-12)
@@ -152,6 +155,7 @@ class TunerConstants:
     _back_right_steer_motor_id = 8
     _back_right_encoder_id = 8
     _back_right_encoder_offset: units.rotation = -0.089111328125
+    _back_right_encoder_inverted = False
     _back_right_steer_motor_inverted = True
 
     _back_right_x_pos: units.meter = inchesToMeters(-12)
@@ -167,6 +171,7 @@ class TunerConstants:
         _front_left_y_pos,
         _invert_left_side,
         _front_left_steer_motor_inverted,
+        _front_left_encoder_inverted
     )
     front_right = _constants_creator.create_module_constants(
         _front_right_steer_motor_id,
@@ -177,6 +182,7 @@ class TunerConstants:
         _front_right_y_pos,
         _invert_right_side,
         _front_right_steer_motor_inverted,
+        _front_right_encoder_inverted
     )
     back_left = _constants_creator.create_module_constants(
         _back_left_steer_motor_id,
@@ -187,6 +193,7 @@ class TunerConstants:
         _back_left_y_pos,
         _invert_left_side,
         _back_left_steer_motor_inverted,
+        _back_left_encoder_inverted,
     )
     back_right = _constants_creator.create_module_constants(
         _back_right_steer_motor_id,
@@ -197,6 +204,7 @@ class TunerConstants:
         _back_right_y_pos,
         _invert_right_side,
         _back_right_steer_motor_inverted,
+        _back_right_encoder_inverted,
     )
 
     @classmethod
