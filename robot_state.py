@@ -4,15 +4,12 @@ from wpilib import DataLogManager, DriverStation, Field2d, SmartDashboard
 from wpimath.geometry import Pose2d
 from wpimath.kinematics import ChassisSpeeds, SwerveModuleState
 
-class Telemetry:
-    def __init__(self, max_speed: units.meters_per_second):
-        """
-        Construct a telemetry object with the specified max speed of the robot.
+from subsystems.swerve import SwerveSubsystem
 
-        :param max_speed: Maximum speed
-        :type max_speed: units.meters_per_second
-        """
-        self._max_speed = max_speed
+class RobotState:
+    def __init__(self, swerve: SwerveSubsystem):
+        self.swerve = swerve
+
         DriverStation.startDataLog(DataLogManager.getLog())
 
         self._field = Field2d()
@@ -28,9 +25,11 @@ class Telemetry:
         self._module_states = self._table.getStructArrayTopic("moduleStates", SwerveModuleState).publish()
         self._module_targets = self._table.getStructArrayTopic("moduleTargets", SwerveModuleState).publish()
 
-    def telemeterize(self, state: swerve.SwerveDrivetrain.SwerveDriveState):
+    def log_swerve_state(self, state: swerve.SwerveDrivetrain.SwerveDriveState):
         """
-        Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger.
+        Logs desired info with the given swerve state. Called by the 
+        Phoenix 6 drivetrain method every time the odometry thread is 
+        updated.
         """
 
         self._field.setRobotPose(state.pose)
@@ -41,3 +40,28 @@ class Telemetry:
         self._module_states.set(state.module_states)
         self._module_targets.set(state.module_targets)
         self._chassis_speeds.set(state.speeds)
+
+    def get_current_pose(self) -> Pose2d:
+        
+        """Returns the current pose of the robot on the field (blue-side origin)."""
+        return self.swerve.get_state().pose
+    
+    def get_latency_compensated_pose(self, dt: float) -> Pose2d:
+        """Returns the current pose of the robot on the field (blue-side origin),
+        compensated for latency.
+
+        :param dt: The amount of time in seconds since the last 
+            update.
+        :type dt: float
+        :return: The current pose of the robot on the field with 
+            latency compensation.
+        :rtype: Pose2d
+        """
+        state = self.swerve.get_state()
+        speeds = state.speeds
+        pose = state.pose
+
+        return Pose2d(pose.X() + speeds.vx * dt,
+                      pose.Y() + speeds.vy * dt,
+                      pose.rotation() + speeds.omega * dt)
+    

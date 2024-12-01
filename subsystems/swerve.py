@@ -11,7 +11,7 @@ from wpilib import DriverStation, Notifier, RobotController
 from wpimath.geometry import Rotation2d
 
 
-class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
+class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
     """
     Class that extends the Phoenix 6 SwerveDrivetrain class and implements
     Subsystem so it can easily be used in command-based projects.
@@ -167,11 +167,6 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain):
                 rampRate=math.pi / 6,
                 # Use dynamic voltage of 7 V
                 stepVoltage=7.0,
-                # Use default timeout (10 s)
-                # Log state with SignalLogger class
-                #recordState=lambda state: SignalLogger.write_string(
-                    #"SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
-                #),
             ),
             SysIdRoutine.Mechanism(
                 lambda output: (
