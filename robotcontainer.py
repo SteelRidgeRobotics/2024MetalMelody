@@ -4,6 +4,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+from annotated_types import T
 import commands2
 import commands2.button
 import commands2.cmd
@@ -25,12 +26,14 @@ from phoenix6.controls import DutyCycleOut
 from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
 from wpilib import DriverStation, SmartDashboard, XboxController
 from wpimath.geometry import Rotation2d
+from wpimath.trajectory import TrapezoidProfile
 from wpimath.units import rotationsToRadians
 
 from commands.manual_lift import ManualLift
 from commands.intake_and_stow import IntakeAndStow
 from commands.vibrate import VibrateController
 from subsystems.pivot import PivotStates
+from subsystems.swerve.requests import ProfiledFieldCentricFacingAngle
 
 class RobotContainer:
     """
@@ -69,17 +72,10 @@ class RobotContainer:
         self._brake = swerve.requests.SwerveDriveBrake()
         self._point = swerve.requests.PointWheelsAt()
         self._face = (
-            swerve.requests.FieldCentricFacingAngle()
-            .with_deadband(self._max_speed * 0.1)
-            .with_rotational_deadband(
-                self._max_angular_rate * 0.1
-            )
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE
-            )
+            ProfiledFieldCentricFacingAngle(TrapezoidProfile.Constraints(self._max_angular_rate, self._max_angular_rate / 0.25))
+            .with_deadband(self._max_speed * 0.1).with_rotational_deadband(self._max_angular_rate * 0.1)
+            .with_drive_request_type(swerve.SwerveModule.DriveRequestType.OPEN_LOOP_VOLTAGE)
         )
-        self._face.heading_controller = PhoenixPIDController(18.749, 0.45773, 0)
-        self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
 
         self.intake = Intake()
         self.leds = LedSubsystem()
@@ -99,6 +95,8 @@ class RobotContainer:
         instantiating a :GenericHID or one of its subclasses (Joystick or XboxController),
         and then passing it to a JoystickButton.
         """
+        self._face.heading_controller.setPID(7, 0, 0)
+        self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
 
         # Note that X is defined as forward according to WPILib convention,
         # and Y is defined as to the left according to WPILib convention.
@@ -130,6 +128,7 @@ class RobotContainer:
         
         # We can't test these until we get a Limelight onto MM and until PathPlanner Beta 5 releases :(
         self._driver_controller.x().whileTrue(
+            self.drivetrain.runOnce(lambda: self._face.reset_profile(self.drivetrain.get_state().pose.rotation())).andThen(
             self.drivetrain.apply_request(
                 lambda: self._face.with_velocity_x(
                     -self._driver_controller.getLeftY() * self._max_speed
@@ -139,9 +138,10 @@ class RobotContainer:
                 )
                 .with_target_direction(
                     # Gets the angle to our alliance's speaker
-                    (Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
+                    #(Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
+                    Rotation2d(-self._driver_controller.getRightY(), -self._driver_controller.getRightX())
                 )
-            )
+            ))
         )
         
         self._driver_controller.y().whileTrue(
