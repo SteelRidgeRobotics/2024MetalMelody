@@ -89,7 +89,7 @@ class ProfiledFieldCentricFacingAngle(SwerveRequest):
         return (self._field_centric_facing_angle
                 .with_velocity_x(self.velocity_x)
                 .with_velocity_y(self.velocity_y)
-                .with_target_direction(Rotation2d(self._setpoint.position))
+                .with_target_direction(Rotation2d(self._goal.position))
                 .with_target_rate_feedforward(self._setpoint.velocity)
                 .with_deadband(self.deadband)
                 .with_rotational_deadband(self.rotatonal_deadband)

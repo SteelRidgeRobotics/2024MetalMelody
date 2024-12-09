@@ -18,7 +18,6 @@ from subsystems.lift import Lift
 from subsystems.pivot import Pivot
 from robot_state import RobotState
 
-import math
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.path import PathConstraints, PathPlannerPath
 from phoenix6 import swerve
@@ -47,9 +46,7 @@ class RobotContainer:
         self._max_speed = (
             TunerConstants.speed_at_12_volts
         )  # speed_at_12_volts desired top speed
-        self._max_angular_rate = rotationsToRadians(
-            1
-        )  # 3/4 of a rotation per second max angular velocity
+        self._max_angular_rate = rotationsToRadians(0.75)
 
         self._driver_controller = commands2.button.CommandXboxController(0)
         self._function_controller = commands2.button.CommandXboxController(1)
@@ -95,11 +92,9 @@ class RobotContainer:
         instantiating a :GenericHID or one of its subclasses (Joystick or XboxController),
         and then passing it to a JoystickButton.
         """
-        self._face.heading_controller.setPID(7, 0, 0)
-        self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
+        self._face.heading_controller.setPID(18.749, 0, 0.45774)
+        #self._face.heading_controller.enableContinuousInput(-math.pi, math.pi)
 
-        # Note that X is defined as forward according to WPILib convention,
-        # and Y is defined as to the left according to WPILib convention.
         self.drivetrain.setDefaultCommand(
             # Drivetrain will execute this command periodically
             self.drivetrain.apply_request(
@@ -138,8 +133,22 @@ class RobotContainer:
                 )
                 .with_target_direction(
                     # Gets the angle to our alliance's speaker
-                    #(Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
-                    Rotation2d(-self._driver_controller.getRightY(), -self._driver_controller.getRightX())
+                    (Constants.k_apriltag_layout.getTagPose(4 if (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed else 7).toPose2d().translation() - self.drivetrain.get_state().pose.translation()).angle() + Rotation2d.fromDegrees(180)
+                )
+            ))
+        )
+        
+        commands2.button.Trigger(lambda: self._driver_controller.getHID().getPOV() != -1).whileTrue(
+            self.drivetrain.runOnce(lambda: self._face.reset_profile(self.drivetrain.get_state().pose.rotation())).andThen(
+            self.drivetrain.apply_request(
+                lambda: self._face.with_velocity_x(
+                    -self._driver_controller.getLeftY() * self._max_speed
+                )
+                .with_velocity_y(
+                    -self._driver_controller.getLeftX() * self._max_speed
+                )
+                .with_target_direction(
+                    Rotation2d.fromDegrees(-self._driver_controller.getHID().getPOV())
                 )
             ))
         )
