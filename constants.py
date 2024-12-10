@@ -1,6 +1,7 @@
 from phoenix6.configs import Slot0Configs
 from phoenix6.configs.talon_fx_configs import *
 from robotpy_apriltag import AprilTagField, AprilTagFieldLayout
+from wpilib import RobotBase
 
 class Constants:
 
@@ -75,3 +76,23 @@ class Constants:
         k_led_length = 144
 
     k_apriltag_layout = AprilTagFieldLayout.loadField(AprilTagField.k2024Crescendo)
+
+    class LimeLight:
+        
+        k_enable_vision_odometry = RobotBase.isReal() # False if there's no Limelight on the robot.
+        
+        k_limelight_name = "limelight" # "limelight" by default. Name of the limelight to use for vision.
+
+        k_use_mega_tag_2 = False # If False, uses MegaTag 1.
+        
+        k_standard_deviations = [0.3, 0.3, 999999] # (x, y, radians) Basically how confident we are with our vision, lower = more confident. Angle is set really high because we have a gyro.
+
+        k_auto_align_kp = 0.04
+
+        k_mount_angle = 0.0  # degrees for the angle that the limelight is mounted from the floor
+        k_mount_height = 23.25 # distance from the center of the limelight lens to the floor in inches
+        k_target_height = 82.5 # height of the speaker in inches
+        k_tag_height = 51.9 # height of april tag in inches
+
+        REDSPEAKERID = 4
+        BLUESPEAKERID = 7
