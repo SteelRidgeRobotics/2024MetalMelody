@@ -4,6 +4,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
+from annotated_types import T
 import commands2
 import commands2.button
 import commands2.cmd

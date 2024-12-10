@@ -1,7 +1,7 @@
 from commands2 import Command
 from commands2.button import CommandXboxController
 from constants import Constants
-#from frc6343.controller.deadband import deadband
+from frc6343.controller.deadband import deadband
 from phoenix6.controls import TorqueCurrentFOC
 from subsystems.lift import Lift
 
@@ -29,4 +29,4 @@ class ManualLift(Command):
         self.lift.stop()
 
     def getTriggerCombinedValue(self) -> float:
-        return self.controller.getLeftTriggerAxis()#deadband(self.controller.getLeftTriggerAxis(), 0.1)
+        return deadband(self.controller.getLeftTriggerAxis(), 0.1)
