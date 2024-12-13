@@ -76,6 +76,19 @@ class Constants:
         k_led_length = 114
 
     k_apriltag_layout = AprilTagFieldLayout.loadField(AprilTagField.k2024Crescendo)
+    
+    class Swivel:
+        MM_ACCELERATION = 0
+        MM_CRUISE_VEL = 0
+        TRANSFERPOS = 0
+        K_P = 0
+        K_I = 0
+        K_D = 0
+        K_V = 0
+        K_S = 0
+        GEAR_RATIO = 1
+        SUPPLY_LIMIT = 0
+        MAX_ANGLE = 80.0
 
     class LimeLight:
         
