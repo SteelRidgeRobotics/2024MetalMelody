@@ -2,10 +2,12 @@ from commands2 import Subsystem
 from constants import Constants
 import ntcore
 import math
+from limelight import LimelightHelpers
 from subsystems.swerve import SwerveSubsystem
 from wpimath.kinematics import ChassisSpeeds
 from wpilib import DriverStation
 import wpilib
+import robotpy_apriltag
 
 class AutoAlign(Subsystem):
 
@@ -69,11 +71,20 @@ class AutoAlign(Subsystem):
         return angleToGoalRadians
     
     # Would only be used if we want to adjust velocity of launcher or determine if we are too close or far
-    def getDistanceToTargetInches(self, angleToTargetRadians):
-        distanceToTargetInches=(Constants.LimeLight.k_tag_height - Constants.LimeLight.k_mount_height)/math.tan(angleToTargetRadians)
+    def getDistanceToTargetInches(self, april_tag_id: int):
 
-        wpilib.SmartDashboard.putNumber("D", distanceToTargetInches)
-        return distanceToTargetInches
+        robot_pose = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("").pose.translation()
+
+        tag_pose = Constants.k_apriltag_layout.getTagPose(april_tag_id).toPose2d().translation()
+
+        robot_to_tag_dist = math.sqrt(math.fabs(robot_pose.x-tag_pose.x)**2+math.fabs(robot_pose.y-tag_pose.y)**2)
+
+        rttd_inches = robot_to_tag_dist*39.37
+
+        #distanceToTargetInches=(Constants.LimeLight.k_tag_height - Constants.LimeLight.k_mount_height)/math.tan(angleToTargetRadians)
+
+        wpilib.SmartDashboard.putNumber("D", rttd_inches)
+        return rttd_inches
     
     def getDegreesToSpeaker(self, distance):
         if distance <= 0.0:
