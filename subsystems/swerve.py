@@ -4,10 +4,11 @@ from limelight import LimelightHelpers
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
-from phoenix6 import swerve, units, utils
+from phoenix6 import SignalLogger, swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController
+from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Rotation2d
 
 
@@ -128,15 +129,20 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
 
         self._sys_id_routine_translation = SysIdRoutine(
-            SysIdRoutine.Config(),
+            SysIdRoutine.Config(
+                # Use default ramp rate (1 V/s) and timeout (10 s)
+                # Reduce dynamic voltage to 4 V to prevent brownout
+                stepVoltage=4.0,
+                # Log state with SignalLogger class
+                recordState=lambda state: SignalLogger.write_string(
+                    "SysIdTranslation_State", SysIdRoutineLog.stateEnumToString(state)
+                ),
+            ),
             SysIdRoutine.Mechanism(
                 lambda output: self.set_control(
                     self._translation_characterization.with_volts(output)
                 ),
-                lambda log: log.motor("drive")
-                .voltage(self.modules[0].drive_motor.get_motor_voltage().value)
-                .velocity(self.modules[0].drive_motor.get_velocity().value)
-                .position(self.modules[0].drive_motor.get_position().value),
+                lambda log: None,
                 self,
             ),
         )
@@ -188,7 +194,7 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         See the documentation of swerve.requests.SysIdSwerveRotation for info on importing the log to SysId.
         """
 
-        self._sys_id_routine_to_apply = self._sys_id_routine_rotation
+        self._sys_id_routine_to_apply = self._sys_id_routine_translation
         """The SysId routine to test"""
 
         if utils.is_simulation():

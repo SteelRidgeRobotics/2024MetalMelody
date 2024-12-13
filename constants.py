@@ -72,8 +72,8 @@ class Constants:
 
     class LedConstants:
 
-        k_led_pwm_port = 9
-        k_led_length = 144
+        k_led_pwm_port = 9 
+        k_led_length = 114
 
     k_apriltag_layout = AprilTagFieldLayout.loadField(AprilTagField.k2024Crescendo)
 

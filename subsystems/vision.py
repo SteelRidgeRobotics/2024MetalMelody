@@ -17,6 +17,9 @@ class AutoAlign(Subsystem):
         self.ntInstance = ntcore.NetworkTableInstance.getDefault()
         # self.addRequirements(self.drivetrain)
 
+    def periodic(self) -> None:
+        self.calculateDegrees()
+
     def calculateDegrees(self):
 
         # read from LimeLight
@@ -56,7 +59,7 @@ class AutoAlign(Subsystem):
         
        
         angleToTargetRadians = self.getAngleToTargetInRadians(targetOffsetAngle)
-        distanceToGoal = self.getDistanceToTargetInches(angleToTargetRadians)
+        distanceToGoal = self.getDistanceToTargetInches(4)
         degrees = self.getDegreesToSpeaker(distanceToGoal)
         rotations = (degrees * Constants.Swivel.GEAR_RATIO) / 360
 
