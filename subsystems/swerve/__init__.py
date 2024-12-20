@@ -4,11 +4,15 @@ from limelight import LimelightHelpers
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
+from pathplannerlib.util import DriveFeedforwards
+from pathplannerlib.util.swerve import SwerveSetpoint, SwerveSetpointGenerator
 from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController
 from wpimath.geometry import Rotation2d
+from wpimath.kinematics import ChassisSpeeds
+from wpimath.units import rotationsToRadians
 
 
 class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
@@ -203,10 +207,7 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
             lambda: self.get_state().speeds, # Supplier of current robot speeds
             # Consumer of ChassisSpeeds and feedforwards to drive the robot
             lambda speeds, feedforwards: self.set_control(
-                self._apply_robot_speeds
-                .with_speeds(speeds)
-                .with_wheel_force_feedforwards_x(feedforwards.robotRelativeForcesXNewtons)
-                .with_wheel_force_feedforwards_y(feedforwards.robotRelativeForcesYNewtons)
+                self._apply_speeds_from_setpoint(speeds)
             ),
             PPHolonomicDriveController(
                 # PID constants for translation
@@ -219,6 +220,28 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
             lambda: (DriverStation.getAlliance() or DriverStation.Alliance.kBlue) == DriverStation.Alliance.kRed,
             self # Subsystem for requirements
         )
+        
+        self._setpoint_generator = SwerveSetpointGenerator(config, rotationsToRadians(10.0))
+        
+        self._previous_setpoint = SwerveSetpoint(
+            self.get_state().speeds,
+            self.get_state().module_states,
+            DriveFeedforwards.zeros(config.numModules)
+        )
+        
+    def _apply_speeds_from_setpoint(self, speeds: ChassisSpeeds) -> ApplyRobotSpeeds:
+        self._previous_setpoint = self._setpoint_generator.generateSetpoint(
+            self._previous_setpoint, 
+            speeds, 
+            0.02
+        )
+        
+        return (self._apply_robot_speeds
+                .with_speeds(self._previous_setpoint.robot_relative_speeds)
+                .with_wheel_force_feedforwards_x(self._previous_setpoint.feedforwards.robotRelativeForcesXNewtons)
+                .with_wheel_force_feedforwards_y(self._previous_setpoint.feedforwards.robotRelativeForcesYNewtons)
+        )
+        
 
     def apply_request(
         self, request: Callable[[], swerve.requests.SwerveRequest]
