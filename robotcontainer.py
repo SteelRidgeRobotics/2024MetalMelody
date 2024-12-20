@@ -15,6 +15,8 @@ from subsystems.intake import Intake
 from subsystems.leds import LedSubsystem
 from subsystems.lift import Lift
 from subsystems.pivot import Pivot
+from subsystems.pivot import PivotStates
+from subsystems.vision import VisionSubsystem
 from robot_state import RobotState
 
 import math
@@ -30,8 +32,7 @@ from wpimath.units import rotationsToRadians
 from commands.manual_lift import ManualLift
 from commands.intake_and_stow import IntakeAndStow
 from commands.vibrate import VibrateController
-from subsystems.pivot import PivotStates
-from subsystems.vision import AutoAlign
+
 
 class RobotContainer:
     """
@@ -86,7 +87,7 @@ class RobotContainer:
         self.leds = LedSubsystem()
         self.lift = Lift()
         self.pivot = Pivot()
-        self.rah = AutoAlign(self.drivetrain)
+        self.vision = VisionSubsystem(self.drivetrain)
 
         # Path follower
         self._auto_chooser = AutoBuilder.buildAutoChooser("Auto Chooser")

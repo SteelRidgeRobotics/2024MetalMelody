@@ -9,13 +9,10 @@ from wpilib import DriverStation
 import wpilib
 import robotpy_apriltag
 
-class AutoAlign(Subsystem):
+class VisionSubsystem(Subsystem):
 
-    def __init__(self, drivetrain: SwerveSubsystem):
-
-        self.drivetrain = drivetrain
+    def __init__(self):
         self.ntInstance = ntcore.NetworkTableInstance.getDefault()
-        # self.addRequirements(self.drivetrain)
 
     def periodic(self) -> None:
         self.calculateDegrees()
@@ -30,13 +27,7 @@ class AutoAlign(Subsystem):
         # convert degrees to rotations per constant of gear ratio
         # return number of rotations
         # ! calculate the rev speed
-
-        """
-        To do
-
         
-
-        """
         table = self.ntInstance.getTable("limelight")
         # NetworkTables.getTable("limelight").putNumber('priorityid',4) I have a topic on this pending in Chief Delphi so I'll know how to write this.
         targetOffsetAngle = table.getNumber("ty",0.0)
@@ -56,8 +47,6 @@ class AutoAlign(Subsystem):
             if tagId != Constants.LimeLight.BLUESPEAKERID: #need ids for blue or red and also check that
                 return 0
         
-        
-       
         angleToTargetRadians = self.getAngleToTargetInRadians(targetOffsetAngle)
         distanceToGoal = self.getDistanceToTargetInches(4)
         degrees = self.getDegreesToSpeaker(distanceToGoal)
@@ -98,8 +87,3 @@ class AutoAlign(Subsystem):
         
         wpilib.SmartDashboard.putNumber("Degrees to speaker", degrees)
         return degrees
-
-
-    def isFinished(self):
-
-        return False
