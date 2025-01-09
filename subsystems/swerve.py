@@ -278,15 +278,19 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
                     else self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION
                 )
                 self._has_applied_operator_perspective = True
+        
+        LimelightHelpers.set_robot_orientation("", self.get_state().pose.rotation().degrees(), 0, 0, 0, 0, 0)
+        pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
+        if self.pigeon2.get_angular_velocity_z_world().value > 720:
+            doRejectUpdate = True
+        if pose_estimate.tag_count == 0:
+            doRejectUpdate = True
+        if not doRejectUpdate:
+            self.set_vision_measurement_std_devs((.6, .6, 999999))
+            self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds)
 
-        self._apply_vision_estimates()
+    
 
-    def _apply_vision_estimates(self):
-        LimelightHelpers.set_robot_orientation("", self.get_rotation3d().toRotation2d().degrees(), 0, 0, 0, 0, 0)
-        mt2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
-        if mt2.tag_count > 0:
-            self.set_vision_measurement_std_devs([0.7, 0.7, 999999])
-            self.add_vision_measurement(mt2.pose, mt2.timestamp_seconds)
 
     def _start_sim_thread(self):
         def _sim_periodic():
