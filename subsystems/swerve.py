@@ -4,10 +4,11 @@ from limelight import LimelightHelpers
 import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
-from phoenix6 import swerve, units, utils
+from phoenix6 import SignalLogger, swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController
+from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Rotation2d
 
 
@@ -128,15 +129,20 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
 
         self._sys_id_routine_translation = SysIdRoutine(
-            SysIdRoutine.Config(),
+            SysIdRoutine.Config(
+                # Use default ramp rate (1 V/s) and timeout (10 s)
+                # Reduce dynamic voltage to 4 V to prevent brownout
+                stepVoltage=4.0,
+                # Log state with SignalLogger class
+                recordState=lambda state: SignalLogger.write_string(
+                    "SysIdTranslation_State", SysIdRoutineLog.stateEnumToString(state)
+                ),
+            ),
             SysIdRoutine.Mechanism(
                 lambda output: self.set_control(
                     self._translation_characterization.with_volts(output)
                 ),
-                lambda log: log.motor("drive")
-                .voltage(self.modules[0].drive_motor.get_motor_voltage().value)
-                .velocity(self.modules[0].drive_motor.get_velocity().value)
-                .position(self.modules[0].drive_motor.get_position().value),
+                lambda log: None,
                 self,
             ),
         )
@@ -188,7 +194,7 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         See the documentation of swerve.requests.SysIdSwerveRotation for info on importing the log to SysId.
         """
 
-        self._sys_id_routine_to_apply = self._sys_id_routine_rotation
+        self._sys_id_routine_to_apply = self._sys_id_routine_translation
         """The SysId routine to test"""
 
         if utils.is_simulation():
@@ -272,15 +278,19 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
                     else self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION
                 )
                 self._has_applied_operator_perspective = True
+        
+        LimelightHelpers.set_robot_orientation("", self.get_state().pose.rotation().degrees(), 0, 0, 0, 0, 0)
+        pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
+        if self.pigeon2.get_angular_velocity_z_world().value > 720:
+            doRejectUpdate = True
+        if pose_estimate.tag_count == 0:
+            doRejectUpdate = True
+        if not doRejectUpdate:
+            self.set_vision_measurement_std_devs((.6, .6, 999999))
+            self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds)
 
-        self._apply_vision_estimates()
+    
 
-    def _apply_vision_estimates(self):
-        LimelightHelpers.set_robot_orientation("", self.get_rotation3d().toRotation2d().degrees(), 0, 0, 0, 0, 0)
-        mt2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
-        if mt2.tag_count > 0:
-            self.set_vision_measurement_std_devs([0.7, 0.7, 999999])
-            self.add_vision_measurement(mt2.pose, mt2.timestamp_seconds)
 
     def _start_sim_thread(self):
         def _sim_periodic():

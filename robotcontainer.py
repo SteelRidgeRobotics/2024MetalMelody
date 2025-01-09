@@ -15,12 +15,14 @@ from subsystems.intake import Intake
 from subsystems.leds import LedSubsystem
 from subsystems.lift import Lift
 from subsystems.pivot import Pivot
+from subsystems.pivot import PivotStates
+from subsystems.vision import VisionSubsystem
 from robot_state import RobotState
 
 import math
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.path import PathConstraints, PathPlannerPath
-from phoenix6 import swerve
+from phoenix6 import SignalLogger, swerve
 from phoenix6.controls import DutyCycleOut
 from phoenix6.swerve.utility.phoenix_pid_controller import PhoenixPIDController
 from wpilib import DriverStation, SmartDashboard, XboxController
@@ -30,7 +32,7 @@ from wpimath.units import rotationsToRadians
 from commands.manual_lift import ManualLift
 from commands.intake_and_stow import IntakeAndStow
 from commands.vibrate import VibrateController
-from subsystems.pivot import PivotStates
+
 
 class RobotContainer:
     """
@@ -85,6 +87,7 @@ class RobotContainer:
         self.leds = LedSubsystem()
         self.lift = Lift()
         self.pivot = Pivot()
+        #self.vision = VisionSubsystem(self.drivetrain)
 
         # Path follower
         self._auto_chooser = AutoBuilder.buildAutoChooser("Auto Chooser")
@@ -150,16 +153,16 @@ class RobotContainer:
 
         # Run SysId routines when holding back/start and X/Y.
         # Note that each routine should be run exactly once in a single log.
-        (self._driver_controller.back() & self._driver_controller.y()).whileTrue(
+        (self._driver_controller.back() & self._driver_controller.y()).onTrue(commands2.InstantCommand(lambda: SignalLogger.start())).whileTrue(
             self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kForward).onlyIf(lambda: not DriverStation.isFMSAttached())
         )
-        (self._driver_controller.back() & self._driver_controller.x()).whileTrue(
+        (self._driver_controller.back() & self._driver_controller.x()).onTrue(commands2.InstantCommand(lambda: SignalLogger.start())).whileTrue(
             self.drivetrain.sys_id_dynamic(SysIdRoutine.Direction.kReverse).onlyIf(lambda: not DriverStation.isFMSAttached())
         )
-        (self._driver_controller.start() & self._driver_controller.y()).whileTrue(
+        (self._driver_controller.start() & self._driver_controller.y()).onTrue(commands2.InstantCommand(lambda: SignalLogger.start())).whileTrue(
             self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kForward).onlyIf(lambda: not DriverStation.isFMSAttached())
         )
-        (self._driver_controller.start() & self._driver_controller.x()).whileTrue(
+        (self._driver_controller.start() & self._driver_controller.x()).onTrue(commands2.InstantCommand(lambda: SignalLogger.start())).whileTrue(
             self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse).onlyIf(lambda: not DriverStation.isFMSAttached())
         )
 
