@@ -318,6 +318,7 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue("")
         if pose_estimate.tag_count > 0:
             self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds, vision_measurement_std_devs = (0.6, 0.6, 0.6))
+
         #if self.pigeon2.get_angular_velocity_z_world().value > 720:
             #doRejectUpdate = True
         #if pose_estimate.tag_count == 0:
