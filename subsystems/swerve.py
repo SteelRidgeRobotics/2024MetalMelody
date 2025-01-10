@@ -1,15 +1,17 @@
+import math
+from typing import Callable, overload
+
 from commands2 import Command, Subsystem
 from commands2.sysid import SysIdRoutine
-from limelight import LimelightHelpers
-import math
 from pathplannerlib.auto import AutoBuilder, RobotConfig
 from pathplannerlib.controller import PIDConstants, PPHolonomicDriveController
-from phoenix6 import SignalLogger, swerve, units, utils
+from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
-from typing import Callable, overload
+from phoenix6.swerve.swerve_drivetrain import DriveMotorT, SteerMotorT, EncoderT
 from wpilib import DriverStation, Notifier, RobotController
-from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Rotation2d
+
+from limelight import LimelightHelpers
 
 
 class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
@@ -134,9 +136,9 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
 
     def __init__(
             self,
-            drive_motor_type: type,
-            steer_motor_type: type,
-            encoder_type: type,
+            drive_motor_type: type[DriveMotorT],
+            steer_motor_type: type[SteerMotorT],
+            encoder_type: type[EncoderT],
             drivetrain_constants: swerve.SwerveDrivetrainConstants,
             arg0=None,
             arg1=None,
@@ -167,17 +169,16 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
             SysIdRoutine.Config(
                 # Use default ramp rate (1 V/s) and timeout (10 s)
                 # Reduce dynamic voltage to 4 V to prevent brownout
-                stepVoltage=4.0,
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdTranslation_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
+                stepVoltage=4.0
             ),
             SysIdRoutine.Mechanism(
                 lambda output: self.set_control(
                     self._translation_characterization.with_volts(output)
                 ),
-                lambda log: None,
+                lambda log: log.motor("drive")
+                .voltage(self.modules[0].drive_motor.get_motor_voltage().value)
+                .velocity(self.modules[0].drive_motor.get_velocity().value)
+                .position(self.modules[0].drive_motor.get_position().value),
                 self,
             ),
         )
@@ -313,21 +314,23 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
                     else self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION
                 )
                 self._has_applied_operator_perspective = True
-        
-        LimelightHelpers.set_robot_orientation("", self.get_state().pose.rotation().degrees(), 0, 0, 0, 0, 0)
-        pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue("")
-        if pose_estimate.tag_count > 0:
-            self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds, vision_measurement_std_devs = (0.6, 0.6, 0.6))
 
-        #if self.pigeon2.get_angular_velocity_z_world().value > 720:
-            #doRejectUpdate = True
-        #if pose_estimate.tag_count == 0:
-            #doRejectUpdate = True
-        #if not doRejectUpdate:
+        self._add_vision_measurements()
 
-
-    
-
+    def _add_vision_measurements(self):
+        LimelightHelpers.set_robot_orientation(
+            "",
+            self.pigeon2.get_yaw().value,
+            self.pigeon2.get_angular_velocity_z_world().value,
+            self.pigeon2.get_pitch().value,
+            self.pigeon2.get_angular_velocity_y_world().value,
+            self.pigeon2.get_roll().value,
+            self.pigeon2.get_angular_velocity_x_world().value
+        )
+        mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
+        if not abs(self.pigeon2.get_angular_velocity_z_world().value) > 720 and not mega_tag2.tag_count == 0:
+            self.set_vision_measurement_std_devs((0.7, 0.7, 999999999))
+            self.add_vision_measurement(mega_tag2.pose, mega_tag2.timestamp_seconds)
 
     def _start_sim_thread(self):
         def _sim_periodic():
