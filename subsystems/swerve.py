@@ -315,14 +315,15 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
                 self._has_applied_operator_perspective = True
         
         LimelightHelpers.set_robot_orientation("", self.get_state().pose.rotation().degrees(), 0, 0, 0, 0, 0)
-        pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
-        if self.pigeon2.get_angular_velocity_z_world().value > 720:
-            doRejectUpdate = True
-        if pose_estimate.tag_count == 0:
-            doRejectUpdate = True
-        if not doRejectUpdate:
-            self.set_vision_measurement_std_devs((.6, .6, 999999))
-            self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds)
+        pose_estimate = LimelightHelpers.get_botpose_estimate_wpiblue("")
+        if pose_estimate.tag_count > 0:
+            self.add_vision_measurement(pose_estimate.pose, pose_estimate.timestamp_seconds, vision_measurement_std_devs = (0.6, 0.6, 0.6))
+        #if self.pigeon2.get_angular_velocity_z_world().value > 720:
+            #doRejectUpdate = True
+        #if pose_estimate.tag_count == 0:
+            #doRejectUpdate = True
+        #if not doRejectUpdate:
+
 
     
 

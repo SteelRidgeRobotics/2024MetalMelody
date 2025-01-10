@@ -27,4 +27,4 @@ class AutoMove(Subsystem):
         return distance_x, distance_y
         
     def calculateAngle(self, dist_x, dist_y):
-        
+        pass
