@@ -7,7 +7,9 @@
 import commands2
 import commands2.button
 import commands2.cmd
+from commands2 import SequentialCommandGroup, WaitCommand
 from commands2.sysid import SysIdRoutine
+from numpy.f2py.capi_maps import lcb_map
 
 from constants import Constants
 from generated.tuner_constants import TunerConstants
@@ -148,7 +150,18 @@ class RobotContainer:
         )
         
         self._driver_controller.y().whileTrue(
-            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=True))
+            (AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("ScoreAmp"), PathConstraints(1, 1, 1, 1, unlimited=False))
+             .andThen(
+                SequentialCommandGroup(
+                    self.pivot.runOnce(lambda: self.pivot.scoreDownwards()),
+                    WaitCommand(1),
+                    self.intake.runOnce(lambda: self.intake.disencumber()),
+                    WaitCommand(1),
+                    self.intake.runOnce(lambda: self.intake.stop()).alongWith(self.pivot.runOnce(lambda: self.pivot.stow()))
+                )
+            ))
+        ).onFalse(
+            self.pivot.runOnce(lambda: self.pivot.stow())
         )
 
         # Run SysId routines when holding back/start and X/Y.

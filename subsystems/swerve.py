@@ -328,9 +328,9 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
             self.pigeon2.get_roll().value,
             self.pigeon2.get_angular_velocity_x_world().value
         )
-        mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
+        mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue("")
         if not abs(self.pigeon2.get_angular_velocity_z_world().value) > 720 and not mega_tag2.tag_count == 0:
-            self.set_vision_measurement_std_devs((0.7, 0.7, 999999999))
+            self.set_vision_measurement_std_devs((0.7, 0.7, 0.7))
             self.add_vision_measurement(mega_tag2.pose, utils.fpga_to_current_time(mega_tag2.timestamp_seconds))
 
     def _start_sim_thread(self):
