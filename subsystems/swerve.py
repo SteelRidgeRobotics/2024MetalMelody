@@ -9,7 +9,7 @@ from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from phoenix6.swerve.swerve_drivetrain import DriveMotorT, SteerMotorT, EncoderT
 from wpilib import DriverStation, Notifier, RobotController
-from wpimath.geometry import Rotation2d
+from wpimath.geometry import Rotation2d, Pose2d
 
 from limelight import LimelightHelpers
 
@@ -315,7 +315,8 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
                 )
                 self._has_applied_operator_perspective = True
 
-        self._add_vision_measurements()
+        if not utils.is_simulation():
+            self._add_vision_measurements()
 
     def _add_vision_measurements(self):
         LimelightHelpers.set_robot_orientation(
@@ -330,7 +331,7 @@ class SwerveSubsystem(Subsystem, swerve.SwerveDrivetrain):
         mega_tag2 = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2("")
         if not abs(self.pigeon2.get_angular_velocity_z_world().value) > 720 and not mega_tag2.tag_count == 0:
             self.set_vision_measurement_std_devs((0.7, 0.7, 999999999))
-            self.add_vision_measurement(mega_tag2.pose, mega_tag2.timestamp_seconds)
+            self.add_vision_measurement(mega_tag2.pose, utils.fpga_to_current_time(mega_tag2.timestamp_seconds))
 
     def _start_sim_thread(self):
         def _sim_periodic():
