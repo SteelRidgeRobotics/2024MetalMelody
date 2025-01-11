@@ -9,7 +9,7 @@ from phoenix6 import swerve, units, utils
 from phoenix6.swerve.requests import ApplyRobotSpeeds
 from phoenix6.swerve.swerve_drivetrain import DriveMotorT, SteerMotorT, EncoderT
 from wpilib import DriverStation, Notifier, RobotController
-from wpimath.geometry import Rotation2d, Pose2d
+from wpimath.geometry import Rotation2d
 
 from limelight import LimelightHelpers
 
