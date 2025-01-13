@@ -87,7 +87,7 @@ class RobotContainer:
         self.leds = LedSubsystem()
         self.lift = Lift()
         self.pivot = Pivot()
-        self.vision = VisionSubsystem(self.drivetrain)
+        #self.vision = VisionSubsystem(self.drivetrain)
 
         # Path follower
         self._auto_chooser = AutoBuilder.buildAutoChooser("Auto Chooser")
