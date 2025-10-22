@@ -51,7 +51,6 @@ class PivotSubsystem(StateSubsystem):
      .with_feedback_sensor_source(FeedbackSensorSourceValue.REMOTE_CANCODER)
      .with_feedback_remote_sensor_id(Constants.CanIDs.PIVOT_CANCODER)
      )
-    _master_config.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
     _master_config.motor_output.neutral_mode = NeutralModeValue.BRAKE
 
     _master_config.with_slot0(Constants.PivotConstants.GAINS)
@@ -63,7 +62,6 @@ class PivotSubsystem(StateSubsystem):
     _follower_config.feedback.with_rotor_to_sensor_ratio(Constants.PivotConstants.GEAR_RATIO)
     _follower_config.motor_output.neutral_mode = NeutralModeValue.BRAKE
     _follower_config.with_slot0(Constants.PivotConstants.GAINS)
-    _follower_config.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
 
     def __init__(self) -> None:
         super().__init__("Pivot", self.SubsystemState.STOW)

@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.717948717948717,
+        "y": 5.036410256410257
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.5560499500000624,
+        "y": 5.385936788638289
+      },
+      "isLocked": false,
+      "linkedName": "Coral L"
+    },
+    {
+      "anchor": {
+        "x": 2.7676117549668873,
+        "y": 7.272040562913906
+      },
+      "prevControl": {
+        "x": 2.8801480813378744,
+        "y": 7.0131525286556995
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "asdfasfsfa",
+      "waypointRelativePos": 0.06441558441558301,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Default"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 1600.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "reversed": false,
+  "folder": "Toddlers",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": false
+}

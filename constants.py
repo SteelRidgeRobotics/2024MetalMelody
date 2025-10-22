@@ -10,9 +10,12 @@ class Constants:
     class CanIDs:
         LEFT_ELEVATOR_TALON = 10
         RIGHT_ELEVATOR_TALON = 11
+
         INTAKE_TALON = 12
-        LEFT_PIVOT_TALON = 13
-        RIGHT_PIVOT_TALON = 14
+        INTAKE_TALON2 = 13
+        
+        LEFT_PIVOT_TALON = 14
+        RIGHT_PIVOT_TALON = 15
 
         ELEVATOR_CANDI = 20
         PIVOT_CANCODER = 21

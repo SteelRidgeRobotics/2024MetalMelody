@@ -3,7 +3,8 @@ from enum import auto, Enum
 from commands2 import Command, cmd
 from phoenix6 import utils
 from phoenix6.configs import CANrangeConfiguration, TalonFXConfiguration, MotorOutputConfigs, FeedbackConfigs, HardwareLimitSwitchConfigs, ProximityParamsConfigs, CurrentLimitsConfigs
-from phoenix6.controls import DutyCycleOut
+from phoenix6.configs.config_groups import InvertedValue
+from phoenix6.controls import DutyCycleOut, Follower
 from phoenix6.hardware import TalonFX, CANrange
 from phoenix6.signals import NeutralModeValue, ForwardLimitValue, ForwardLimitSourceValue
 
@@ -30,7 +31,7 @@ class IntakeSubsystem(StateSubsystem):
     _motor_config = (TalonFXConfiguration()
                      .with_slot0(Constants.IntakeConstants.GAINS)
                      .with_motor_output(MotorOutputConfigs().with_neutral_mode(NeutralModeValue.BRAKE))
-                     .with_feedback(FeedbackConfigs().with_sensor_to_mechanism_ratio(Constants.ElevatorConstants.GEAR_RATIO))
+                     .with_feedback(FeedbackConfigs().with_sensor_to_mechanism_ratio(Constants.IntakeConstants.GEAR_RATIO))
                      .with_current_limits(CurrentLimitsConfigs().with_supply_current_limit_enable(True).with_supply_current_limit(Constants.IntakeConstants.SUPPLY_CURRENT))
                      )
 
@@ -51,11 +52,16 @@ class IntakeSubsystem(StateSubsystem):
     def __init__(self) -> None:
         super().__init__("Intake", self.SubsystemState.HOLD)
 
-        self._intake_motor = TalonFX(Constants.CanIDs.INTAKE_TALON)
+        self._master_motor = TalonFX(Constants.CanIDs.INTAKE_TALON) # Master
         _motor_config = self._motor_config
         if not utils.is_simulation():
             _motor_config.hardware_limit_switch = self._limit_switch_config
-        self._intake_motor.configurator.apply(self._motor_config)
+        self._master_motor.configurator.apply(self._motor_config)
+
+        self.follower_motor = TalonFX(Constants.CanIDs.INTAKE_TALON2) # Follower
+        _follower_config = _motor_config
+        self.follower_motor.configurator.apply(_follower_config)
+        self.follower_motor.set_control(Follower(self._master_motor.device_id, True))
 
         self._canrange = CANrange(Constants.CanIDs.INTAKE_CANRANGE)
         self._canrange.configurator.apply(self._canrange_config)
@@ -71,12 +77,12 @@ class IntakeSubsystem(StateSubsystem):
         self._velocity_request.output = output
         self._velocity_request.ignore_hardware_limits = ignore_limits
 
-        self._intake_motor.set_control(self._velocity_request)
+        self._master_motor.set_control(self._velocity_request)
 
     def set_desired_state_command(self, state: SubsystemState) -> Command:
         return cmd.runOnce(lambda: self.set_desired_state(state), self)
 
     def has_coral(self) -> bool:
-        return self._intake_motor.get_forward_limit().value is ForwardLimitValue.CLOSED_TO_GROUND
+        return self._master_motor.get_forward_limit().value is ForwardLimitValue.CLOSED_TO_GROUND
 
     
