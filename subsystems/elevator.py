@@ -25,7 +25,8 @@ class ElevatorSubsystem(StateSubsystem):
         L1 = Constants.ElevatorConstants.L1_SCORE_POSITION
         L2 = Constants.ElevatorConstants.L2_SCORE_POSITION
         L3 = Constants.ElevatorConstants.L3_SCORE_POSITION
-        ALGAE = Constants.ElevatorConstants.L3_ALGAE_POSITION
+        ALGAE_REEF = Constants.ElevatorConstants.L2_ALGAE_POSITION
+        ALGAE_GROUND = Constants.ElevatorConstants.L3_ALGAE_POSITION
         PROCESSOR = Constants.ElevatorConstants.PROCESSOR_SCORE_POSITION
 
     _motor_config = (TalonFXConfiguration()

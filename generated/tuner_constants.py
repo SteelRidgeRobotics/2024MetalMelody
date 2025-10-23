@@ -69,7 +69,7 @@ class TunerConstants:
 
     # CAN bus that the devices are located on;
     # All swerve devices must share the same CAN bus
-    canbus = CANBus("rio")
+    canbus = CANBus("Drivetrain")
 
     # Theoretical free speed (m/s) at 12 V applied output;
     # This needs to be tuned to your individual robot
@@ -131,7 +131,7 @@ class TunerConstants:
     _front_left_drive_motor_id = 1
     _front_left_steer_motor_id = 5
     _front_left_encoder_id = 5
-    _front_left_encoder_offset: units.rotation = 0.14990234375
+    _front_left_encoder_offset: units.rotation = -0.228759765625
     _front_left_steer_motor_inverted = True
     _front_left_encoder_inverted = False
 
@@ -142,7 +142,7 @@ class TunerConstants:
     _front_right_drive_motor_id = 3
     _front_right_steer_motor_id = 7
     _front_right_encoder_id = 7
-    _front_right_encoder_offset: units.rotation = -0.28076171875
+    _front_right_encoder_offset: units.rotation = -0.079833984375
     _front_right_steer_motor_inverted = True
     _front_right_encoder_inverted = False
 
@@ -153,7 +153,7 @@ class TunerConstants:
     _back_left_drive_motor_id = 2
     _back_left_steer_motor_id = 6
     _back_left_encoder_id = 6
-    _back_left_encoder_offset: units.rotation = -0.173583984375
+    _back_left_encoder_offset: units.rotation = -0.486572265625
     _back_left_steer_motor_inverted = True
     _back_left_encoder_inverted = False
 
@@ -164,7 +164,7 @@ class TunerConstants:
     _back_right_drive_motor_id = 4
     _back_right_steer_motor_id = 8
     _back_right_encoder_id = 8
-    _back_right_encoder_offset: units.rotation = -0.06982421875
+    _back_right_encoder_offset: units.rotation = -0.08544921875
     _back_right_steer_motor_inverted = True
     _back_right_encoder_inverted = False
 

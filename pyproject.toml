@@ -28,5 +28,7 @@ robotpy_extras = [
 
 # Other pip packages to install
 requires = [
-    "phoenix6==25.0b3",
+    "phoenix6==25.3.1",
+    "robotpy-opencv; platform_machine == 'roborio'",
+    "opencv-python; platform_machine != 'roborio'"
 ]
