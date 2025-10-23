@@ -96,13 +96,17 @@ class ElevatorSubsystem(StateSubsystem):
         latency_compensated_position = BaseStatusSignal.get_latency_compensated_value(
             self._master_motor.get_position(), self._master_motor.get_velocity()
         )
-        self._at_setpoint = abs(latency_compensated_position - self._position_request.position) <= Constants.ElevatorConstants.SETPOINT_TOLERANCE
+        # self._at_setpoint = abs(latency_compensated_position - self._position_request.position) <= Constants.ElevatorConstants.SETPOINT_TOLERANCE
+        self._at_setpoint = True
         self.get_network_table().getEntry("At Setpoint").setBoolean(self._at_setpoint)
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):
             return
 
+        # Skippig elevator
+        return
+        """
         position = desired_state.value
 
         if position is None:
@@ -116,6 +120,7 @@ class ElevatorSubsystem(StateSubsystem):
 
             self._position_request.position = position
             self._master_motor.set_control(self._position_request)
+        """
 
     def is_at_setpoint(self) -> bool:
         if self._subsystem_state is self.SubsystemState.IDLE:

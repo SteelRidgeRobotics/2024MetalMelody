@@ -63,13 +63,9 @@ class IntakeSubsystem(StateSubsystem):
         self._intake_follower_motor.configurator.apply(_follower_config)
         self._intake_follower_motor.set_control(Follower(self._master_motor.device_id, True))
 
-        self._top_algae_motor = TalonFX(Constants.CanIDs.TOP_ALGAE_TALON) # Top Algae Wheel
-        self._top_algae_motor.configurator.apply(_follower_config)
-        self._top_algae_motor.set_control(Follower(self._master_motor.device_id, True))
-
-        self._bottom_algae_motor = TalonFX(Constants.CanIDs.BOTTOM_ALGAE_TALON) # Top Algae Wheel
-        self._bottom_algae_motor.configurator.apply(_follower_config)
-        self._bottom_algae_motor.set_control(Follower(self._master_motor.device_id, False))
+        self.algae_motor = TalonFX(Constants.CanIDs.ALGAE_TALON)
+        self.algae_motor.configurator.apply(_follower_config)
+        self.algae_motor.set_control(Follower(self._master_motor.device_id, False))
 
         self._canrange = CANrange(Constants.CanIDs.INTAKE_CANRANGE)
         self._canrange.configurator.apply(self._canrange_config)

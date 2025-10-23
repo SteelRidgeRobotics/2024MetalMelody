@@ -73,8 +73,8 @@ class RobotContainer:
             auto = auto.removesuffix(".auto")
             if auto ==".DS_Store":
                 continue
-            self._auto_chooser.addOption(auto, PathPlannerAuto(auto, False))
-            self._auto_chooser.addOption(auto + " (Mirrored)", PathPlannerAuto(auto, True))
+            self._auto_chooser.addOption(auto, PathPlannerAuto(auto)) # Deleted false after "auto"
+            self._auto_chooser.addOption(auto + " (Mirrored)", PathPlannerAuto(auto)) # Deleted true after "auto"
         self._auto_chooser.setDefaultOption("None", cmd.none())
         self._auto_chooser.onChange(
             lambda _: self._set_correct_swerve_position()

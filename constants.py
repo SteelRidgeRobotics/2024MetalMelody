@@ -13,8 +13,7 @@ class Constants:
 
         INTAKE_TALON = 12
         INTAKE_TALON2 = 13
-        BOTTOM_ALGAE_TALON = 14
-        TOP_ALGAE_TALON = 15
+        ALGAE_TALON = 14
         
         LEFT_PIVOT_TALON = 16
         RIGHT_PIVOT_TALON = 17
@@ -59,11 +58,11 @@ class Constants:
     class PivotConstants:
         INSIDE_ELEVATOR_ANGLE = 0.2 # Used for subsystem collision checking
         ELEVATOR_PRIORITY_ANGLE = 0.123535 # We move the pivot to this position until the elevator has reached its setpoint.
-        STOW_ANGLE = 0.188
-        GROUND_INTAKE_ANGLE = -0.081543 -1
+        STOW_ANGLE = -13.700684
+        GROUND_INTAKE_ANGLE = -2.733887
         ALGAE_INTAKE_ANGLE = -0.05 -1 
         HIGH_SCORING_ANGLE =  0.21 -1
-        MID_SCORING_ANGLE = 0.22 -1
+        MID_SCORING_ANGLE = -1.33252
         LOW_SCORING_ANGLE = -0.081543 -1
         NET_SCORING_ANGLE = 0.131 -1
         PROCESSOR_SCORING_ANGLE = 0. -1
