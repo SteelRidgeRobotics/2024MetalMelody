@@ -26,10 +26,9 @@ class Constants:
     class ElevatorConstants:
         L1_SCORE_POSITION = 2.208
         L2_SCORE_POSITION = 1.841
-        L3_SCORE_POSITION = 3.576
-        L4_SCORE_POSITION = 6.087158
+        L3_SCORE_POSITION = 3.576 # We will not be able to reach this position, so we will not use it.
         L2_ALGAE_POSITION = 3.198
-        L3_ALGAE_POSITION = 5
+        L3_ALGAE_POSITION = 5 # We will not be able to reach this position, so we will not use it.
         PROCESSOR_SCORE_POSITION = 0.8205
         ELEVATOR_MAX = 6.096924
 
@@ -41,7 +40,7 @@ class Constants:
         MM_BRAKE_ACCELERATION = 24
         MM_DOWNWARD_ACCELERATION = 12
 
-        GEAR_RATIO = 31/4
+        GEAR_RATIO = 31/4  #TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
             .with_k_g(0.36)
             .with_k_p(40)
@@ -56,25 +55,25 @@ class Constants:
         SETPOINT_TOLERANCE = 0.1
 
     class PivotConstants:
-        INSIDE_ELEVATOR_ANGLE = 0.2 # Used for subsystem collision checking
-        ELEVATOR_PRIORITY_ANGLE = 0.123535 # We move the pivot to this position until the elevator has reached its setpoint.
+        # INSIDE_ELEVATOR_ANGLE = 0.2 # Used for subsystem collision checking
+        #ELEVATOR_PRIORITY_ANGLE = 0.123535 # We move the pivot to this position until the elevator has reached its setpoint.
         STOW_ANGLE = -13.700684
         GROUND_INTAKE_ANGLE = -2.733887
         ALGAE_INTAKE_ANGLE = -0.05 -1 
         HIGH_SCORING_ANGLE =  0.21 -1
         MID_SCORING_ANGLE = -1.33252
-        LOW_SCORING_ANGLE = -0.081543 -1
+        LOW_SCORING_ANGLE = -1.33252
         NET_SCORING_ANGLE = 0.131 -1
         PROCESSOR_SCORING_ANGLE = 0. -1
-        CLIMBER_PRIORITY_ANGLE = 0.201943 -1
+        # CLIMBER_PRIORITY_ANGLE = 0.201943 -1
 
-        MINIMUM_ANGLE = -0.091 -1
-        MAXIMUM_ANGLE = 0.392822 -1
+        MINIMUM_ANGLE = -1.33252 -1
+        MAXIMUM_ANGLE = -13.700684 -1
 
         CRUISE_VELOCITY = 3
         MM_ACCELERATION = 3
 
-        GEAR_RATIO = 961/36
+        GEAR_RATIO = 961/36 # TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
                  .with_k_g(0.27)
                  .with_k_p(30)
@@ -86,13 +85,13 @@ class Constants:
                  .with_gravity_type(GravityTypeValue.ARM_COSINE)
         )
 
-        CANCODER_DISCONTINUITY = 0.5
-        CANCODER_OFFSET = -0.434326171875
+        # CANCODER_DISCONTINUITY = 0.5
+        # CANCODER_OFFSET = -0.434326171875 
 
         SETPOINT_TOLERANCE = 0.03125
 
     class IntakeConstants:
-
+        # TODO: Verify these speeds.
         CORAL_INTAKE_SPEED = 0.4*1.2*1.1
         CORAL_OUTPUT_SPEED = 0.6
         L1_OUTPUT_SPEED = -0.4

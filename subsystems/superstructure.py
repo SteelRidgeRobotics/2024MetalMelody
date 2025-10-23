@@ -10,7 +10,7 @@ from constants import Constants
 from subsystems.elevator import ElevatorSubsystem
 from subsystems.pivot import PivotSubsystem
 from subsystems.swerve import SwerveSubsystem
-from subsystems.vision import VisionSubsystem
+# from subsystems.vision import VisionSubsystem
 
 
 class Superstructure(Subsystem):
@@ -34,18 +34,18 @@ class Superstructure(Subsystem):
             tuple[
                 Optional[PivotSubsystem.SubsystemState],
                 Optional[ElevatorSubsystem.SubsystemState],
-                Optional[VisionSubsystem.SubsystemState]
+                #  Optional[VisionSubsystem.SubsystemState]
             ]] = {
-        Goal.DEFAULT: (PivotSubsystem.SubsystemState.STOW, ElevatorSubsystem.SubsystemState.DEFAULT, VisionSubsystem.SubsystemState.ALL_ESTIMATES),
-        Goal.L3_CORAL: (PivotSubsystem.SubsystemState.L3_CORAL, ElevatorSubsystem.SubsystemState.L3, VisionSubsystem.SubsystemState.REEF_ESTIMATES),
-        Goal.L2_CORAL: (PivotSubsystem.SubsystemState.L2_CORAL, ElevatorSubsystem.SubsystemState.L2, VisionSubsystem.SubsystemState.REEF_ESTIMATES),
-        Goal.L1_CORAL: (PivotSubsystem.SubsystemState.LOW_SCORING, ElevatorSubsystem.SubsystemState.L1, VisionSubsystem.SubsystemState.REEF_ESTIMATES),
-        Goal.PROCESSOR: (PivotSubsystem.SubsystemState.PROCESSOR_SCORING, ElevatorSubsystem.SubsystemState.PROCESSOR, VisionSubsystem.SubsystemState.ALL_ESTIMATES),
-        Goal.FLOOR: (PivotSubsystem.SubsystemState.GROUND_INTAKE, ElevatorSubsystem.SubsystemState.DEFAULT, VisionSubsystem.SubsystemState.ALL_ESTIMATES),
-        Goal.CLIMBING: (PivotSubsystem.SubsystemState.AVOID_CLIMBER, ElevatorSubsystem.SubsystemState.DEFAULT, VisionSubsystem.SubsystemState.NO_ESTIMATES)
+        Goal.DEFAULT: (PivotSubsystem.SubsystemState.STOW, ElevatorSubsystem.SubsystemState.DEFAULT),
+        Goal.L3_CORAL: (PivotSubsystem.SubsystemState.L3_CORAL, ElevatorSubsystem.SubsystemState.L3),
+        Goal.L2_CORAL: (PivotSubsystem.SubsystemState.L2_CORAL, ElevatorSubsystem.SubsystemState.L2),
+        Goal.L1_CORAL: (PivotSubsystem.SubsystemState.LOW_SCORING, ElevatorSubsystem.SubsystemState.L1),
+        Goal.PROCESSOR: (PivotSubsystem.SubsystemState.PROCESSOR_SCORING, ElevatorSubsystem.SubsystemState.PROCESSOR),
+        Goal.FLOOR: (PivotSubsystem.SubsystemState.GROUND_INTAKE, ElevatorSubsystem.SubsystemState.DEFAULT),
+        # Goal.CLIMBING: (PivotSubsystem.SubsystemState.AVOID_CLIMBER, ElevatorSubsystem.SubsystemState.DEFAULT """, VisionSubsystem.SubsystemState.NO_ESTIMATES)
     }
 
-    def __init__(self, drivetrain: SwerveSubsystem, pivot: PivotSubsystem, elevator: ElevatorSubsystem, vision: VisionSubsystem) -> None:
+    def __init__(self, drivetrain: SwerveSubsystem, pivot: PivotSubsystem, elevator: ElevatorSubsystem) -> None:
         """
         Constructs the superstructure using instance of each subsystem.
 
@@ -55,14 +55,13 @@ class Superstructure(Subsystem):
         :type pivot: PivotSubsystem
         :param elevator: Elevator that moves the intake up and down
         :type elevator: ElevatorSubsystem
-        :param vision: Handles all vision estimates
-        :type vision: VisionSubsystem
+
         """
         super().__init__()
         self.drivetrain = drivetrain
         self.pivot = pivot
         self.elevator = elevator
-        self.vision = vision
+        # self.vision = vision
 
         self._goal = self.Goal.DEFAULT
         self.set_goal_command(self._goal)
@@ -81,17 +80,23 @@ class Superstructure(Subsystem):
         if DriverStation.isDisabled():
             return
 
+        """
+        Melody does not use these safety checks since the pivot doesn't move inside the elevator.
         # Unfreeze subsystems if safe
         if self.elevator.is_frozen() and not self.pivot.is_in_elevator():
             self.elevator.unfreeze()
             self.elevator.set_desired_state(self._desired_elevator_state)
-
         # If the elevator reaches its setpoint or the pivot is outside the elevator and can reach its target safely, unfreeze the pivot
         if self.pivot.get_current_state() is PivotSubsystem.SubsystemState.AVOID_ELEVATOR and not self.pivot.is_in_elevator() and (
                 self.elevator.is_at_setpoint() or self._desired_pivot_state.value < Constants.PivotConstants.INSIDE_ELEVATOR_ANGLE):
             self.pivot.unfreeze()
             self.pivot.set_desired_state(self._desired_pivot_state)
+        """
+        
+        #TODO: Uncomment this when the elevator is fixed.
+        # self.elevator.set_desired_state(self._desired_elevator_state)
 
+    
     def simulationPeriodic(self) -> None:
         self._elevator_mech.setLength(self.elevator.get_height())
         self._pivot_mech.setAngle(self.pivot.get_position() * 360 - 90)
@@ -99,33 +104,45 @@ class Superstructure(Subsystem):
     def _set_goal(self, goal: Goal) -> None:
         self._goal = goal
 
-        pivot_state, elevator_state, vision_state = self._goal_to_states.get(goal, (None, None, None, None))
-        safety_checks = self._should_enable_safety_checks(pivot_state)
+        pivot_state, elevator_state = self._goal_to_states.get(goal, (None, None, None))
+        # safety_checks = self._should_enable_safety_checks(pivot_state)
         if pivot_state:
+            """
+            Melody does not use these safety checks since the pivot doesn't move inside the elevator.
             self._desired_pivot_state = pivot_state
             if safety_checks:
                 self.pivot.set_desired_state(PivotSubsystem.SubsystemState.AVOID_ELEVATOR)
                 self.pivot.freeze()
             else:
                 self.pivot.set_desired_state(pivot_state)
+            """
+            self.pivot.set_desired_state(pivot_state)
         if elevator_state:
             self._desired_elevator_state = elevator_state
+            """
+            Melody does not use these safety checks since the pivot doesn't move inside the elevator.
             if pivot_state and safety_checks:
                 self.elevator.set_desired_state(ElevatorSubsystem.SubsystemState.IDLE)
                 self.elevator.freeze()
             else:
                 self.elevator.set_desired_state(elevator_state)
-        if vision_state:
-            self.vision.set_desired_state(vision_state)
+            """
+            
+            #TODO: Uncomment this when the elevator is fixed.
+            # self.elevator.set_desired_state(elevator_state)
+        #if vision_state:
+        #    self.vision.set_desired_state(vision_state)
 
         self._current_goal_pub.set(goal.name)
 
+    """
     def _should_enable_safety_checks(self, pivot_state: PivotSubsystem.SubsystemState) -> bool:
-        """Safety checks are always activated, unless we're already outside the elevator and the new state is also outside the elevator."""
+        # Safety checks are always activated, unless we're already outside the elevator and the new state is also outside the elevator
         return not (
                 self.pivot.get_current_state().value < Constants.PivotConstants.INSIDE_ELEVATOR_ANGLE
                 and pivot_state.value < Constants.PivotConstants.INSIDE_ELEVATOR_ANGLE
         )
+    """
 
     def set_goal_command(self, goal: Goal) -> Command:
         """

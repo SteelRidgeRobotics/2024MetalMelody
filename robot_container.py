@@ -19,7 +19,7 @@ from subsystems.intake import IntakeSubsystem
 from subsystems.pivot import PivotSubsystem
 from subsystems.superstructure import Superstructure
 from subsystems.swerve.requests import DriverAssist
-from subsystems.vision import VisionSubsystem
+# from subsystems.vision import VisionSubsystem
 
 
 class RobotContainer:
@@ -34,6 +34,8 @@ class RobotContainer:
         self.pivot = PivotSubsystem()
         self.intake = IntakeSubsystem()
         self.elevator = ElevatorSubsystem()
+        """
+        Melody does not use vision, so we will not create the VisionSubsystem.
         self.vision = VisionSubsystem(
             self.drivetrain,
             Constants.VisionConstants.FRONT_RIGHT,
@@ -41,9 +43,9 @@ class RobotContainer:
             Constants.VisionConstants.FRONT_LEFT,
             Constants.VisionConstants.BACK_CENTER,
         )
-
+        """
         self.superstructure = Superstructure(
-            self.drivetrain, self.pivot, self.elevator, self.vision
+            self.drivetrain, self.pivot, self.elevator #, self.vision
         )
 
         self._setup_swerve_requests()
@@ -53,7 +55,7 @@ class RobotContainer:
     def _pathplanner_setup(self):
         # Register NamedCommands
         NamedCommands.registerCommand("Default", self.superstructure.set_goal_command(Superstructure.Goal.DEFAULT))
-        NamedCommands.registerCommand("L3 Coral", self.superstructure.set_goal_command(Superstructure.Goal.L3_CORAL))
+        # NamedCommands.registerCommand("L3 Coral", self.superstructure.set_goal_command(Superstructure.Goal.L3_CORAL))
         NamedCommands.registerCommand("L2 Coral", self.superstructure.set_goal_command(Superstructure.Goal.L2_CORAL))
         NamedCommands.registerCommand("L1 Coral", self.superstructure.set_goal_command(Superstructure.Goal.L1_CORAL))
         NamedCommands.registerCommand("L2 Algae", self.superstructure.set_goal_command(Superstructure.Goal.L2_ALGAE))

@@ -26,7 +26,7 @@ class PivotSubsystem(StateSubsystem):
 
     class SubsystemState(Enum):
         IDLE = None
-        AVOID_ELEVATOR = Constants.PivotConstants.ELEVATOR_PRIORITY_ANGLE
+        # AVOID_ELEVATOR = Constants.PivotConstants.ELEVATOR_PRIORITY_ANGLE  Not used in Melody
         STOW = Constants.PivotConstants.STOW_ANGLE
         GROUND_INTAKE = Constants.PivotConstants.GROUND_INTAKE_ANGLE
         ALGAE_INTAKE = Constants.PivotConstants.ALGAE_INTAKE_ANGLE
@@ -35,15 +35,16 @@ class PivotSubsystem(StateSubsystem):
         L2_CORAL = Constants.PivotConstants.MID_SCORING_ANGLE
         LOW_SCORING = Constants.PivotConstants.LOW_SCORING_ANGLE
         PROCESSOR_SCORING = Constants.PivotConstants.PROCESSOR_SCORING_ANGLE
-        AVOID_CLIMBER = Constants.PivotConstants.CLIMBER_PRIORITY_ANGLE
+        # AVOID_CLIMBER = Constants.PivotConstants.CLIMBER_PRIORITY_ANGLE
 
+    """
     _encoder_config = CANcoderConfiguration()
     (
         _encoder_config.magnet_sensor
         .with_magnet_offset(Constants.PivotConstants.CANCODER_OFFSET)
         .with_absolute_sensor_discontinuity_point(Constants.PivotConstants.CANCODER_DISCONTINUITY)
     )
-
+    """
     _master_config = TalonFXConfiguration()
     (_master_config.feedback
      .with_rotor_to_sensor_ratio(Constants.PivotConstants.GEAR_RATIO)
@@ -110,7 +111,7 @@ class PivotSubsystem(StateSubsystem):
         )
         self._at_setpoint = self._at_setpoint_debounce.calculate(abs(latency_compensated_position - self._position_request.position) <= Constants.PivotConstants.SETPOINT_TOLERANCE)
         self.get_network_table().getEntry("At Setpoint").setBoolean(self._at_setpoint)
-        self.get_network_table().getEntry("In Elevator").setBoolean(self.is_in_elevator())
+        self.get_network_table().getEntry("In Elevator").setBoolean(False) # Melody does not use this check
 
         # Update CANcoder sim state
         if utils.is_simulation() and not RobotBase.isReal():
@@ -137,10 +138,6 @@ class PivotSubsystem(StateSubsystem):
     def is_at_setpoint(self) -> bool:
         return self._at_setpoint
 
-    def is_in_elevator(self, position=None) -> bool:
-        if not position:
-            position = self._master_motor.get_position(True).value
-        return position >= Constants.PivotConstants.INSIDE_ELEVATOR_ANGLE
     def get_setpoint(self) -> float:
         return self._position_request.position
 
