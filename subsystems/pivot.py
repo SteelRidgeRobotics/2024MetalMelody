@@ -34,7 +34,6 @@ class PivotSubsystem(StateSubsystem):
         L3_CORAL = Constants.PivotConstants.MID_SCORING_ANGLE
         L2_CORAL = Constants.PivotConstants.MID_SCORING_ANGLE
         LOW_SCORING = Constants.PivotConstants.LOW_SCORING_ANGLE
-        NET_SCORING = Constants.PivotConstants.NET_SCORING_ANGLE
         PROCESSOR_SCORING = Constants.PivotConstants.PROCESSOR_SCORING_ANGLE
         AVOID_CLIMBER = Constants.PivotConstants.CLIMBER_PRIORITY_ANGLE
 

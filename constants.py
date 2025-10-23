@@ -13,9 +13,11 @@ class Constants:
 
         INTAKE_TALON = 12
         INTAKE_TALON2 = 13
+        BOTTOM_ALGAE_TALON = 14
+        TOP_ALGAE_TALON = 15
         
-        LEFT_PIVOT_TALON = 14
-        RIGHT_PIVOT_TALON = 15
+        LEFT_PIVOT_TALON = 16
+        RIGHT_PIVOT_TALON = 17
 
         ELEVATOR_CANDI = 20
         PIVOT_CANCODER = 21
