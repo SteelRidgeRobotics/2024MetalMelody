@@ -179,7 +179,7 @@ class RobotContainer:
         )
 
         self._driver_controller.start().onTrue(self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric()))
-
+        """
         self._setup_sysid_bindings(
             self._driver_controller, self.drivetrain,
             self._driver_controller.y(), self._driver_controller.a()
@@ -194,6 +194,7 @@ class RobotContainer:
             self._function_controller, self.pivot,
             self._function_controller.b(), self._function_controller.x()
         )
+        """
 
         goal_bindings = {
             self._function_controller.x(): self.superstructure.Goal.L3_CORAL,
