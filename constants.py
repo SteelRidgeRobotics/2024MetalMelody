@@ -35,7 +35,7 @@ class Constants:
 
         DEFAULT_POSITION = -0.03
 
-        CRUISE_VELOCITY = 80
+        CRUISE_VELOCITY = 100
         MM_JERK = len("העלא")*1000000
         MM_UPWARD_ACCELERATION = 50
         MM_BRAKE_ACCELERATION = 25
@@ -64,8 +64,8 @@ class Constants:
         LOW_SCORING_ANGLE = -1.0
         PROCESSOR_SCORING_ANGLE = -6.0
 
-        CRUISE_VELOCITY = 5
-        MM_ACCELERATION = 5
+        CRUISE_VELOCITY = 10
+        MM_ACCELERATION = 10
 
         GEAR_RATIO = 961/36 # TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
@@ -88,10 +88,10 @@ class Constants:
         # TODO: Verify these speeds.
         CORAL_INTAKE_SPEED = 0.4*1.2*1.1
         CORAL_OUTPUT_SPEED = 0.6
-        L1_OUTPUT_SPEED = -0.4
+        L1_OUTPUT_SPEED = 0.4
 
         ALGAE_HOLD = 0.125
-        ALGAE_INTAKE_SPEED = 0.25
+        ALGAE_INTAKE_SPEED = -0.25
         ALGAE_OUTPUT_SPEED = -1
 
         SUPPLY_CURRENT = 35
