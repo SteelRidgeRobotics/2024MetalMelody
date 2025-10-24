@@ -53,8 +53,6 @@ class ElevatorSubsystem(StateSubsystem):
         general_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
         general_config.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
         self._master_motor.configurator.apply(general_config)
-        
-        self._master_motor.set_position(Constants.ElevatorConstants.CAM_POSITION)
 
         self.follower_motor = TalonFX(Constants.CanIDs.LEFT_ELEVATOR_TALON) # Left Motor
         follower_config = general_config
@@ -91,6 +89,7 @@ class ElevatorSubsystem(StateSubsystem):
                 self,
             )
         )
+        self._master_motor.set_position(0)
 
 
     def periodic(self) -> None:

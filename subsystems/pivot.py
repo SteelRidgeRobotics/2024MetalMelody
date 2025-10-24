@@ -51,8 +51,8 @@ class PivotSubsystem(StateSubsystem):
     _master_config = TalonFXConfiguration()
     (_master_config.feedback
      .with_rotor_to_sensor_ratio(Constants.PivotConstants.GEAR_RATIO)
-     .with_feedback_sensor_source(FeedbackSensorSourceValue.REMOTE_CANCODER)
-     .with_feedback_remote_sensor_id(Constants.CanIDs.PIVOT_CANCODER)
+     #.with_feedback_sensor_source(FeedbackSensorSourceValue.REMOTE_CANCODER)
+     #.with_feedback_remote_sensor_id(Constants.CanIDs.PIVOT_CANCODER)
      )
     _master_config.motor_output.neutral_mode = NeutralModeValue.BRAKE
 
@@ -102,8 +102,8 @@ class PivotSubsystem(StateSubsystem):
                 self,
             )
         )
-        self._master_motor.set_position(Constants.PivotConstants.START_ANGLE)
-        self._follower_motor.set_position(Constants.PivotConstants.START_ANGLE)
+        self._master_motor.set_position(0)
+        #self._follower_motor.set_position(Constants.PivotConstants.START_ANGLE)
         # self._master_motor.set_position(self._encoder.get_absolute_position().value)
         # self._follower_motor.set_position(self._encoder.get_position().value)
 

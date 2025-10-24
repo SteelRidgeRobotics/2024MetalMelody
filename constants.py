@@ -33,7 +33,7 @@ class Constants:
         CAM_POSITION = 100.620117
         ELEVATOR_MAX = 52.342773
 
-        DEFAULT_POSITION = 101.472656
+        DEFAULT_POSITION = 75
 
         CRUISE_VELOCITY = 100
         MM_JERK = len("העלא")*1000000
@@ -55,21 +55,14 @@ class Constants:
         SETPOINT_TOLERANCE = 0.1
 
     class PivotConstants:
-        # INSIDE_ELEVATOR_ANGLE = 0.2 # Used for subsystem collision checking
-        #ELEVATOR_PRIORITY_ANGLE = 0.123535 # We move the pivot to this position until the elevator has reached its setpoint.
         START_ANGLE = -0.024902
-        STOW_ANGLE = -0.510254
-        GROUND_INTAKE_ANGLE = -10.788086
+        STOW_ANGLE = -0.5
+        GROUND_INTAKE_ANGLE = -10.591797
         ALGAE_INTAKE_ANGLE = -8.5
         HIGH_SCORING_ANGLE = -2.0
-        MID_SCORING_ANGLE = -3.5
-        LOW_SCORING_ANGLE = -5.0
-        NET_SCORING_ANGLE = -4.0
+        MID_SCORING_ANGLE = -1.1
+        LOW_SCORING_ANGLE = -1.0
         PROCESSOR_SCORING_ANGLE = -6.0
-        # CLIMBER_PRIORITY_ANGLE = 0.201943 -1
-
-        MINIMUM_ANGLE = -10.788086
-        MAXIMUM_ANGLE = -0.024902
 
         CRUISE_VELOCITY = 3
         MM_ACCELERATION = 3
