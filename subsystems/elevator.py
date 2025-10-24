@@ -105,9 +105,6 @@ class ElevatorSubsystem(StateSubsystem):
         if not super().set_desired_state(desired_state):
             return
 
-        # Skippig elevator
-        return
-        """
         position = desired_state.value
 
         if position is None:
@@ -121,7 +118,7 @@ class ElevatorSubsystem(StateSubsystem):
 
             self._position_request.position = position
             self._master_motor.set_control(self._position_request)
-        """
+    
 
     def is_at_setpoint(self) -> bool:
         if self._subsystem_state is self.SubsystemState.IDLE:
