@@ -115,6 +115,7 @@ class Superstructure(Subsystem):
             else:
                 self.pivot.set_desired_state(pivot_state)
             """
+            self._desired_pivot_state = pivot_state
             self.pivot.set_desired_state(pivot_state)
         if elevator_state:
             self._desired_elevator_state = elevator_state
