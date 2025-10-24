@@ -54,8 +54,10 @@ class IntakeSubsystem(StateSubsystem):
 
         self._master_motor = TalonFX(Constants.CanIDs.INTAKE_TALON) # Master
         _motor_config = self._motor_config
+        _motor_config.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
         if not utils.is_simulation():
             _motor_config.hardware_limit_switch = self._limit_switch_config
+
         self._master_motor.configurator.apply(self._motor_config)
 
         self._intake_follower_motor = TalonFX(Constants.CanIDs.INTAKE_TALON2) # Follower

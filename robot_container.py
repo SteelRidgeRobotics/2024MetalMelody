@@ -141,15 +141,7 @@ class RobotContainer:
             )
         )
 
-        
-        self._driver_controller.leftBumper().whileTrue(
-            self.drivetrain.apply_request(
-                lambda: self._robot_centric
-                .with_velocity_x(-hid.getLeftY() * self._max_speed)
-                .with_velocity_y(-hid.getLeftX() * self._max_speed)
-                .with_rotational_rate(-self._driver_controller.getRightX() * self._max_angular_rate)
-            )
-        )
+
 
         self._driver_controller.rightBumper().whileTrue(
             self.intake.set_desired_state_command(self.intake.SubsystemState.CORAL_OUTPUT)
@@ -222,7 +214,7 @@ class RobotContainer:
                 button.onTrue(self.superstructure.set_goal_command(goal))
 
 
-        (self._function_controller.leftBumper() & self._function_controller.back()).whileTrue(
+        (self._function_controller.leftBumper()).whileTrue(
             cmd.parallel(
                 self.superstructure.set_goal_command(self.superstructure.Goal.FLOOR),
                 self.intake.set_desired_state_command(self.intake.SubsystemState.CORAL_INTAKE),

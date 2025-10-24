@@ -98,7 +98,7 @@ class Constants:
         L1_OUTPUT_SPEED = -0.4
 
         ALGAE_HOLD = 0.125
-        ALGAE_INTAKE_SPEED = 0.75
+        ALGAE_INTAKE_SPEED = 0.25
         ALGAE_OUTPUT_SPEED = -1
 
         SUPPLY_CURRENT = 35
