@@ -64,6 +64,9 @@ class Superstructure(Subsystem):
         # self.vision = vision
 
         self._goal = self.Goal.DEFAULT
+        # Initialize desired state attributes to prevent AttributeError
+        self._desired_pivot_state = PivotSubsystem.SubsystemState.STOW
+        self._desired_elevator_state = ElevatorSubsystem.SubsystemState.DEFAULT
         self.set_goal_command(self._goal)
 
         table = NetworkTableInstance.getDefault().getTable("Superstructure")
@@ -92,8 +95,11 @@ class Superstructure(Subsystem):
             self.pivot.unfreeze()
             self.pivot.set_desired_state(self._desired_pivot_state)
         """
-        self.pivot.set_desired_state(self._desired_pivot_state)
-        self.elevator.set_desired_state(self._desired_elevator_state)
+        # Only set desired states if they exist (safety check)
+        if hasattr(self, '_desired_pivot_state'):
+            self.pivot.set_desired_state(self._desired_pivot_state)
+        if hasattr(self, '_desired_elevator_state'):
+            self.elevator.set_desired_state(self._desired_elevator_state)
 
     
     def simulationPeriodic(self) -> None:
