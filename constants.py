@@ -70,9 +70,9 @@ class Constants:
         GEAR_RATIO = 961/36 # TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
                  .with_k_g(0.27)
-                 .with_k_p(30)
+                 .with_k_p(15)  # Reduced from 30 to 15
                  .with_k_i(0.0)
-                 .with_k_d(0.6343)
+                 .with_k_d(0.3)  # Reduced from 0.6343 to 0.3
                  .with_k_s(0.19)
                  .with_k_v(0)
                  .with_k_a(0)

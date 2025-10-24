@@ -100,6 +100,11 @@ class ElevatorSubsystem(StateSubsystem):
         )
         self._at_setpoint = abs(latency_compensated_position - self._position_request.position) <= Constants.ElevatorConstants.SETPOINT_TOLERANCE
         self.get_network_table().getEntry("At Setpoint").setBoolean(self._at_setpoint)
+        
+        # Log position and velocity for debugging
+        self.get_network_table().getEntry("Position").setDouble(latency_compensated_position)
+        self.get_network_table().getEntry("Velocity").setDouble(self._master_motor.get_velocity().value)
+        self.get_network_table().getEntry("Target Position").setDouble(self._position_request.position)
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):

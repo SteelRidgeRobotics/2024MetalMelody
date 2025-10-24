@@ -58,7 +58,10 @@ class PivotSubsystem(StateSubsystem):
 
     _master_config.with_slot0(Constants.PivotConstants.GAINS)
     _master_config.with_motion_magic(
-        MotionMagicConfigs().with_motion_magic_cruise_velocity(Constants.PivotConstants.CRUISE_VELOCITY).with_motion_magic_acceleration(Constants.PivotConstants.MM_ACCELERATION)
+        MotionMagicConfigs()
+        .with_motion_magic_cruise_velocity(Constants.PivotConstants.CRUISE_VELOCITY * 0.5)  # Reduce cruise velocity
+        .with_motion_magic_acceleration(Constants.PivotConstants.MM_ACCELERATION * 0.3)  # Reduce acceleration
+        .with_motion_magic_jerk(Constants.PivotConstants.MM_ACCELERATION * 0.1)  # Add jerk limiting
     )
 
     _follower_config = TalonFXConfiguration()
@@ -116,6 +119,11 @@ class PivotSubsystem(StateSubsystem):
         self._at_setpoint = self._at_setpoint_debounce.calculate(abs(latency_compensated_position - self._position_request.position) <= Constants.PivotConstants.SETPOINT_TOLERANCE)
         self.get_network_table().getEntry("At Setpoint").setBoolean(self._at_setpoint)
         self.get_network_table().getEntry("In Elevator").setBoolean(False) # Melody does not use this check
+        
+        # Log position and velocity for debugging
+        self.get_network_table().getEntry("Position").setDouble(latency_compensated_position)
+        self.get_network_table().getEntry("Velocity").setDouble(self._master_motor.get_velocity().value)
+        self.get_network_table().getEntry("Target Position").setDouble(self._position_request.position)
 
         # Update CANcoder sim state
         if utils.is_simulation() and not RobotBase.isReal():
