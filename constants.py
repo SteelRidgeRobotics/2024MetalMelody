@@ -33,13 +33,13 @@ class Constants:
         CAM_POSITION = -1
         ELEVATOR_MAX = -2.6
 
-        DEFAULT_POSITION = 0
+        DEFAULT_POSITION = -0.03
 
-        CRUISE_VELOCITY = 10
+        CRUISE_VELOCITY = 60
         MM_JERK = len("העלא")*1000000
-        MM_UPWARD_ACCELERATION = 25
+        MM_UPWARD_ACCELERATION = 40
         MM_BRAKE_ACCELERATION = 24
-        MM_DOWNWARD_ACCELERATION = 12
+        MM_DOWNWARD_ACCELERATION = 30
 
         GEAR_RATIO = 12/1  #Pulled from old code
         GAINS = (Slot0Configs()
@@ -64,8 +64,8 @@ class Constants:
         LOW_SCORING_ANGLE = -1.0
         PROCESSOR_SCORING_ANGLE = -6.0
 
-        CRUISE_VELOCITY = 3
-        MM_ACCELERATION = 3
+        CRUISE_VELOCITY = 5
+        MM_ACCELERATION = 5
 
         GEAR_RATIO = 961/36 # TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
