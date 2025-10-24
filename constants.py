@@ -30,28 +30,28 @@ class Constants:
         L2_ALGAE_POSITION = 3.198
         L3_ALGAE_POSITION = 5 # We will not be able to reach this position, so we will not use it.
         PROCESSOR_SCORE_POSITION = 0.8205
+        CAM_POSITION = 0.1
         ELEVATOR_MAX = 6.096924
 
         DEFAULT_POSITION = 0
 
-        CRUISE_VELOCITY = 9.5
+        CRUISE_VELOCITY = 100
         MM_JERK = len("העלא")*1000000
-        MM_UPWARD_ACCELERATION = 65
+        MM_UPWARD_ACCELERATION = 75
         MM_BRAKE_ACCELERATION = 24
         MM_DOWNWARD_ACCELERATION = 12
 
-        GEAR_RATIO = 31/4  #TODO: Verify this gear ratio.
+        GEAR_RATIO = 12/1  #Pulled from old code
         GAINS = (Slot0Configs()
             .with_k_g(0.36)
-            .with_k_p(40)
-            .with_k_i(0.0)
+            .with_k_p(1)
+            .with_k_i(0.1)
             .with_k_d(0.0)
-            .with_k_s(0.11)
+            .with_k_s(0)
             .with_k_v(0.0)
             .with_k_a(0.0)
             .with_gravity_type(GravityTypeValue.ELEVATOR_STATIC)
         )
-
         SETPOINT_TOLERANCE = 0.1
 
     class PivotConstants:
@@ -85,8 +85,8 @@ class Constants:
                  .with_gravity_type(GravityTypeValue.ARM_COSINE)
         )
 
-        # CANCODER_DISCONTINUITY = 0.5
-        # CANCODER_OFFSET = -0.434326171875 
+        CANCODER_DISCONTINUITY = 0.5
+        CANCODER_OFFSET = -0.434326171875 
 
         SETPOINT_TOLERANCE = 0.03125
 

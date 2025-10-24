@@ -72,6 +72,7 @@ class IntakeSubsystem(StateSubsystem):
 
         self._velocity_request = DutyCycleOut(0)
 
+
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):
             return

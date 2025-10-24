@@ -37,14 +37,14 @@ class PivotSubsystem(StateSubsystem):
         PROCESSOR_SCORING = Constants.PivotConstants.PROCESSOR_SCORING_ANGLE
         # AVOID_CLIMBER = Constants.PivotConstants.CLIMBER_PRIORITY_ANGLE
 
-    """
+
     _encoder_config = CANcoderConfiguration()
     (
         _encoder_config.magnet_sensor
         .with_magnet_offset(Constants.PivotConstants.CANCODER_OFFSET)
         .with_absolute_sensor_discontinuity_point(Constants.PivotConstants.CANCODER_DISCONTINUITY)
     )
-    """
+
     _master_config = TalonFXConfiguration()
     (_master_config.feedback
      .with_rotor_to_sensor_ratio(Constants.PivotConstants.GEAR_RATIO)
@@ -66,12 +66,12 @@ class PivotSubsystem(StateSubsystem):
     def __init__(self) -> None:
         super().__init__("Pivot", self.SubsystemState.STOW)
 
-        # self._encoder = CANcoder(Constants.CanIDs.PIVOT_CANCODER)
+        self._encoder = CANcoder(Constants.CanIDs.PIVOT_CANCODER)
         self._master_motor = TalonFX(Constants.CanIDs.RIGHT_PIVOT_TALON)
         self._master_motor.sim_state.orientation = ChassisReference.CounterClockwise_Positive
         self._follower_motor = TalonFX(Constants.CanIDs.LEFT_PIVOT_TALON)
 
-        #self._encoder.configurator.apply(self._encoder_config)
+        self._encoder.configurator.apply(self._encoder_config)
         self._master_motor.configurator.apply(self._master_config)
         self._follower_motor.configurator.apply(self._follower_config)
 
@@ -100,8 +100,8 @@ class PivotSubsystem(StateSubsystem):
             )
         )
 
-        # self._master_motor.set_position(self._encoder.get_absolute_position().value)
-        # self._follower_motor.set_position(self._encoder.get_position().value)
+        self._master_motor.set_position(self._encoder.get_absolute_position().value)
+        self._follower_motor.set_position(self._encoder.get_position().value)
 
     def periodic(self):
         super().periodic()
@@ -116,12 +116,12 @@ class PivotSubsystem(StateSubsystem):
         # Update CANcoder sim state
         if utils.is_simulation() and not RobotBase.isReal():
             talon_sim = self._sim_models[0][0]
-            """ cancoder_sim = self._encoder.sim_state
+            cancoder_sim = self._encoder.sim_state
 
             cancoder_sim.set_supply_voltage(RobotController.getBatteryVoltage())
             cancoder_sim.set_raw_position(talon_sim.getAngularPosition() / Constants.PivotConstants.GEAR_RATIO)
             cancoder_sim.set_velocity(talon_sim.getAngularVelocity() / Constants.PivotConstants.GEAR_RATIO)
-            """
+            
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):
