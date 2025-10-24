@@ -125,17 +125,7 @@ class Superstructure(Subsystem):
             self.pivot.set_desired_state(pivot_state)
         if elevator_state:
             self._desired_elevator_state = elevator_state
-            """
-            Melody does not use these safety checks since the pivot doesn't move inside the elevator.
-            if pivot_state and safety_checks:
-                self.elevator.set_desired_state(ElevatorSubsystem.SubsystemState.IDLE)
-                self.elevator.freeze()
-            else:
-                self.elevator.set_desired_state(elevator_state)
-            """
-            
-            #TODO: Uncomment this when the elevator is fixed.
-            # self.elevator.set_desired_state(elevator_state)
+            self.elevator.set_desired_state(elevator_state)
         #if vision_state:
         #    self.vision.set_desired_state(vision_state)
 
