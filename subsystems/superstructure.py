@@ -4,7 +4,7 @@ from typing import Optional
 from commands2 import Command, Subsystem, cmd
 from ntcore import NetworkTableInstance
 from phoenix6 import utils
-from wpilib import DriverStation, Mechanism2d, Color8Bit, SmartDashboard
+from wpilib import DriverStation, Mechanism2d, Color8Bit, SmartDashboard, DataLogManager
 
 from constants import Constants
 from subsystems.elevator import ElevatorSubsystem
@@ -97,10 +97,11 @@ class Superstructure(Subsystem):
             self.pivot.set_desired_state(self._desired_pivot_state)
         """
         # Only set desired states if they exist (safety check)
-        if hasattr(self, '_desired_pivot_state'):
-            self.pivot.set_desired_state(self._desired_pivot_state)
-        if hasattr(self, '_desired_elevator_state'):
-            self.elevator.set_desired_state(self._desired_elevator_state)
+        # Remove the continuous set_desired_state calls - let the subsystems handle their own state management
+        # if hasattr(self, '_desired_pivot_state'):
+        #     self.pivot.set_desired_state(self._desired_pivot_state)
+        # if hasattr(self, '_desired_elevator_state'):
+        #     self.elevator.set_desired_state(self._desired_elevator_state)
 
     
     def simulationPeriodic(self) -> None:
@@ -108,9 +109,12 @@ class Superstructure(Subsystem):
         self._pivot_mech.setAngle(self.pivot.get_position() * 360 - 90)
 
     def _set_goal(self, goal: Goal) -> None:
+        DataLogManager.log(f"Superstructure: Setting goal to {goal.name}")
         self._goal = goal
 
         pivot_state, elevator_state = self._goal_to_states.get(goal, (None, None))
+        DataLogManager.log(f"Superstructure: Goal {goal.name} maps to pivot_state={pivot_state}, elevator_state={elevator_state}")
+        
         # safety_checks = self._should_enable_safety_checks(pivot_state)
         if pivot_state:
             """
@@ -123,9 +127,11 @@ class Superstructure(Subsystem):
                 self.pivot.set_desired_state(pivot_state)
             """
             self._desired_pivot_state = pivot_state
+            DataLogManager.log(f"Superstructure: Setting pivot desired state to {pivot_state}")
             self.pivot.set_desired_state(pivot_state)
         if elevator_state:
             self._desired_elevator_state = elevator_state
+            DataLogManager.log(f"Superstructure: Setting elevator desired state to {elevator_state}")
             self.elevator.set_desired_state(elevator_state)
         #if vision_state:
         #    self.vision.set_desired_state(vision_state)

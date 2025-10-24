@@ -8,7 +8,7 @@ from commands2.button import CommandXboxController, Trigger
 from commands2.sysid import SysIdRoutine
 from pathplannerlib.auto import NamedCommands, PathPlannerAuto
 from phoenix6 import SignalLogger, swerve
-from wpilib import DriverStation, SendableChooser, XboxController, SmartDashboard, getDeployDirectory
+from wpilib import DriverStation, SendableChooser, XboxController, SmartDashboard, getDeployDirectory, DataLogManager
 from wpimath.geometry import Rotation2d, Pose2d
 from wpimath.units import rotationsToRadians
 
@@ -197,7 +197,8 @@ class RobotContainer:
                     .alongWith(self.intake.set_desired_state_command(self.intake.SubsystemState.ALGAE_INTAKE)))
                     .onFalse(self.intake.set_desired_state_command(self.intake.SubsystemState.ALGAE_HOLD)))
             else:
-                button.onTrue(self.superstructure.set_goal_command(goal))
+                button.onTrue(cmd.runOnce(lambda g=goal: DataLogManager.log(f"Function Controller: Button pressed for goal {g.name}"), self.superstructure)
+                    .andThen(self.superstructure.set_goal_command(goal)))
 
 
         (self._function_controller.leftBumper()).whileTrue(

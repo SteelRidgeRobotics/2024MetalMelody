@@ -10,6 +10,7 @@ from phoenix6.controls import Follower, VoltageOut, DynamicMotionMagicVoltage, C
 from phoenix6.hardware import TalonFX
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose3d, Rotation3d
+from wpilib import DataLogManager
 
 from constants import Constants
 from subsystems import StateSubsystem
@@ -103,20 +104,27 @@ class ElevatorSubsystem(StateSubsystem):
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):
+            DataLogManager.log(f"Elevator: State change rejected - current state is {self._subsystem_state}, desired state is {desired_state}")
             return
 
+        DataLogManager.log(f"Elevator: Changing state to {desired_state} with position {desired_state.value}")
         position = desired_state.value
 
         if position is None:
+            DataLogManager.log("Elevator: Setting brake request")
             self._brake_request.position = self._master_motor.get_position().value
             self._master_motor.set_control(self._brake_request)
         else:
-            if self._master_motor.get_position().value < position:
+            current_pos = self._master_motor.get_position().value
+            if current_pos < position:
                 self._position_request.acceleration = Constants.ElevatorConstants.MM_UPWARD_ACCELERATION
+                DataLogManager.log(f"Elevator: Moving up from {current_pos} to {position}")
             else:
                 self._position_request.acceleration = Constants.ElevatorConstants.MM_DOWNWARD_ACCELERATION
+                DataLogManager.log(f"Elevator: Moving down from {current_pos} to {position}")
 
             self._position_request.position = position
+            DataLogManager.log(f"Elevator: Setting position request to {position}")
             self._master_motor.set_control(self._position_request)
     
 

@@ -1,0 +1,192 @@
+{
+  "version": 1.0,
+  "grid_size": 128,
+  "tabs": [
+    {
+      "name": "Debug Pivot & Elevator",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Superstructure Current Goal",
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 128,
+            "type": "Text",
+            "properties": {
+              "topic": "/Superstructure/Current Goal",
+              "period": 0.1,
+              "data_type": "string",
+              "font_size": 16
+            }
+          },
+          {
+            "title": "Pivot Current State",
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 128,
+            "type": "Text",
+            "properties": {
+              "topic": "/Pivot/Current State",
+              "period": 0.1,
+              "data_type": "string",
+              "font_size": 16
+            }
+          },
+          {
+            "title": "Elevator Current State",
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 128,
+            "type": "Text",
+            "properties": {
+              "topic": "/Elevator/Current State",
+              "period": 0.1,
+              "data_type": "string",
+              "font_size": 16
+            }
+          },
+          {
+            "title": "Pivot Position",
+            "x": 0,
+            "y": 128,
+            "width": 256,
+            "height": 128,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/Pivot/Position",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": -180,
+              "max_value": 180,
+              "number_of_labels": 8,
+              "show_value": true,
+              "font_size": 16
+            }
+          },
+          {
+            "title": "Elevator Position",
+            "x": 256,
+            "y": 128,
+            "width": 256,
+            "height": 128,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/Elevator/Position",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": 0,
+              "max_value": 1.0,
+              "number_of_labels": 6,
+              "show_value": true,
+              "font_size": 16
+            }
+          },
+          {
+            "title": "Pivot At Setpoint",
+            "x": 512,
+            "y": 128,
+            "width": 256,
+            "height": 128,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/Pivot/At Setpoint",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "show_text": true
+            }
+          },
+          {
+            "title": "Elevator At Setpoint",
+            "x": 768,
+            "y": 128,
+            "width": 256,
+            "height": 128,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/Elevator/At Setpoint",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "show_text": true
+            }
+          },
+          {
+            "title": "Pivot Frozen",
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 128,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/Pivot/Frozen",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294198070,
+              "false_color": 4283215696,
+              "show_text": true
+            }
+          },
+          {
+            "title": "Elevator Frozen",
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 128,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/Elevator/Frozen",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294198070,
+              "false_color": 4283215696,
+              "show_text": true
+            }
+          },
+          {
+            "title": "Function Controller Test Buttons",
+            "x": 512,
+            "y": 256,
+            "width": 512,
+            "height": 256,
+            "type": "Text",
+            "properties": {
+              "topic": "/SmartDashboard/Function Controller Test",
+              "period": 0.1,
+              "data_type": "string",
+              "font_size": 14,
+              "text": "Test Buttons:\nX = L3_CORAL\nB = L2_CORAL\nA = DEFAULT\nB+Start = L2_ALGAE\nA+Start = PROCESSOR\nLeft Stick = L1_CORAL\nLeft Bumper = FLOOR"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Logs",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "System Logs",
+            "x": 0,
+            "y": 0,
+            "width": 1024,
+            "height": 512,
+            "type": "Console",
+            "properties": {
+              "topic": "/RealOutputs/DataLog",
+              "period": 0.1,
+              "max_lines": 100
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

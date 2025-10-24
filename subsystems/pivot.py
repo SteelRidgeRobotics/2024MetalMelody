@@ -8,7 +8,7 @@ from phoenix6.controls import VoltageOut, Follower, MotionMagicVoltage
 from phoenix6.hardware import CANcoder, TalonFX
 from phoenix6.signals import InvertedValue, FeedbackSensorSourceValue, NeutralModeValue
 from phoenix6.sim import ChassisReference
-from wpilib import RobotBase, RobotController
+from wpilib import RobotBase, RobotController, DataLogManager
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.filter import Debouncer
 from wpimath.geometry import Pose3d, Translation3d, Rotation3d
@@ -128,14 +128,18 @@ class PivotSubsystem(StateSubsystem):
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
         if not super().set_desired_state(desired_state):
+            DataLogManager.log(f"Pivot: State change rejected - current state is {self._subsystem_state}, desired state is {desired_state}")
             return
 
+        DataLogManager.log(f"Pivot: Changing state to {desired_state} with position {desired_state.value}")
         position = desired_state.value
         if position is None:
+            DataLogManager.log("Pivot: Setting brake request")
             self._master_motor.set_control(self._brake_request)
             return
 
         self._position_request.position = position
+        DataLogManager.log(f"Pivot: Setting position request to {position}")
         self._master_motor.set_control(self._position_request)
 
     def is_at_setpoint(self) -> bool:
