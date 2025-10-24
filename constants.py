@@ -24,16 +24,16 @@ class Constants:
         INTAKE_CANRANGE = 23
 
     class ElevatorConstants:
-        L1_SCORE_POSITION = 2.208
-        L2_SCORE_POSITION = 1.841
-        L3_SCORE_POSITION = 3.576 # We will not be able to reach this position, so we will not use it.
-        L2_ALGAE_POSITION = 3.198
-        L3_ALGAE_POSITION = 5 # We will not be able to reach this position, so we will not use it.
-        PROCESSOR_SCORE_POSITION = 0.8205
-        CAM_POSITION = 0.1
-        ELEVATOR_MAX = 6.096924
+        L1_SCORE_POSITION = 75
+        L2_SCORE_POSITION = 60
+        L3_SCORE_POSITION = 60 # We will not be able to reach this position, so we will not use it.
+        L2_ALGAE_POSITION = 60
+        L3_ALGAE_POSITION = 60 # We will not be able to reach this position, so we will not use it.
+        PROCESSOR_SCORE_POSITION = 75
+        CAM_POSITION = 100.620117
+        ELEVATOR_MAX = 52.342773
 
-        DEFAULT_POSITION = 0
+        DEFAULT_POSITION = 101.472656
 
         CRUISE_VELOCITY = 100
         MM_JERK = len("העלא")*1000000
@@ -57,19 +57,19 @@ class Constants:
     class PivotConstants:
         # INSIDE_ELEVATOR_ANGLE = 0.2 # Used for subsystem collision checking
         #ELEVATOR_PRIORITY_ANGLE = 0.123535 # We move the pivot to this position until the elevator has reached its setpoint.
-        START_ANGLE = -14
-        STOW_ANGLE = -13.700684
-        GROUND_INTAKE_ANGLE = -2.733887
-        ALGAE_INTAKE_ANGLE = -0.05 -1 
-        HIGH_SCORING_ANGLE =  0.21 -1
-        MID_SCORING_ANGLE = -1.33252
-        LOW_SCORING_ANGLE = -1.33252
-        NET_SCORING_ANGLE = 0.131 -1
-        PROCESSOR_SCORING_ANGLE = 0. -1
+        START_ANGLE = -0.024902
+        STOW_ANGLE = -0.510254
+        GROUND_INTAKE_ANGLE = -10.788086
+        ALGAE_INTAKE_ANGLE = -10.788086
+        HIGH_SCORING_ANGLE =  -10.788086
+        MID_SCORING_ANGLE = -10.788086
+        LOW_SCORING_ANGLE = -10.788086
+        NET_SCORING_ANGLE = -10.788086
+        PROCESSOR_SCORING_ANGLE = -10.788086
         # CLIMBER_PRIORITY_ANGLE = 0.201943 -1
 
-        MINIMUM_ANGLE = -1.33252 -1
-        MAXIMUM_ANGLE = -13.700684 -1
+        MINIMUM_ANGLE = -10.788086
+        MAXIMUM_ANGLE = -0.024902
 
         CRUISE_VELOCITY = 3
         MM_ACCELERATION = 3
