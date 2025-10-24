@@ -40,6 +40,7 @@ class Superstructure(Subsystem):
         Goal.L3_CORAL: (PivotSubsystem.SubsystemState.L3_CORAL, ElevatorSubsystem.SubsystemState.L3),
         Goal.L2_CORAL: (PivotSubsystem.SubsystemState.L2_CORAL, ElevatorSubsystem.SubsystemState.L2),
         Goal.L1_CORAL: (PivotSubsystem.SubsystemState.LOW_SCORING, ElevatorSubsystem.SubsystemState.L1),
+        Goal.L2_ALGAE: (PivotSubsystem.SubsystemState.ALGAE_INTAKE, ElevatorSubsystem.SubsystemState.ALGAE_REEF),
         Goal.PROCESSOR: (PivotSubsystem.SubsystemState.PROCESSOR_SCORING, ElevatorSubsystem.SubsystemState.PROCESSOR),
         Goal.FLOOR: (PivotSubsystem.SubsystemState.GROUND_INTAKE, ElevatorSubsystem.SubsystemState.DEFAULT),
         # Goal.CLIMBING: (PivotSubsystem.SubsystemState.AVOID_CLIMBER, ElevatorSubsystem.SubsystemState.DEFAULT """, VisionSubsystem.SubsystemState.NO_ESTIMATES)
@@ -109,7 +110,7 @@ class Superstructure(Subsystem):
     def _set_goal(self, goal: Goal) -> None:
         self._goal = goal
 
-        pivot_state, elevator_state = self._goal_to_states.get(goal, (None, None, None))
+        pivot_state, elevator_state = self._goal_to_states.get(goal, (None, None))
         # safety_checks = self._should_enable_safety_checks(pivot_state)
         if pivot_state:
             """
