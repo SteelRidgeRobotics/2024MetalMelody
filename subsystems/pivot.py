@@ -59,8 +59,8 @@ class PivotSubsystem(StateSubsystem):
     _master_config.with_slot0(Constants.PivotConstants.GAINS)
     _master_config.with_motion_magic(
         MotionMagicConfigs()
-        .with_motion_magic_cruise_velocity(Constants.PivotConstants.CRUISE_VELOCITY * 0.9)  # Increase cruise velocity
-        .with_motion_magic_acceleration(Constants.PivotConstants.MM_ACCELERATION * 0.8)  # Increase acceleration
+        .with_motion_magic_cruise_velocity(Constants.PivotConstants.CRUISE_VELOCITY)  # Increase cruise velocity
+        .with_motion_magic_acceleration(Constants.PivotConstants.MM_ACCELERATION)  # Increase acceleration
         .with_motion_magic_jerk(Constants.PivotConstants.MM_ACCELERATION * 0.2)  # Add jerk limiting
     )
 

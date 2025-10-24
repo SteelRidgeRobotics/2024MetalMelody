@@ -35,11 +35,11 @@ class Constants:
 
         DEFAULT_POSITION = -0.03
 
-        CRUISE_VELOCITY = 60
+        CRUISE_VELOCITY = 80
         MM_JERK = len("העלא")*1000000
-        MM_UPWARD_ACCELERATION = 40
-        MM_BRAKE_ACCELERATION = 24
-        MM_DOWNWARD_ACCELERATION = 30
+        MM_UPWARD_ACCELERATION = 50
+        MM_BRAKE_ACCELERATION = 25
+        MM_DOWNWARD_ACCELERATION = 50
 
         GEAR_RATIO = 12/1  #Pulled from old code
         GAINS = (Slot0Configs()
