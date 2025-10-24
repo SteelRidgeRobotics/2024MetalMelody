@@ -6,7 +6,7 @@ from commands2.sysid import SysIdRoutine
 from phoenix6 import SignalLogger, BaseStatusSignal, utils
 from phoenix6.configs import TalonFXConfiguration, MotorOutputConfigs, FeedbackConfigs
 from phoenix6.configs.config_groups import NeutralModeValue, MotionMagicConfigs, InvertedValue, DifferentialSensorSourceValue, DifferentialSensorsConfigs
-from phoenix6.controls import Follower, VoltageOut, DynamicMotionMagicVoltage, CoastOut
+from phoenix6.controls import Follower, VoltageOut, DynamicMotionMagicVoltage, CoastOut, MotionMagicVoltage
 from phoenix6.hardware import TalonFX
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose3d, Rotation3d
@@ -48,33 +48,29 @@ class ElevatorSubsystem(StateSubsystem):
         super().__init__("Elevator", self.SubsystemState.DEFAULT)
 
         self._master_motor = TalonFX(Constants.CanIDs.RIGHT_ELEVATOR_TALON) # Right Motor
-        general_config = TalonFXConfiguration()
-        general_config.slot0 = Constants.ElevatorConstants.GAINS
-        general_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
-        general_config.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
-        self._master_motor.configurator.apply(general_config)
+        self._master_motor.configurator.apply(self._motor_config)
 
         self.follower_motor = TalonFX(Constants.CanIDs.LEFT_ELEVATOR_TALON) # Left Motor
-        follower_config = general_config
-        follower_config.with_differential_sensors(
-            DifferentialSensorsConfigs()
-            .with_differential_sensor_source(DifferentialSensorSourceValue.REMOTE_TALON_FX_DIFF)
-            .with_differential_talon_fx_sensor_id(self._master_motor.device_id)
-            .with_differential_remote_sensor_id(self._master_motor.device_id)
-        )
+        follower_config = TalonFXConfiguration()
+        follower_config.slot0 = Constants.ElevatorConstants.GAINS
+        follower_config.motor_output.with_neutral_mode(NeutralModeValue.BRAKE)
         follower_config.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
+        follower_config.feedback.with_sensor_to_mechanism_ratio(Constants.ElevatorConstants.GEAR_RATIO)
+        follower_config.with_motion_magic(
+            MotionMagicConfigs()
+            .with_motion_magic_acceleration(Constants.ElevatorConstants.MM_DOWNWARD_ACCELERATION)
+            .with_motion_magic_cruise_velocity(Constants.ElevatorConstants.CRUISE_VELOCITY)
+        )
 
         self.follower_motor.configurator.apply(follower_config)
         
-        self.follower_motor.set_control(CoastOut())
+        # Use Follower control to make the follower motor follow the master
+        self.follower_motor.set_control(Follower(self._master_motor.device_id, True))
 
-        self._position_request = DynamicMotionMagicVoltage(
-            0,
-            Constants.ElevatorConstants.CRUISE_VELOCITY,
-            Constants.ElevatorConstants.MM_UPWARD_ACCELERATION,
-            Constants.ElevatorConstants.MM_JERK
-        )
-        self._brake_request = DynamicMotionMagicVoltage(0, Constants.ElevatorConstants.CRUISE_VELOCITY, Constants.ElevatorConstants.MM_BRAKE_ACCELERATION, 0)
+        # Use simpler MotionMagicVoltage instead of DynamicMotionMagicVoltage
+
+        self._position_request = MotionMagicVoltage(0)
+        self._brake_request = MotionMagicVoltage(0)
 
         self._sys_id_request = VoltageOut(0)
         self._sys_id_routine = SysIdRoutine(
@@ -120,13 +116,8 @@ class ElevatorSubsystem(StateSubsystem):
             self._master_motor.set_control(self._brake_request)
         else:
             current_pos = self._master_motor.get_position().value
-            if current_pos < position:
-                self._position_request.acceleration = Constants.ElevatorConstants.MM_UPWARD_ACCELERATION
-                DataLogManager.log(f"Elevator: Moving up from {current_pos} to {position}")
-            else:
-                self._position_request.acceleration = Constants.ElevatorConstants.MM_DOWNWARD_ACCELERATION
-                DataLogManager.log(f"Elevator: Moving down from {current_pos} to {position}")
-
+            DataLogManager.log(f"Elevator: Moving from {current_pos} to {position}")
+            
             self._position_request.position = position
             DataLogManager.log(f"Elevator: Setting position request to {position}")
             self._master_motor.set_control(self._position_request)

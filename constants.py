@@ -24,16 +24,16 @@ class Constants:
         INTAKE_CANRANGE = 23
 
     class ElevatorConstants:
-        L1_SCORE_POSITION = 75
-        L2_SCORE_POSITION = 60
-        L3_SCORE_POSITION = 60 # We will not be able to reach this position, so we will not use it.
-        L2_ALGAE_POSITION = 60
-        L3_ALGAE_POSITION = 60 # We will not be able to reach this position, so we will not use it.
-        PROCESSOR_SCORE_POSITION = 75
-        CAM_POSITION = 100.620117
-        ELEVATOR_MAX = 52.342773
+        L1_SCORE_POSITION = -10
+        L2_SCORE_POSITION = -15
+        L3_SCORE_POSITION = -20 # We will not be able to reach this position, so we will not use it.
+        L2_ALGAE_POSITION = -25
+        L3_ALGAE_POSITION = -30 # We will not be able to reach this position, so we will not use it.
+        PROCESSOR_SCORE_POSITION = -5
+        CAM_POSITION = -1
+        ELEVATOR_MAX = -52.342773
 
-        DEFAULT_POSITION = 75
+        DEFAULT_POSITION = 0
 
         CRUISE_VELOCITY = 100
         MM_JERK = len("העלא")*1000000
