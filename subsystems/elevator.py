@@ -9,6 +9,7 @@ from phoenix6.configs.config_groups import NeutralModeValue, MotionMagicConfigs,
 from phoenix6.controls import Follower, VoltageOut, DynamicMotionMagicVoltage, CoastOut
 from phoenix6.hardware import TalonFX
 from wpilib.sysid import SysIdRoutineLog
+from wpimath.geometry import Pose3d, Rotation3d
 
 from constants import Constants
 from subsystems import StateSubsystem
@@ -97,8 +98,7 @@ class ElevatorSubsystem(StateSubsystem):
         latency_compensated_position = BaseStatusSignal.get_latency_compensated_value(
             self._master_motor.get_position(), self._master_motor.get_velocity()
         )
-        # self._at_setpoint = abs(latency_compensated_position - self._position_request.position) <= Constants.ElevatorConstants.SETPOINT_TOLERANCE
-        self._at_setpoint = True
+        self._at_setpoint = abs(latency_compensated_position - self._position_request.position) <= Constants.ElevatorConstants.SETPOINT_TOLERANCE
         self.get_network_table().getEntry("At Setpoint").setBoolean(self._at_setpoint)
 
     def set_desired_state(self, desired_state: SubsystemState) -> None:
@@ -142,3 +142,17 @@ class ElevatorSubsystem(StateSubsystem):
 
     def sys_id_dynamic(self, direction: SysIdRoutine.Direction) -> Command:
         return self._sys_id_routine.dynamic(direction).andThen(self.stop())
+
+    def get_component_poses(self) -> tuple[Pose3d, Pose3d]:
+        position = self._master_motor.get_position().value
+        return (
+            Pose3d(0, 0, (position * (0.6985 / 6.096924)), Rotation3d()),
+            Pose3d(0, 0, (position * 2 * (0.6985 / 6.096924)), Rotation3d())
+        )
+
+    def get_target_poses(self) -> tuple[Pose3d, Pose3d]:
+        reference = self._master_motor.get_closed_loop_reference().value
+        return (
+            Pose3d(0, 0, (reference * (0.6985 / 6.096924)), Rotation3d()),
+            Pose3d(0, 0, (reference * 2 * (0.6985 / 6.096924)), Rotation3d())
+        )
