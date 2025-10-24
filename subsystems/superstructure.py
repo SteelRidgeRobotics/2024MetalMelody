@@ -92,9 +92,8 @@ class Superstructure(Subsystem):
             self.pivot.unfreeze()
             self.pivot.set_desired_state(self._desired_pivot_state)
         """
-        
-        #TODO: Uncomment this when the elevator is fixed.
-        # self.elevator.set_desired_state(self._desired_elevator_state)
+        self.pivot.set_desired_state(self._desired_pivot_state)
+        self.elevator.set_desired_state(self._desired_elevator_state)
 
     
     def simulationPeriodic(self) -> None:
