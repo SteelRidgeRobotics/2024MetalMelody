@@ -85,8 +85,8 @@ class Constants:
                  .with_gravity_type(GravityTypeValue.ARM_COSINE)
         )
 
-        # CANCODER_DISCONTINUITY = 0.5
-        # CANCODER_OFFSET = -0.434326171875 
+        CANCODER_DISCONTINUITY = 0.5
+        CANCODER_OFFSET = -0.434326171875 
 
         SETPOINT_TOLERANCE = 0.03125
 
