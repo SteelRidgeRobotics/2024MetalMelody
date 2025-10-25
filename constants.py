@@ -24,10 +24,10 @@ class Constants:
         INTAKE_CANRANGE = 23
 
     class ElevatorConstants:
-        L1_SCORE_POSITION = -1.1
-        L2_SCORE_POSITION = -1.5
+        L1_SCORE_POSITION = -0.03
+        L2_SCORE_POSITION = -2.538818
         L3_SCORE_POSITION = -2.0 # We will not be able to reach this position, so we will not use it.
-        L2_ALGAE_POSITION = -2.5
+        L2_ALGAE_POSITION = -2.538818
         L3_ALGAE_POSITION = -2.6 # We will not be able to reach this position, so we will not use it.
         PROCESSOR_SCORE_POSITION = -1
         CAM_POSITION = -1
@@ -58,10 +58,10 @@ class Constants:
         START_ANGLE = -0.024902
         STOW_ANGLE = -0.5
         GROUND_INTAKE_ANGLE = -10.591797
-        ALGAE_INTAKE_ANGLE = -8.5
-        HIGH_SCORING_ANGLE = -2.0
-        MID_SCORING_ANGLE = -1.1
-        LOW_SCORING_ANGLE = -1.0
+        ALGAE_INTAKE_ANGLE = -3
+        HIGH_SCORING_ANGLE = -0.5
+        MID_SCORING_ANGLE = -0.5
+        LOW_SCORING_ANGLE = -0.5
         PROCESSOR_SCORING_ANGLE = -6.0
 
         CRUISE_VELOCITY = 10
@@ -90,9 +90,9 @@ class Constants:
         CORAL_OUTPUT_SPEED = 0.6
         L1_OUTPUT_SPEED = 0.4
 
-        ALGAE_HOLD = 0.125
+        ALGAE_HOLD = -0.125
         ALGAE_INTAKE_SPEED = -0.25
-        ALGAE_OUTPUT_SPEED = -1
+        ALGAE_OUTPUT_SPEED = 1
 
         SUPPLY_CURRENT = 35
 
