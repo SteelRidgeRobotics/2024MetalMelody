@@ -58,11 +58,11 @@ class Constants:
         START_ANGLE = -0.024902
         STOW_ANGLE = -0.5
         GROUND_INTAKE_ANGLE = -10.591797
-        ALGAE_INTAKE_ANGLE = -3
+        ALGAE_INTAKE_ANGLE = -7
         HIGH_SCORING_ANGLE = -0.5
         MID_SCORING_ANGLE = -0.5
         LOW_SCORING_ANGLE = -0.5
-        PROCESSOR_SCORING_ANGLE = -6.0
+        PROCESSOR_SCORING_ANGLE = -8
 
         CRUISE_VELOCITY = 10
         MM_ACCELERATION = 10
@@ -70,7 +70,7 @@ class Constants:
         GEAR_RATIO = 961/36 # TODO: Verify this gear ratio.
         GAINS = (Slot0Configs()
                  .with_k_g(0.27)
-                 .with_k_p(15)  # Reduced from 30 to 15
+                 .with_k_p(30)  # Reduced from 30 to 15
                  .with_k_i(0.0)
                  .with_k_d(0.3)  # Reduced from 0.6343 to 0.3
                  .with_k_s(0.19)
