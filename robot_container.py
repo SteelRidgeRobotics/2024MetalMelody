@@ -156,6 +156,8 @@ class RobotContainer:
             )
         )
 
+        """
+        NO NO FUNCTION (If we use auto-align it will EXPLODE!!1!1!!11)
         Trigger(lambda: self._driver_controller.getLeftTriggerAxis() > 0.75).whileTrue(
             self.drivetrain.apply_request(
                 lambda: self._driver_assist
@@ -177,6 +179,7 @@ class RobotContainer:
                 .with_target_pose(self.drivetrain.get_closest_branch(self.drivetrain.BranchSide.RIGHT))
             )
         )
+        """
 
         self._driver_controller.start().onTrue(self.drivetrain.runOnce(lambda: self.drivetrain.seed_field_centric()))
 
@@ -219,11 +222,14 @@ class RobotContainer:
             self.intake.set_desired_state_command(self.intake.SubsystemState.HOLD)
         )
 
+        """
+        NO NO FUNCTION
         (self._function_controller.rightBumper() & self._function_controller.start()).onTrue(
             self.intake.set_desired_state_command(self.intake.SubsystemState.L1_OUTPUT)
         ).onFalse(
             self.intake.set_desired_state_command(self.intake.SubsystemState.HOLD)
         )
+        """
 
     def get_autonomous_command(self) -> commands2.Command:
         return self._auto_chooser.getSelected()
