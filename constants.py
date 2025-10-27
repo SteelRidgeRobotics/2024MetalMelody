@@ -27,7 +27,7 @@ class Constants:
         L1_SCORE_POSITION = -0.03
         L2_SCORE_POSITION = -2.538818
         L3_SCORE_POSITION = -2.0 # We will not be able to reach this position, so we will not use it.
-        L2_ALGAE_POSITION = -2.538818
+        L2_ALGAE_POSITION = -0.03
         L3_ALGAE_POSITION = -2.6 # We will not be able to reach this position, so we will not use it.
         PROCESSOR_SCORE_POSITION = -1
         CAM_POSITION = -1
@@ -58,7 +58,7 @@ class Constants:
         START_ANGLE = -0.024902
         STOW_ANGLE = -0.5
         GROUND_INTAKE_ANGLE = -10.591797
-        ALGAE_INTAKE_ANGLE = -7
+        ALGAE_INTAKE_ANGLE = -10.591797
         HIGH_SCORING_ANGLE = -0.5
         MID_SCORING_ANGLE = -0.5
         LOW_SCORING_ANGLE = -0.5
